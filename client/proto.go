@@ -1,10 +1,8 @@
-package rmproto
+package client
 
 import (
 	"fmt"
 
-	"github.com/openrobosouls/rm-proto/client"
-	"github.com/openrobosouls/rm-proto/core"
 	"github.com/wintbiit/tsf4g/tdrcom"
 )
 
@@ -23,6 +21,6 @@ func newMessage[T any]() NewMessage {
 }
 
 var MessageTypeMap = map[uint16]NewMessage{
-	uint16(core.CmdGameState):  newMessage[client.GameStateData](),
-	uint16(core.CmdGameResult): newMessage[client.GameResultData](),
+	uint16(CmdGameState):  newMessage[GameStateData](),
+	uint16(CmdGameResult): newMessage[GameResultData](),
 }

@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/openrobosouls/rm-proto/core"
-
 	"github.com/openrobosouls/rm-proto/client"
 )
 
@@ -54,7 +52,7 @@ func main() {
 					fmt.Println("Invalid frame received:", data)
 					continue
 				}
-				frame := core.NewFrame()
+				frame := client.NewFrame()
 				if err := frame.Unpack(0, data); err != nil {
 					fmt.Println("Error unpacking frame:", err)
 					continue

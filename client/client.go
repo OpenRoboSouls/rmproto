@@ -3,7 +3,7 @@
 //	go code compiler
 //	author: cowhuang@tencent.com
 //
-// create time: 2025-08-16 15:58:43
+// create time: 2025-08-16 22:19:02
 package client
 
 import (
@@ -12,6 +12,340 @@ import (
 
 	"github.com/wintbiit/tsf4g/tdrcom"
 )
+
+// 红方英雄机器人
+const IDRed1Hero int64 = 1
+
+// 红方英雄机器人选手端
+const ClientIDRed1Hero int64 = 0x0101
+
+// 数据帧起始字节固定值
+const SOF int64 = 0xA5
+const (
+	FrameHeaderBaseVersion    uint32 = 1
+	FrameHeaderCurrentVersion uint32 = 1
+)
+
+// FrameHeader
+type FrameHeader struct {
+	Sof byte `tdr_field:"sof"`
+
+	DataLength uint16 `tdr_field:"data_length"`
+
+	Seq byte `tdr_field:"seq"`
+
+	Crc8 byte `tdr_field:"crc8"`
+}
+
+func NewFrameHeader() *FrameHeader {
+	obj := new(FrameHeader)
+	obj.Init()
+	return obj
+}
+
+func (this *FrameHeader) GetBaseVersion() uint32 {
+	return FrameHeaderBaseVersion
+}
+
+func (this *FrameHeader) GetCurrentVersion() uint32 {
+	return FrameHeaderCurrentVersion
+}
+
+func (this *FrameHeader) Init() {
+	this.Sof = 0xA5
+
+}
+
+func (this *FrameHeader) Pack(cutVer uint32) ([]byte, error) {
+	w := tdrcom.NewWriter()
+	if err := this.PackTo(cutVer, w); err != nil {
+		return nil, errors.New("FrameHeader Pack error\n" + err.Error())
+	} else {
+		return w.Bytes(), nil
+	}
+}
+
+func (this *FrameHeader) PackTo(cutVer uint32, w *tdrcom.Writer) error {
+	// adjust cut version
+	if cutVer == 0 || cutVer > FrameHeaderCurrentVersion {
+		cutVer = FrameHeaderCurrentVersion
+	}
+	// check cut version
+	if cutVer < FrameHeaderBaseVersion {
+		return errors.New("FrameHeader cut version must large than FrameHeaderBaseVersion\n")
+	}
+
+	var err error
+
+	err = binary.Write(w, binary.BigEndian, this.Sof)
+	if err != nil {
+		return errors.New("FrameHeader.Sof pack error\n" + err.Error())
+	}
+
+	err = binary.Write(w, binary.BigEndian, this.DataLength)
+	if err != nil {
+		return errors.New("FrameHeader.DataLength pack error\n" + err.Error())
+	}
+
+	err = binary.Write(w, binary.BigEndian, this.Seq)
+	if err != nil {
+		return errors.New("FrameHeader.Seq pack error\n" + err.Error())
+	}
+
+	err = binary.Write(w, binary.BigEndian, this.Crc8)
+	if err != nil {
+		return errors.New("FrameHeader.Crc8 pack error\n" + err.Error())
+	}
+
+	return nil
+}
+
+func (this *FrameHeader) Unpack(cutVer uint32, data []byte) error {
+	if nil == data {
+		return errors.New("FrameHeader data is nil")
+	}
+	return this.UnpackFrom(cutVer, tdrcom.NewReader(data))
+}
+
+func (this *FrameHeader) UnpackFrom(cutVer uint32, r *tdrcom.Reader) error {
+	var err error = nil
+	// adjust version
+	if cutVer == 0 || cutVer > FrameHeaderCurrentVersion {
+		cutVer = FrameHeaderCurrentVersion
+	}
+	// check version
+	if cutVer < FrameHeaderBaseVersion {
+		errors.New("FrameHeader cut version must large than FrameHeaderBaseVersion\n")
+	}
+
+	err = binary.Read(r, binary.BigEndian, &this.Sof)
+	if err != nil {
+		return errors.New("FrameHeader.Sof unpack error\n" + err.Error())
+	}
+
+	err = binary.Read(r, binary.BigEndian, &this.DataLength)
+	if err != nil {
+		return errors.New("FrameHeader.DataLength unpack error\n" + err.Error())
+	}
+
+	err = binary.Read(r, binary.BigEndian, &this.Seq)
+	if err != nil {
+		return errors.New("FrameHeader.Seq unpack error\n" + err.Error())
+	}
+
+	err = binary.Read(r, binary.BigEndian, &this.Crc8)
+	if err != nil {
+		return errors.New("FrameHeader.Crc8 unpack error\n" + err.Error())
+	}
+
+	return err
+}
+
+// 比赛状态数据
+const CmdGameState int64 = 0x0001
+
+// 比赛结果数据
+const CmdGameResult int64 = 0x0002
+
+// 机器人血量数据
+const CmdRobotHealth int64 = 0x0003
+
+// 场地事件数据
+const CmdEventData int64 = 0x0101
+
+// 裁判警告数据
+const CmdRefereeWarning int64 = 0x0104
+
+// 飞镖发射相关数据
+const CmdDartInfo int64 = 0x0105
+
+// 机器人性能体系数据
+const CmdRobotStatus int64 = 0x0201
+
+// 实时底盘缓冲能量和射击热量数据
+const CmdPowerHeatData int64 = 0x0202
+
+// 机器人位置数据
+const CmdRobotPosition int64 = 0x0203
+
+// 机器人增益和底盘能量数据
+const CmdBuffData int64 = 0x0204
+
+// 实时射击数据
+const CmdShootData int64 = 0x0207
+
+// 允许发弹量
+const CmdBulletAllowance int64 = 0x0208
+
+// 机器人RFID模块状态
+const CmdRFIDStatus int64 = 0x0209
+
+// 飞镖选手端指令数据
+const CmdDartClientCmd int64 = 0x020A
+
+// 地面机器人位置数据
+const CmdGroundRobotPos int64 = 0x020B
+
+// 雷达标记进度数据
+const CmdRadarMark int64 = 0x020C
+
+// 哨兵自主决策信息同步
+const CmdSentryInfo int64 = 0x020D
+
+// 雷达自主决策信息同步
+const CmdRadarInfo int64 = 0x020E
+
+// 选手端小地图交互数据
+const CmdClientMapInteraction int64 = 0x0303
+
+// 键鼠遥控数据
+const CmdKeyboardMouse int64 = 0x0304
+
+// 数据帧中 data 的最大长度
+const DataMaxLength int64 = 1024
+const (
+	FrameBaseVersion    uint32 = 1
+	FrameCurrentVersion uint32 = 1
+)
+
+// Frame
+type Frame struct {
+	FrameHeader *FrameHeader `tdr_field:"frame_header"`
+
+	CmdId uint16 `tdr_field:"cmd_id"`
+
+	Data []byte `tdr_field:"data" tdr_count:"1024" tdr_refer:"FrameHeader.DataLength"`
+
+	FrameTail uint16 `tdr_field:"frame_tail"`
+}
+
+func NewFrame() *Frame {
+	obj := new(Frame)
+	obj.Init()
+	return obj
+}
+
+func (this *Frame) GetBaseVersion() uint32 {
+	return FrameBaseVersion
+}
+
+func (this *Frame) GetCurrentVersion() uint32 {
+	return FrameCurrentVersion
+}
+
+func (this *Frame) Init() {
+	this.FrameHeader = NewFrameHeader()
+
+}
+
+func (this *Frame) Pack(cutVer uint32) ([]byte, error) {
+	w := tdrcom.NewWriter()
+	if err := this.PackTo(cutVer, w); err != nil {
+		return nil, errors.New("Frame Pack error\n" + err.Error())
+	} else {
+		return w.Bytes(), nil
+	}
+}
+
+func (this *Frame) PackTo(cutVer uint32, w *tdrcom.Writer) error {
+	// adjust cut version
+	if cutVer == 0 || cutVer > FrameCurrentVersion {
+		cutVer = FrameCurrentVersion
+	}
+	// check cut version
+	if cutVer < FrameBaseVersion {
+		return errors.New("Frame cut version must large than FrameBaseVersion\n")
+	}
+
+	var err error
+
+	err = this.FrameHeader.PackTo(cutVer, w)
+	if err != nil {
+		return errors.New("Frame.FrameHeader pack error\n" + err.Error())
+	}
+
+	err = binary.Write(w, binary.BigEndian, this.CmdId)
+	if err != nil {
+		return errors.New("Frame.CmdId pack error\n" + err.Error())
+	}
+
+	if this.FrameHeader.DataLength < 0 {
+		return errors.New("Frame.Data's refer FrameHeader.DataLength should >= 0")
+	}
+	if this.FrameHeader.DataLength > 1024 {
+		return errors.New("Frame.Data's refer FrameHeader.DataLength should <= count 1024")
+	}
+	if len(this.Data) < int(this.FrameHeader.DataLength) {
+		return errors.New("Frame.Data's length should > FrameHeader.DataLength")
+	}
+	if this.FrameHeader.DataLength > 0 {
+		referData := this.Data[:this.FrameHeader.DataLength]
+		err = binary.Write(w, binary.BigEndian, referData)
+		if err != nil {
+			return errors.New("Frame.Data pack error\n" + err.Error())
+		}
+	}
+
+	err = binary.Write(w, binary.BigEndian, this.FrameTail)
+	if err != nil {
+		return errors.New("Frame.FrameTail pack error\n" + err.Error())
+	}
+
+	return nil
+}
+
+func (this *Frame) Unpack(cutVer uint32, data []byte) error {
+	if nil == data {
+		return errors.New("Frame data is nil")
+	}
+	return this.UnpackFrom(cutVer, tdrcom.NewReader(data))
+}
+
+func (this *Frame) UnpackFrom(cutVer uint32, r *tdrcom.Reader) error {
+	var err error = nil
+	// adjust version
+	if cutVer == 0 || cutVer > FrameCurrentVersion {
+		cutVer = FrameCurrentVersion
+	}
+	// check version
+	if cutVer < FrameBaseVersion {
+		errors.New("Frame cut version must large than FrameBaseVersion\n")
+	}
+
+	err = this.FrameHeader.UnpackFrom(cutVer, r)
+	if err != nil {
+		return errors.New("Frame.FrameHeader unpack error\n" + err.Error())
+	}
+
+	err = binary.Read(r, binary.BigEndian, &this.CmdId)
+	if err != nil {
+		return errors.New("Frame.CmdId unpack error\n" + err.Error())
+	}
+
+	if this.FrameHeader.DataLength < 0 {
+		return errors.New("Frame.Data's refer FrameHeader.DataLength should >= 0")
+	}
+	if this.FrameHeader.DataLength > 1024 {
+		return errors.New("Frame.Data's refer FrameHeader.DataLength should <= count 1024")
+	}
+
+	if this.Data == nil {
+		this.Data = make([]byte, int(this.FrameHeader.DataLength))
+	}
+
+	referData := this.Data[:this.FrameHeader.DataLength]
+	err = binary.Read(r, binary.BigEndian, referData)
+	if err != nil {
+		return errors.New("Frame.Data pack error\n" + err.Error())
+	}
+
+	err = binary.Read(r, binary.BigEndian, &this.FrameTail)
+	if err != nil {
+		return errors.New("Frame.FrameTail unpack error\n" + err.Error())
+	}
+
+	return err
+}
 
 // RoboMaster 机甲大师超级对抗赛
 const GameTypeRoboMasterUC int64 = 1

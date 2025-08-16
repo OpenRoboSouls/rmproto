@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<metalib name="s1" tagsetversion="1" version="1">
+    <struct name="Header" version="1" size="12">
+        <entry name="proto_id" type="uint16" desc="协议 ID"/>
+        <entry name="proto_type" type="uint16" desc="协议类型"/>
+        <entry name="data_len" type="uint32" desc="数据帧长度"/>
+        <entry name="sequence_id" type="byte" desc="序列号"/>
+        <entry name="ack_type" type="byte" desc="ACK 类型"/>
+        <entry name="nouse1" type="byte" desc="-"/>
+        <entry name="nouse2" type="byte" desc="-"/>
+    </struct>
+
+    <struct name="Frame" version="1" desc="数据帧">
+        <entry type="Header" name="header" desc="数据帧头"/>
+        <entry type="byte" name="data" desc="数据内容" count="1024" refer="header.data_len"/>
+    </struct>
+</metalib>

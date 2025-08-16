@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<metalib name="s0" tagsetversion="1" version="1">
+    <macro name="PREFIX" value="241" desc="数据帧前缀字节"/>
+    <struct name="Header" version="1">
+        <entry name="prefix" type="byte" desc="前缀" defaultValue="PREFIX"/>
+        <entry name="receiver_id" type="byte" desc="接受端ID"/>
+        <entry name="sender_id" type="byte" desc="发送端ID"/>
+        <entry name="proto_id" type="uint16" desc="协议 ID"/>
+        <entry name="data_len" type="uint16" desc="数据帧长度"/>
+    </struct>
+
+    <struct name="Frame" version="1" desc="数据帧">
+        <entry type="Header" name="header" desc="数据帧头"/>
+        <entry type="byte" name="data" desc="数据内容" count="1024" refer="header.data_len"/>
+    </struct>
+</metalib>

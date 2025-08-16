@@ -1,0 +1,8 @@
+syntax = "proto3";
+package s99;
+
+option go_package = "./;s99";
+
+message RobotStatus {
+
+}
