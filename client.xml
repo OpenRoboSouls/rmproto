@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<metalib name="client" tagsetversion="1" version="1">
+    <macrosgroup name="GameType" desc="比赛类型">
+        <macro name="GameTypeRoboMasterUC" value="1" desc="RoboMaster 机甲大师超级对抗赛"/>
+        <macro name="GameTypeRoboMasterCS" value="2" desc="RoboMaster 机甲大师高校单项赛"/>
+        <macro name="GameTypeRoboMasterICRA" value="3" desc="ICRA RoboMaster 高校人工智能挑战赛"/>
+        <macro name="GameTypeRoboMasterUL" value="4" desc="RoboMaster 机甲大师高校联盟赛 3V3 对抗"/>
+        <macro name="GameTypeRoboMasterULStandard" value="5" desc="RoboMaster 机甲大师高校联盟赛步兵对抗"/>
+    </macrosgroup>
+    <macrosgroup name="GameStage" desc="比赛阶段">
+        <macro name="GameStageDefault" value="0" desc="未开始比赛"/>
+        <macro name="GameStagePrepare" value="1" desc="准备阶段"/>
+        <macro name="GameStageJudgeSystemCheck" value="2" desc="十五秒裁判系统自检阶段"/>
+        <macro name="GameStageCountdown" value="3" desc="五秒倒计时"/>
+        <macro name="GameStageRunning" value="4" desc="比赛中"/>
+        <macro name="GameStageEnd" value="5" desc="比赛结算中"/>
+    </macrosgroup>
+    <struct name="GameStateData" version="1" id="CMD" desc="比赛状态数据" size="11">
+        <entry name="game_state" type="byte" desc="bit 0-3：比赛类型，bit 4-7：当前比赛阶段"/>
+        <entry name="time_remaining" type="uint16" desc="当前阶段剩余时间，单位：秒"/>
+        <entry name="timestamp" type="uint64" desc="UNIX 时间，当机器人正确连接到裁判系统的 NTP 服务器后生效"/>
+    </struct>
+
+    <macrosgroup name="GameResult" desc="比赛结果">
+        <macro name="GameResultDraw" value="0" desc="平局"/>
+        <macro name="GameResultRedWin" value="1" desc="红方胜利"/>
+        <macro name="GameResultBlueWin" value="2" desc="蓝方胜利"/>
+    </macrosgroup>
+    <struct name="GameResultData" version="1" desc="比赛结果数据" size="1">
+        <entry name="game_result" type="byte" desc="比赛结果"/>
+    </struct>
+
+    <struct name="RobotHealthData" version="1" desc="机器人血量数据" size="32">
+        <entry name="Red1HeroHealth" type="uint16" desc="红 1 英雄机器人血量。若该机器人未上场或者被罚下，则血量为 0"/>
+        <entry name="Red2EngineerHealth" type="uint16" desc="红 2 工程机器人血量"/>
+        <entry name="Red3StandardHealth" type="uint16" desc="红 3 步兵机器人血量"/>
+        <entry name="Red4StandardHealth" type="uint16" desc="红 4 步兵机器人血量"/>
+        <entry name="Red5Preserved" type="uint16" desc="保留位"/>
+        <entry name="Red7SentryHealth" type="uint16" desc="红 7 哨兵机器人血量"/>
+        <entry name="RedOutpostHealth" type="uint16" desc="红方前哨站血量"/>
+        <entry name="RedBaseHealth" type="uint16" desc="红方基地血量"/>
+
+        <entry name="Blue1HeroHealth" type="uint16" desc="蓝 1 英雄机器人血量"/>
+        <entry name="Blue2EngineerHealth" type="uint16" desc="蓝 2 工程机器人血量"/>
+        <entry name="Blue3StandardHealth" type="uint16" desc="蓝 3 步兵机器人血量"/>
+        <entry name="Blue4StandardHealth" type="uint16" desc="蓝 4 步兵机器人血量"/>
+        <entry name="Blue5Preserved" type="uint16" desc="保留位"/>
+        <entry name="Blue7SentryHealth" type="uint16" desc="蓝 7 哨兵机器人血量"/>
+        <entry name="BlueOutpostHealth" type="uint16" desc="蓝方前哨站血量"/>
+        <entry name="BlueBaseHealth" type="uint16" desc="蓝方基地血量"/>
+    </struct>
+
+    <!-- 场地事件数据 -->
+    <struct name="EventData" version="1" desc="场地事件数据" size="4">
+        <entry name="event_type" type="byte" desc="事件类型"/>
+        <entry name="event_data" type="byte" desc="事件数据"/>
+        <entry name="reserved" type="uint16" desc="保留位"/>
+    </struct>
+
+    <!-- 裁判警告数据 -->
+    <struct name="RefereeWarningData" version="1" desc="裁判警告数据" size="3">
+        <entry name="penalty_level" type="byte" desc="判罚等级"/>
+        <entry name="offender_id" type="byte" desc="违规机器人ID"/>
+        <entry name="count" type="byte" desc="违规次数"/>
+    </struct>
+
+    <!-- 飞镖信息数据 -->
+    <struct name="DartInfoData" version="1" desc="飞镖发射相关数据" size="3">
+        <entry name="remaining_time" type="byte" desc="飞镖发射剩余时间"/>
+        <entry name="dart_info" type="uint16" desc="飞镖击中信息"/>
+    </struct>
+
+    <!-- 机器人状态数据 -->
+    <struct name="RobotStatusData" version="1" desc="机器人性能体系数据" size="13">
+        <entry name="robot_id" type="byte" desc="本机器人ID"/>
+        <entry name="robot_level" type="byte" desc="机器人等级"/>
+        <entry name="current_hp" type="uint16" desc="机器人当前血量"/>
+        <entry name="max_hp" type="uint16" desc="机器人血量上限"/>
+        <entry name="cooling_rate" type="uint16" desc="射击热量每秒冷却值"/>
+        <entry name="heat_limit" type="uint16" desc="射击热量上限"/>
+        <entry name="power_limit" type="uint16" desc="底盘功率上限"/>
+        <entry name="power_output" type="byte" desc="电源管理模块输出情况"/>
+    </struct>
+
+    <!-- 射击数据 -->
+    <struct name="ShootData" version="1" desc="实时射击数据" size="7">
+        <entry name="bullet_type" type="byte" desc="弹丸类型"/>
+        <entry name="shooter_id" type="byte" desc="发射机构ID"/>
+        <entry name="frequency" type="byte" desc="发射频率"/>
+        <entry name="speed" type="float" desc="弹丸初速度"/>
+    </struct>
+
+    <!-- 允许发弹量数据 -->
+    <struct name="BulletAllowanceData" version="1" desc="允许发弹量" size="6">
+        <entry name="allowance_17mm" type="uint16" desc="17mm弹丸允许发弹量"/>
+        <entry name="allowance_42mm" type="uint16" desc="42mm弹丸允许发弹量"/>
+        <entry name="coins" type="uint16" desc="剩余金币数量"/>
+        <entry name="reserved" type="uint16" desc="堡垒增益点提供的储备17mm弹丸允许发弹量"/>
+    </struct>
+
+    <!-- 雷达标记数据 -->
+    <struct name="RadarMarkData" version="1" desc="雷达标记进度数据" size="1">
+        <entry name="mark_progress" type="byte" desc="标记进度"/>
+    </struct>
+
+    <!-- 哨兵信息数据 -->
+    <struct name="SentryInfoData" version="1" desc="哨兵自主决策信息同步" size="6">
+        <entry name="sentry_info" type="uint32" desc="哨兵信息"/>
+        <entry name="sentry_info_2" type="uint16" desc="哨兵信息补充"/>
+    </struct>
+
+    <!-- 键鼠遥控数据 -->
+    <struct name="KeyboardMouseData" version="1" desc="键鼠遥控数据" size="12">
+        <entry name="mouse_x" type="int16" desc="鼠标x轴移动速度"/>
+        <entry name="mouse_y" type="int16" desc="鼠标y轴移动速度"/>
+        <entry name="mouse_z" type="int16" desc="鼠标滚轮移动速度"/>
+        <entry name="left_button" type="byte" desc="鼠标左键状态"/>
+        <entry name="right_button" type="byte" desc="鼠标右键状态"/>
+        <entry name="keyboard_value" type="uint16" desc="键盘键值"/>
+        <entry name="reserved" type="uint16" desc="保留位"/>
+    </struct>
+</metalib>

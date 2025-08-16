@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<metalib name="core" tagsetversion="1" version="1">
+    <macrosgroup name="ID" desc="ID编号" >
+        <macro name="IDRed1Hero" value="1" desc="红方英雄机器人" />
+
+        <macro name="ClientIDRed1Hero" value="0x0101" desc="红方英雄机器人选手端" />
+    </macrosgroup>
+
+    <macro name="SOF" value="0xA5" desc="数据帧起始字节固定值" />
+    <struct name="FrameHeader" version="1">
+        <entry name="sof" type="byte" desc="数据帧起始字节" defaultvalue="SOF"/>
+        <entry name="data_length" type="uint16" desc="数据帧中 data 的长度"/>
+        <entry name="seq" type="uint8" desc="数据帧序列号"/>
+        <entry name="crc8" type="byte" desc="帧头 CRC8 校验"/>
+    </struct>
+
+    <macro name="DataMaxLength" value="1024" desc="数据帧中 data 的最大长度"/>
+    <struct name="Frame" version="1" desc="数据帧">
+        <entry type="FrameHeader" name="frame_header" desc="数据帧头"/>
+        <entry type="uint16" name="cmd_id" desc="命令码 ID"/>
+        <entry type="byte" name="data" desc="数据内容" count="DataMaxLength" refer="frame_header.data_length"/>
+        <entry type="uint16" name="frame_tail " desc="CRC16，整包校验"/>
+    </struct>
+</metalib>
