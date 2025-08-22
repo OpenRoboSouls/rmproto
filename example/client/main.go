@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/openrobosouls/rm-proto/client"
+	"github.com/openrobosouls/rmproto/client"
 	"github.com/wintbiit/tsf4g/tdrcom"
 )
 

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/openrobosouls/rm-proto/client"
+	"github.com/openrobosouls/rmproto/client"
 )
 
 const SOF = uint8(client.SOF)

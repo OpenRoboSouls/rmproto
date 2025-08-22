@@ -141,65 +141,89 @@ func (this *FrameHeader) UnpackFrom(cutVer uint32, r *tdrcom.Reader) error {
 	return err
 }
 
-// 比赛状态数据，固定以 1Hz 频率发送 GameStateData
-const CmdGameState int64 = 0x0001
+// 比赛状态数据，固定以 1Hz 频率发送 GameStatusData
+const CmdGameStatus int64 = 0x0001
 
 // 比赛结果数据，比赛结束触发发送 GameResultData
 const CmdGameResult int64 = 0x0002
 
-// 机器人血量数据，固定以 3Hz 频率发送 RobotHealthData
-const CmdRobotHealth int64 = 0x0003
+// 机器人血量数据，固定以 3Hz 频率发送 GameRobotHPData
+const CmdGameRobotHP int64 = 0x0003
 
 // 场地事件数据，固定以 1Hz 频率发送 BattleFieldEventData
 const CmdBattleFieldEvent int64 = 0x0101
 
-// 裁判警告数据
+// 裁判警告数据，己方判罚/判负时触发发送，其余时间以 1Hz 频率发送 RefereeWarningData
 const CmdRefereeWarning int64 = 0x0104
 
-// 飞镖发射相关数据
+// 飞镖发射相关数据，固定以 1Hz频率发送 DartInfoData
 const CmdDartInfo int64 = 0x0105
 
-// 机器人性能体系数据
+// 机器人性能体系数据，固定以10Hz 频率发送 RobotStatusData
 const CmdRobotStatus int64 = 0x0201
 
-// 实时底盘缓冲能量和射击热量数据
-const CmdPowerHeatData int64 = 0x0202
+// 实时底盘缓冲能量和射击热量数据，固定以 10Hz 频率发送 RobotPowerHeatData
+const CmdRobotPowerHeat int64 = 0x0202
 
-// 机器人位置数据
+// 机器人位置数据，固定以 1Hz 频率发送 RobotPositionData
 const CmdRobotPosition int64 = 0x0203
 
-// 机器人增益和底盘能量数据
-const CmdBuffData int64 = 0x0204
+// 机器人增益和底盘能量数据，固定以 3Hz 频率发送 RobotBuffData
+const CmdRobotBuff int64 = 0x0204
 
-// 实时射击数据
-const CmdShootData int64 = 0x0207
+// 伤害状态数据，伤害发生后发送 RobotHurtData
+const CmdRobotHurt int64 = 0x0206
 
-// 允许发弹量
-const CmdBulletAllowance int64 = 0x0208
+// 实时射击数据，弹丸发射后发送 RobotShootData
+const CmdRobotShoot int64 = 0x0207
 
-// 机器人RFID模块状态
-const CmdRFIDStatus int64 = 0x0209
+// 允许发弹量，固定以 10Hz 频率发送 RobotBulletAllowanceData
+const CmdRobotBulletAllowance int64 = 0x0208
 
-// 飞镖选手端指令数据
+// 机器人 RFID 模块状态，固定以 3Hz 频率发送 RobotRFIDStatusData
+const CmdRobotRFIDStatus int64 = 0x0209
+
+// 飞镖选手端指令数据，固定以 3Hz 频率发送 DartClientCmdData
 const CmdDartClientCmd int64 = 0x020A
 
-// 地面机器人位置数据
-const CmdGroundRobotPos int64 = 0x020B
+// 地面机器人位置数据，固定以 1Hz 频率发送 GroundRobotPositionData
+const CmdGroundRobotPosition int64 = 0x020B
 
-// 雷达标记进度数据
-const CmdRadarMark int64 = 0x020C
+// 雷达标记进度数据，固定以 1Hz 频率发送 RadarMarkProgressData
+const CmdRadarMarkProgress int64 = 0x020C
 
-// 哨兵自主决策信息同步
-const CmdSentryInfo int64 = 0x020D
+// 哨兵自主决策信息同步，固定以 1Hz 频率发送 SentryDecisionInfoData
+const CmdSentryDecisionInfo int64 = 0x020D
 
-// 雷达自主决策信息同步
-const CmdRadarInfo int64 = 0x020E
+// 雷达自主决策信息同步，固定以 1Hz 频率发送 RadarDecisionInfoData
+const CmdRadarDecisionInfo int64 = 0x020E
 
-// 选手端小地图交互数据
+// 机器人交互数据，发送方触发发送，频率上限为 30Hz RobotInteractionData
+const CmdRobotInteraction int64 = 0x0301
+
+// 自定义控制器与机器人交互数据，发送方触发发送，频率上限为 30Hz CustomControllerRobotInteractionData
+const CmdCustomControllerRobotInteraction int64 = 0x0302
+
+// 选手端小地图交互数据，选手端触发发送 ClientMapInteractionData
 const CmdClientMapInteraction int64 = 0x0303
 
-// 键鼠遥控数据
-const CmdKeyboardMouse int64 = 0x0304
+// 键鼠遥控数据，固定 30Hz 频率发送 KeyboardMouseControllerData
+const CmdKeyboardMouseController int64 = 0x0304
+
+// 选手端小地图接收雷达数据，频率上限为 5Hz ClientMapRadarData
+const CmdClientMapRadar int64 = 0x0305
+
+// 自定义控制器与选手端交互数据，发送方触发发送，频率上限为 30Hz CustomControllerClientInteractionData
+const CmdCustomControllerClientInteraction int64 = 0x0306
+
+// 选手端小地图接收路径数据，频率上限为 1Hz ClientMapPathData
+const CmdClientMapPath int64 = 0x0307
+
+// 选手端小地图接收机器人数据，频率上限为 3Hz ClientMapRobotData
+const CmdClientMapRobot int64 = 0x0308
+
+// 自定义控制器接收机器人数据，频率上限为 10Hz CmdCustomControllerRecvRobotData
+const CmdCustomControllerRecvRobot int64 = 0x0309
 
 // 数据帧中 data 的最大长度
 const DataMaxLength int64 = 1024
