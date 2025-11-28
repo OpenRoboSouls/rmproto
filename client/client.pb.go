@@ -7,12 +7,11 @@
 package client
 
 import (
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
-
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -2717,7 +2716,7 @@ const file_client_client_proto_rawDesc = "" +
 	"\x11airsupport_status\x18\x01 \x01(\rR\x10airsupportStatus\x12\x1b\n" +
 	"\tleft_time\x18\x02 \x01(\rR\bleftTime\x12\x1d\n" +
 	"\n" +
-	"cost_coins\x18\x03 \x01(\rR\tcostCoinsB0Z.github.com/openrobosouls/rmproto/v1.0.0/clientb\x06proto3"
+	"cost_coins\x18\x03 \x01(\rR\tcostCoinsB/Z-github.com/openrobosouls/rmproto/v2026/clientb\x06proto3"
 
 var (
 	file_client_client_proto_rawDescOnce sync.Once

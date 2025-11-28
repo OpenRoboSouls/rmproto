@@ -1,7 +1,7 @@
 syntax = "proto3";
 package client;
 
-option go_package = "github.com/openrobosouls/rmproto/v1.0.0/client";
+option go_package = "github.com/openrobosouls/rmproto/v2026/client";
 
 /*
    传输鼠标键盘输入和自定义数据

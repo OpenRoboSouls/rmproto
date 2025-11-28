@@ -1,4 +1,4 @@
-module github.com/openrobosouls/rmproto/v1.0.0
+module github.com/openrobosouls/rmproto/v2026
 
 go 1.24
 
