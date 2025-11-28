@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<metalib name="serialport" tagsetversion="1" version="1">
+<macrosgroup name="ID" desc="ID编号" >
+        <macro name="IDRed1Hero" value="1" desc="红方英雄机器人" />
+
+        <macro name="ClientIDRed1Hero" value="0x0101" desc="红方英雄机器人选手端" />
+    </macrosgroup>
+
+    <macro name="SOF" value="0xA5" desc="数据帧起始字节固定值" />
+    <struct name="FrameHeader" version="1">
+        <entry name="sof" type="byte" desc="数据帧起始字节" defaultvalue="SOF"/>
+        <entry name="data_length" type="uint16" desc="数据帧中 data 的长度"/>
+        <entry name="seq" type="uint8" desc="数据帧序列号"/>
+        <entry name="crc8" type="byte" desc="帧头 CRC8 校验"/>
+    </struct>
+
+    <macrosgroup name="CmdID" desc="命令码ID">
+        <macro name="CmdGameStatus" value="0x0001" desc="比赛状态数据，固定以 1Hz 频率发送 GameStatusData"/>
+        <macro name="CmdGameResult" value="0x0002" desc="比赛结果数据，比赛结束触发发送 GameResultData"/>
+        <macro name="CmdGameRobotHP" value="0x0003" desc="机器人血量数据，固定以 3Hz 频率发送 GameRobotHPData"/>
+        <macro name="CmdBattleFieldEvent" value="0x0101" desc="场地事件数据，固定以 1Hz 频率发送 BattleFieldEventData"/>
+        <macro name="CmdRefereeWarning" value="0x0104" desc="裁判警告数据，己方判罚/判负时触发发送，其余时间以 1Hz 频率发送 RefereeWarningData"/>
+        <macro name="CmdDartInfo" value="0x0105" desc="飞镖发射相关数据，固定以 1Hz频率发送 DartInfoData"/>
+        <macro name="CmdRobotStatus" value="0x0201" desc="机器人性能体系数据，固定以10Hz 频率发送 RobotStatusData"/>
+        <macro name="CmdRobotPowerHeat" value="0x0202" desc="实时底盘缓冲能量和射击热量数据，固定以 10Hz 频率发送 RobotPowerHeatData"/>
+        <macro name="CmdRobotPosition" value="0x0203" desc="机器人位置数据，固定以 1Hz 频率发送 RobotPositionData"/>
+        <macro name="CmdRobotBuff" value="0x0204" desc="机器人增益和底盘能量数据，固定以 3Hz 频率发送 RobotBuffData"/>
+        <macro name="CmdRobotHurt" value="0x0206" desc="伤害状态数据，伤害发生后发送 RobotHurtData"/>
+        <macro name="CmdRobotShoot" value="0x0207" desc="实时射击数据，弹丸发射后发送 RobotShootData"/>
+        <macro name="CmdRobotBulletAllowance" value="0x0208" desc="允许发弹量，固定以 10Hz 频率发送 RobotBulletAllowanceData"/>
+        <macro name="CmdRobotRFIDStatus" value="0x0209" desc="机器人 RFID 模块状态，固定以 3Hz 频率发送 RobotRFIDStatusData"/>
+        <macro name="CmdDartClientCmd" value="0x020A" desc="飞镖选手端指令数据，固定以 3Hz 频率发送 DartClientCmdData"/>
+        <macro name="CmdGroundRobotPosition" value="0x020B" desc="地面机器人位置数据，固定以 1Hz 频率发送 GroundRobotPositionData"/>
+        <macro name="CmdRadarMarkProgress" value="0x020C" desc="雷达标记进度数据，固定以 1Hz 频率发送 RadarMarkProgressData"/>
+        <macro name="CmdSentryDecisionInfo" value="0x020D" desc="哨兵自主决策信息同步，固定以 1Hz 频率发送 SentryDecisionInfoData"/>
+        <macro name="CmdRadarDecisionInfo" value="0x020E" desc="雷达自主决策信息同步，固定以 1Hz 频率发送 RadarDecisionInfoData"/>
+        <macro name="CmdRobotInteraction" value="0x0301" desc="机器人交互数据，发送方触发发送，频率上限为 30Hz RobotInteractionData"/>
+        <macro name="CmdCustomControllerRobotInteraction" value="0x0302" desc="自定义控制器与机器人交互数据，发送方触发发送，频率上限为 30Hz CustomControllerRobotInteractionData"/>
+        <macro name="CmdClientMapInteraction" value="0x0303" desc="选手端小地图交互数据，选手端触发发送 ClientMapInteractionData"/>
+        <macro name="CmdKeyboardMouseController" value="0x0304" desc="键鼠遥控数据，固定 30Hz 频率发送 KeyboardMouseControllerData"/>
+        <macro name="CmdClientMapRadar" value="0x0305" desc="选手端小地图接收雷达数据，频率上限为 5Hz ClientMapRadarData"/>
+        <macro name="CmdCustomControllerClientInteraction" value="0x0306" desc="自定义控制器与选手端交互数据，发送方触发发送，频率上限为 30Hz CustomControllerClientInteractionData"/>
+        <macro name="CmdClientMapPath" value="0x0307" desc="选手端小地图接收路径数据，频率上限为 1Hz ClientMapPathData"/>
+        <macro name="CmdClientMapRobot" value="0x0308" desc="选手端小地图接收机器人数据，频率上限为 3Hz ClientMapRobotData"/>
+        <macro name="CmdCustomControllerRecvRobot" value="0x0309" desc="自定义控制器接收机器人数据，频率上限为 10Hz CmdCustomControllerRecvRobotData"/>
+    </macrosgroup>
+
+    <macro name="DataMaxLength" value="1024" desc="数据帧中 data 的最大长度"/>
+    <struct name="Frame" version="1" desc="数据帧">
+        <entry type="FrameHeader" name="frame_header" desc="数据帧头"/>
+        <entry type="uint16" name="cmd_id" desc="命令码 ID"/>
+        <entry type="byte" name="data" desc="数据内容" count="DataMaxLength" refer="frame_header.data_length"/>
+        <entry type="uint16" name="frame_tail " desc="CRC16，整包校验"/>
+    </struct>
+
+    <macrosgroup name="GameType" desc="比赛类型">
+        <macro name="GameTypeRoboMasterUC" value="1" desc="RoboMaster 机甲大师超级对抗赛"/>
+        <macro name="GameTypeRoboMasterCS" value="2" desc="RoboMaster 机甲大师高校单项赛"/>
+        <macro name="GameTypeRoboMasterICRA" value="3" desc="ICRA RoboMaster 高校人工智能挑战赛"/>
+        <macro name="GameTypeRoboMasterUL" value="4" desc="RoboMaster 机甲大师高校联盟赛 3V3 对抗"/>
+        <macro name="GameTypeRoboMasterULStandard" value="5" desc="RoboMaster 机甲大师高校联盟赛步兵对抗"/>
+    </macrosgroup>
+    <macrosgroup name="GameStage" desc="比赛阶段">
+        <macro name="GameStageDefault" value="0" desc="未开始比赛"/>
+        <macro name="GameStagePrepare" value="1" desc="准备阶段"/>
+        <macro name="GameStageJudgeSystemCheck" value="2" desc="十五秒裁判系统自检阶段"/>
+        <macro name="GameStageCountdown" value="3" desc="五秒倒计时"/>
+        <macro name="GameStageRunning" value="4" desc="比赛中"/>
+        <macro name="GameStageEnd" value="5" desc="比赛结算中"/>
+    </macrosgroup>
+    <struct name="GameStatusData" version="1" desc="比赛状态数据" size="11">
+        <entry name="game_status" type="byte" desc="bit 0-3：比赛类型，bit 4-7：当前比赛阶段"/>
+        <entry name="stage_remain_time" type="uint16" desc="当前阶段剩余时间，单位：秒"/>
+        <entry name="sync_timestamp" type="uint64" desc="UNIX 时间，当机器人正确连接到裁判系统的 NTP 服务器后生效"/>
+    </struct>
+
+    <macrosgroup name="GameResult" desc="比赛结果">
+        <macro name="GameResultDraw" value="0" desc="平局"/>
+        <macro name="GameResultRedWin" value="1" desc="红方胜利"/>
+        <macro name="GameResultBlueWin" value="2" desc="蓝方胜利"/>
+    </macrosgroup>
+    <struct name="GameResultData" version="1" desc="比赛结果数据" size="1">
+        <entry name="winner" type="byte" desc="比赛结果"/>
+    </struct>
+
+    <struct name="GameRobotHPData" version="1" desc="机器人血量数据" size="32">
+        <entry name="red_1_robot_hp" type="uint16" desc="红 1 英雄机器人血量。若该机器人未上场或者被罚下，则血量为 0"/>
+        <entry name="red_2_robot_hp" type="uint16" desc="红 2 工程机器人血量"/>
+        <entry name="red_3_robot_hp" type="uint16" desc="红 3 步兵机器人血量"/>
+        <entry name="red_4_robot_hp" type="uint16" desc="红 4 步兵机器人血量"/>
+        <entry name="reserved" type="uint16" desc="保留位"/>
+        <entry name="red_7_robot_hp" type="uint16" desc="红 7 哨兵机器人血量"/>
+        <entry name="red_outpost_hp" type="uint16" desc="红方前哨站血量"/>
+        <entry name="red_base_hp" type="uint16" desc="红方基地血量"/>
+
+        <entry name="blue_1_robot_hp" type="uint16" desc="蓝 1 英雄机器人血量"/>
+        <entry name="blue_2_robot_hp" type="uint16" desc="蓝 2 工程机器人血量"/>
+        <entry name="blue_3_robot_hp" type="uint16" desc="蓝 3 步兵机器人血量"/>
+        <entry name="blue_4_robot_hp" type="uint16" desc="蓝 4 步兵机器人血量"/>
+        <entry name="reserved1" type="uint16" desc="保留位"/>
+        <entry name="blue_7_robot_hp" type="uint16" desc="蓝 7 哨兵机器人血量"/>
+        <entry name="blue_outpost_hp" type="uint16" desc="蓝方前哨站血量"/>
+        <entry name="blue_base_hp" type="uint16" desc="蓝方基地血量"/>
+    </struct>
+
+    <struct name="BattleFieldEventData" version="1" desc="场地事件数据" size="4">
+        <entry name="event_data" type="uint32" desc="场地状态" />
+    </struct>
+
+    <macrosgroup name="RefereeWarningLevel" desc="判罚等级">
+        <macro name="RefereeWarningBothYellow" value="1" desc="双方黄牌"/>
+        <macro name="RefereeWarningYellow" value="2" desc="黄牌"/>
+        <macro name="RefereeWarningRed" value="3" desc="红牌"/>
+        <macro name="RefereeWarningDefeated" value="4" desc="判负"/>
+    </macrosgroup>
+    <struct name="RefereeWarningData" version="1" desc="裁判警告数据" size="3">
+        <entry name="level" type="byte" desc="己方最后一次受到判罚的等级" />
+        <entry name="offending_robot_id" type="byte" desc="己方最后一次受到判罚的违规机器人 ID" />
+        <entry name="count" type="uint8" desc="己方最后一次受到判罚的违规机器人对应判罚等级的违规次数" />
+    </struct>
+
+    <macrosgroup name="DartLastHit" desc="最近一次飞镖命中目标">
+        <macro name="DartLastHitNone" value="0" />
+        <macro name="DartLastHitOutpost" value="1" desc="前哨站" />
+        <macro name="DartLastHitBaseFixed" value="2" desc="基地固定目标" />
+        <macro name="DartLastHitBaseRandomFixed" value="3" desc="基地随机固定目标" />
+        <macro name="DartLastHitBaseRandom" value="4" desc="基地随机移动目标" />
+    </macrosgroup>
+    <macrosgroup name="DartTarget" desc="飞镖目标">
+        <macro name="DartTargetOutpost" value="0" desc="前哨站" />
+        <macro name="DartTargetBaseFixed" value="1" desc="基地固定目标" />
+        <macro name="DartTargetBaseRandomFixed" value="2" desc="基地随机固定目标" />
+        <macro name="DartTargetBaseRandom" value="3" desc="基地随机移动目标" />
+    </macrosgroup>
+    <struct name="DartInfoData" version="1" desc="飞镖发射相关数据" size="3">
+        <entry name="dart_remaining_time" type="uint8" desc="己方飞镖发射剩余时间（秒）" />
+        <entry name="dart_info" type="uint16" desc="
+bit 0-2：
+最近一次己方飞镖击中的目标，开局默认为 0， 1 为击中前哨站， 2 为击中
+基地固定目标， 3 为击中基地随机固定目标， 4 为击中基地随机移动目标
+bit 3-5：
+对方最近被击中的目标累计被击中计次数，开局默认为 0，至多为 4
+bit 6-7：
+飞镖此时选定的击打目标，开局默认或未选定/选定前哨站时为 0，选中基
+地固定目标为 1，选中基地随机固定目标为 2，选中基地随机移动目标为 3
+bit 8-15：保留
+" />
+    </struct>
+
+    <struct name="RobotStatusData" version="1" desc="机器人性能体系数据" size="13">
+        <entry name="robot_id" type="byte" desc="本机器人ID" />
+        <entry name="robot_level" type="uint8" desc="机器人等级" />
+        <entry name="current_hp" type="uint16" desc="机器人当前血量" />
+        <entry name="maximum_hp" type="uint16" desc="机器人血量上限" />
+        <entry name="shooter_barrel_cooling_value" type="uint16" desc="机器人射击热量每秒冷却值" />
+        <entry name="shooter_barrel_heat_limit" type="uint16" desc="机器人射击热量上限" />
+        <entry name="chassis_power_limit" type="uint16" desc="机器人底盘功率上限" />
+        <entry name="power_management_output" type="uint8" desc="
+电源管理模块的输出情况
+ bit 0： gimbal 口输出， 0 为无输出， 1 为 24V 输出
+ bit 1： chassis 口输出， 0 为无输出， 1 为 24V 输出
+ bit 2： shooter 口输出， 0 为无输出， 1 为 24V 输出
+" />
+    </struct>
+
+    <struct name="RobotPowerHeatData" version="1" desc="实时底盘缓冲能量和射击热量数据" size="16">
+        <entry name="reserved" type="uint16" />
+        <entry name="reserved1" type="uint16" />
+        <entry name="reserved2" type="float" />
+        <entry name="buffer_energy" type="uint16" desc="缓冲能量（单位： J）" />
+        <entry name="shooter_17mm_1_barrel_heat" type="uint16" desc="第 1 个 17mm 发射机构的射击热量" />
+        <entry name="shooter_17mm_2_barrel_heat" type="uint16" desc="第 2 个 17mm 发射机构的射击热量" />
+        <entry name="shooter_42mm_barrel_heat" type="uint16" desc="42mm 发射机构的射击热量" />
+    </struct>
+
+    <struct name="Vector2" version="1" size="8">
+        <entry name="x" type="float" />
+        <entry name="y" type="float" />
+    </struct>
+    <struct name="Vector3" version="1" size="12">
+        <entry name="x" type="float" />
+        <entry name="y" type="float" />
+        <entry name="z" type="float" />
+    </struct>
+
+    <struct name="RobotPositionData" version="1" desc="机器人位置数据" size="16">
+        <entry name="position" type="Vector3" desc="位置（单位：m）" />
+        <entry name="angle" type="float" desc="本机器人测速模块的朝向，单位：度。正北为 0 度" />
+    </struct>
+
+    <struct name="RobotBuffData" version="1" desc="机器人增益和底盘能量数据" size="7">
+        <entry name="recovery_buff" type="uint8" desc="机器人回血增益（百分比，值为 10 表示每秒恢复血量上限的 10%）" />
+        <entry name="cooling_buff" type="uint8" desc="机器人射击热量冷却倍率（直接值，值为 5 表示 5 倍冷却；堡垒增益点提供
+的固定热量冷却增益暂不适用）" />
+        <entry name="defence_buff" type="uint8" desc="机器人防御增益（百分比，值为 50 表示 50%防御增益）" />
+        <entry name="vulnerability_buff" type="uint8" desc="机器人负防御增益（百分比，值为 30 表示-30%防御增益）" />
+        <entry name="attack_buff" type="uint16" desc="机器人攻击增益（百分比，值为 50 表示 50%攻击增益）" />
+        <entry name="remaining_energy" type="uint8" desc="
+bit 0-4：机器人剩余能量值反馈，以 16 进制标识机器人剩余能量值比例，仅
+在机器人剩余能量小于 50%时反馈，其余默认反馈 0x32。
+ bit 0：在剩余能量≥50%时为 1，其余情况为 0
+ bit 1：在剩余能量≥30%时为 1，其余情况为 0
+ bit 2：在剩余能量≥15%时为 1，其余情况为 0
+ bit 3：在剩余能量≥5%时为 1，其余情况为 0
+ Bit4：在剩余能量≥1%时为 1，其余情况为 0
+" />
+    </struct>
+
+    <macrosgroup name="HPDeductionReason" desc="血量变化类型">
+        <macro name="HPDeductionReasonBulletHit" value="0" desc="装甲模块被弹丸攻击导致扣血" />
+        <macro name="HPDeductionReasonModuleOffline" value="1" desc="装甲模块或超级电容管理模块离线导致扣血" />
+        <macro name="HPDeductionReasonCollision" value="5" desc="装甲模块受到撞击导致扣血" />
+    </macrosgroup>
+    <struct name="RobotHurtData" version="1" desc="伤害状态数据" size="1">
+        <entry name="data" type="uint8" desc="
+bit 0-3： 当扣血原因为装甲模块被弹丸攻击、 受撞击或离线时， 该 4 bit 组
+成的数值为装甲模块或测速模块的 ID 编号； 当其他原因导致扣血时，该数
+值为 0
+bit 4-7： 血量变化类型
+ 0： 装甲模块被弹丸攻击导致扣血
+ 1： 装甲模块或超级电容管理模块离线导致扣血
+ 5： 装甲模块受到撞击导致扣血
+" />
+    </struct>
+
+    <macrosgroup name="BulletType" desc="弹丸类型">
+        <macro name="BulletType17MM" desc="17mm弹丸" value="1" />
+        <macro name="BulletType42MM" desc="42mm弹丸" value="2" />
+    </macrosgroup>
+    <struct name="RobotShootData" version="1" desc="实时射击数据" size="7">
+        <entry name="bullet_type" type="byte" desc="弹丸类型：" />
+        <entry name="shooter_number" type="uint8" desc="发射机构 ID
+ 1： 第 1 个 17mm 发射机构
+ 2： 第 2 个 17mm 发射机构
+ 3： 42mm 发射机构
+" />
+        <entry name="launching_frequency" type="uint8" desc="弹丸射速（单位： Hz）" />
+        <entry name="initial_speed" type="float" desc="弹丸初速度（单位： m/s）" />
+    </struct>
+
+    <struct name="RobotBulletAllowanceData" version="1" desc="允许发弹量" size="6">
+        <entry name="ammo_allowance_17mm" type="uint16" desc="机器人自身拥有的 17mm 弹丸允许发弹量" />
+        <entry name="ammo_allowance_42mm" type="uint16" desc="42mm 弹丸允许发弹量" />
+        <entry name="remaining_gold_coin" type="uint16" desc="剩余金币数量" />
+        <entry name="ammo_allowance_fortress" type="uint16" desc="
+堡垒增益点提供的储备 17mm 弹丸允许发弹量；
+该值与机器人是否实际占领堡垒无关
+" />
+    </struct>
+
+    <struct name="RobotRFIDStatusData" version="1" desc="机器人 RFID 模块状态" size="4">
+        <entry name="rfid_status" type="uint32" desc="
+bit 位值为 1/0 的含义： 是否已检测到该增益点 RFID 卡
+ bit 0：己方基地增益点
+ bit 1：己方中央高地增益点
+ bit 2：对方中央高地增益点
+ bit 3：己方梯形高地增益点
+ bit 4：对方梯形高地增益点
+ bit 5：己方地形跨越增益点（飞坡）（靠近己方一侧飞坡前）
+ bit 6：己方地形跨越增益点（飞坡）（靠近己方一侧飞坡后）
+ bit 7：对方地形跨越增益点（飞坡）（靠近对方一侧飞坡前）
+ bit 8：对方地形跨越增益点（飞坡）（靠近对方一侧飞坡后）
+ bit 9：己方地形跨越增益点（中央高地下方）
+ bit 10：己方地形跨越增益点（中央高地上方）
+ bit 11：对方地形跨越增益点（中央高地下方）
+ bit 12：对方地形跨越增益点（中央高地上方）
+ bit 13：己方地形跨越增益点（公路下方）
+ bit 14：己方地形跨越增益点（公路上方）
+ bit15：对方地形跨越增益点（公路下方）
+ bit16：对方地形跨越增益点（公路上方）
+ bit 17：己方堡垒增益点
+ bit 18：己方前哨站增益点
+ bit 19：己方与兑换区不重叠的补给区/RMUL 补给区
+ bit 20：己方与兑换区重叠的补给区
+ bit 21：己方大资源岛增益点
+ bit 22：对方大资源岛增益点
+ bit 23：中心增益点（仅 RMUL 适用）
+ bit 24： 对方堡垒增益点
+ bit 25-31：保留
+注： 所有 RFID 卡仅在赛内生效。在赛外，即使检测到对应的 RFID 卡，对
+应值也为 0。
+" />
+    </struct>
+
+    <macrosgroup name="DartLauncherStatus" desc="飞镖发射站状态">
+        <macro name="DartLauncherStatusClosed" value="1" desc="关闭" />
+        <macro name="DartLauncherStatusMoving" value="2" desc="正在开启或者关闭中" />
+        <macro name="DartLauncherStatusOpen" value="0" desc="已开启" />
+    </macrosgroup>
+    <struct name="DartClientCmdData" version="1" desc="飞镖选手端指令数据" size="6">
+        <entry name="dart_launch_opening_status" type="uint8" desc="当前飞镖发射站的状态" defaultValue="DartLauncherStatusClosed" />
+        <entry name="reserved" type="uint8" />
+        <entry name="target_change_time" type="uint16" desc="切换击打目标时的比赛剩余时间，单位： 秒， 无/未切换动作， 默认为 0。" />
+        <entry name="latest_launch_cmd_time" type="uint16" desc="最后一次操作手确定发射指令时的比赛剩余时间，单位： 秒， 初始值为 0" />
+    </struct>
+
+    <struct name="GroundRobotPositionData" version="1" desc="地面机器人位置数据" size="40">
+        <entry name="hero" type="Vector2" desc="己方英雄机器人位置 单位： m" />
+        <entry name="engineer" type="Vector2" desc="己方工程机器人位置 单位： m" />
+        <entry name="standard_3" type="Vector2" desc="己方 3 号步兵机器人位置 单位： m" />
+        <entry name="standard_4" type="Vector2" desc="己方 4 号步兵机器人位置 单位： m" />
+        <entry name="reserved" type="Vector2" />
+    </struct>
+
+    <struct name="RadarMarkProgressData" version="1" desc="雷达标记进度数据" size="1">
+        <entry name="mark_progress" type="uint8" desc="
+ bit 0：对方 1 号英雄机器人易伤情况
+ bit 1：对方 2 号工程机器人易伤情况
+ bit 2：对方 3 号步兵机器人易伤情况
+ bit 3：对方 4 号步兵机器人易伤情况
+ bit 4：对方哨兵机器人易伤情况
+" />
+    </struct>
+
+    <struct name="SentryDecisionInfoData" version="1" desc="哨兵自主决策信息同步" size="6">
+        <entry name="preseved" type="byte" />
+    </struct>
+
+    <struct name="RadarDecisionInfoData" version="1" desc="雷达自主决策信息同步" size="1">
+        <entry name="preseved" type="byte" />
+    </struct>
+
+    <struct name="RobotInteractionData" version="1" desc="机器人交互数据" size="127">
+        <entry name="preseved" type="byte" />
+    </struct>
+
+    <struct name="CustomControllerRobotInteractionData" version="1" desc="自定义控制器与机器人交互数据" size="30">
+        <entry name="preseved" type="byte" />
+    </struct>
+
+    <struct name="ClientMapInteractionData" version="1" desc="选手端小地图交互数据" size="15">
+        <entry name="preseved" type="byte" />
+    </struct>
+
+    <struct name="KeyboardMouseControllerData" version="1" desc="键鼠遥控数据" size="12">
+        <entry name="preseved" type="byte" />
+    </struct>
+
+    <struct name="ClientMapRadarData" version="1" desc="选手端小地图接收雷达数据" size="24">
+        <entry name="preseved" type="byte" />
+    </struct>
+
+    <struct name="CustomControllerClientInteractionData" version="1" desc="自定义控制器与选手端交互数据" size="8">
+        <entry name="preseved" type="byte" />
+    </struct>
+
+    <struct name="ClientMapPathData" version="1" desc="选手端小地图接收路径数据" size="103">
+        <entry name="preseved" type="byte" />
+    </struct>
+
+    <struct name="ClientMapRobotData" version="1" desc="选手端小地图接收机器人数据" size="34">
+        <entry name="preseved" type="byte" />
+    </struct>
+
+    <struct name="CmdCustomControllerRecvRobotData" version="1" desc="自定义控制器接收机器人数据" size="30">
+        <entry name="preseved" type="byte" />
+    </struct>
+</metalib>
