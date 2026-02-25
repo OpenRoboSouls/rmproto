@@ -1,14 +1,92 @@
 syntax = "proto3";
-package client;
+
+package robosouls.rmproto.v2026.client;
 
 option go_package = "github.com/openrobosouls/rmproto/v2026/client";
+option csharp_namespace = "RoboSouls.JudgeSystem.RoboMaster2026UC.Proto";
+
+/*
+机器人 ID 编号如下所示：
+ 1：红方英雄机器人
+ 2：红方工程机器人
+ 3/4/5：红方步兵机器人（与机器人 ID 3~5 对应）
+ 6：红方空中机器人
+ 7：红方哨兵机器人
+ 8：红方飞镖
+ 9：红方雷达
+ 10：红方前哨站
+ 11：红方基地
+ 101：蓝方英雄机器人
+ 102：蓝方工程机器人
+ 103/104/105：蓝方步兵机器人（与机器人 ID 3~5 对应）
+ 106：蓝方空中机器人
+ 107：蓝方哨兵机器人
+ 108：蓝方飞镖
+ 109：蓝方雷达
+ 110：蓝方前哨站
+ 111：蓝方基地
+*/
+enum RobotId {
+  ROBOT_UNKNOWN = 0;
+  ROBOT_RED_HERO = 1;
+  ROBOT_RED_ENGINEER = 2;
+  ROBOT_RED_INFANTRY_1 = 3;
+  ROBOT_RED_INFANTRY_2 = 4;
+  ROBOT_RED_INFANTRY_3 = 5;
+  ROBOT_RED_AIRBORNE = 6;
+  ROBOT_RED_SENTINEL = 7;
+  ROBOT_RED_DART = 8;
+  ROBOT_RED_RADAR = 9;
+  ROBOT_RED_OUTPOST = 10;
+  ROBOT_RED_BASE = 11;
+  ROBOT_BLUE_HERO = 101;
+  ROBOT_BLUE_ENGINEER = 102;
+  ROBOT_BLUE_INFANTRY_1 = 103;
+  ROBOT_BLUE_INFANTRY_2 = 104;
+  ROBOT_BLUE_INFANTRY_3 = 105;
+  ROBOT_BLUE_AIRBORNE = 106;
+  ROBOT_BLUE_SENTINEL = 107;
+  ROBOT_BLUE_DART = 108;
+  ROBOT_BLUE_RADAR = 109;
+  ROBOT_BLUE_OUTPOST = 110;
+  ROBOT_BLUE_BASE = 111;
+}
+
+/*
+选手端 ID 如下所示：
+ 0x0101：红方英雄机器人选手端
+ 0x0102：红方工程机器人选手端
+ 0x0103/0x0104/0x0105：红方步兵机器人选手端（与机器人 ID 3~5 对应）
+ 0x0106：红方空中机器人选手端
+ 0x016A：蓝方空中机器人选手端
+ 0x0165：蓝方英雄机器人选手端
+ 0x0166：蓝方工程机器人选手端
+ 0x0167/0x0168/0x0169：蓝方步兵机器人选手端（与机器人 ID 3~5 对应）
+ 0x8080：裁判系统服务器（用于哨兵和雷达自主决策指令）
+*/
+enum ClientId {
+  CLIENT_UNKNOWN = 0;
+  CLIENT_RED_HERO = 0x0101;
+  CLIENT_RED_ENGINEER = 0x0102;
+  CLIENT_RED_INFANTRY_1 = 0x0103;
+  CLIENT_RED_INFANTRY_2 = 0x0104;
+  CLIENT_RED_INFANTRY_3 = 0x0105;
+  CLIENT_RED_AIRBORNE = 0x0106;
+  CLIENT_BLUE_AIRBORNE = 0x016A;
+  CLIENT_BLUE_HERO = 0x0165;
+  CLIENT_BLUE_ENGINEER = 0x0166;
+  CLIENT_BLUE_INFANTRY_1 = 0x0167;
+  CLIENT_BLUE_INFANTRY_2 = 0x0168;
+  CLIENT_BLUE_INFANTRY_3 = 0x0169;
+  CLIENT_JUDGE_SYSTEM_SERVER = 0x8080;
+}
 
 /*
    传输鼠标键盘输入和自定义数据
    自定义客户端→服务器
-   75Hz
+   发送频率：75Hz
 */
-message RemoteControl {
+message KeyboardMouseControl {
   int32 mouse_x = 1; // 鼠标 x 轴移动速度，负值标识向左移动
   int32 mouse_y = 2; // 鼠标 y 轴移动速度，负值标识向下移动
   int32 mouse_z = 3; // 鼠标滚轮移动速度，负值标识向后滚动
@@ -16,20 +94,36 @@ message RemoteControl {
   bool right_button_down = 5; // 右键是否按下（false=抬起, true=按下）
   uint32 keyboard_value = 6; // 键盘按键位掩码
   bool mid_button_down = 7; // 中键是否按下（false=抬起, true=按下）
-  bytes data = 8; // 最大 30 字节的自定义数据
+}
+
+/*
+   最大30字节的自定义数据
+   自定义客户端→图传链路→机器人
+   发送频率：75Hz
+*/
+message CustomControl {
+  bytes data = 1; // 最大30字节的自定义数据
 }
 
 /*
    同步比赛全局状态信息
    服务器→自定义客户端
-   5Hz
+   发送频率：5Hz
 */
 message GameStatus {
+  enum Stage {
+    STAGE_NOT_STARTED = 0; // 未开始比赛
+    STAGE_PREPARATION = 1; // 准备阶段
+    STAGE_SELF_CHECK = 2; // 十五秒裁判系统自检阶段
+    STAGE_COUNTDOWN = 3; // 五秒倒计时
+    STAGE_IN_GAME = 4; // 比赛中
+    STAGE_SETTLEMENT = 5; // 比赛结算中
+  }
   uint32 current_round = 1; // 当前局号（从1开始）
   uint32 total_rounds = 2; // 总局数
   uint32 red_score = 3; // 红方得分
   uint32 blue_score = 4; // 蓝方得分
-  uint32 current_stage = 5; // 当前比赛阶段，枚举值：0=未开始比赛，1=准备阶段，2=十五秒裁判系统自检阶段，3=五秒倒计时，4=比赛中，5=比赛结算中
+  uint32 current_stage = 5; // 当前比赛阶段
   int32 stage_countdown_sec = 6; // 当前阶段剩余时间（单位：秒）
   int32 stage_elapsed_sec = 7; // 当前阶段已过时间（单位：秒）
   bool is_paused = 8; // 比赛是否暂停（false=未暂停，true=暂停）
@@ -38,24 +132,45 @@ message GameStatus {
 /*
    同步基地、前哨站和所有机器人状态
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message GlobalUnitStatus {
-  uint32 base_health = 1; // 基地当前血量（0=已摧毁）
-  uint32 base_status = 2; // 基地状态，枚举值：0=无敌，1=解除无敌（护甲未展开），2=解除无敌（护甲展开）
-  uint32 base_shield = 3; // 基地当前护盾值（0=无护盾）
-  uint32 outpost_health = 4; // 前哨站当前血量（0=已摧毁）
-  uint32 outpost_status = 5; // 前哨站状态，枚举值：0=无敌，1=存活（解除无敌，中部装甲旋转），2=存活（解除无敌，中部装甲停转），3=被击毁（不可重建），4=被击毁（可重建）
-  repeated uint32 robot_health = 6; // 所有机器人血量（先己方后对方，按机器人ID顺序排列）
-  repeated int32 robot_bullets = 7; // 己方机器人剩余累计发弹量（按机器人ID顺序排列）
-  uint32 total_damage_red = 8; // 红方累计总伤害
-  uint32 total_damage_blue = 9; // 蓝方累计总伤害
+  enum BaseStatus {
+    BASE_INVINCIBLE = 0; // 无敌
+    BASE_VULNERABLE_ARMOR_RETRACTED = 1; // 解除无敌（护甲未展开）
+    BASE_VULNERABLE_ARMOR_DEPLOYED = 2; // 解除无敌（护甲展开）
+  }
+
+  enum OutpostStatus {
+    OUTPOST_INVINCIBLE = 0;
+    OUTPOST_VULNERABLE_ARMOR_RETRACTED = 1; // 存活（解除无敌，中部装甲旋转）
+    OUTPOST_VULNERABLE_ARMOR_DEPLOYED = 2; // 存活（解除无敌，中部装甲停转）
+    OUTPOST_DESTROYED_NOT_REBUILDABLE = 3; // 被击毁（不可重建）
+    OUTPOST_DESTROYED_REBUILDABLE = 4; // 被击毁（可重建）
+  }
+
+  uint32 base_health = 1; // 己方基地当前血量（0=已摧毁）
+  uint32 base_status = 2; // 己方基地状态：0=无敌，1=解除无敌（护甲未展开），2=解除无敌（护甲展开）
+  uint32 base_shield = 3; // 己方基地当前护盾值（0=无护盾）
+  uint32 outpost_health = 4; // 己方前哨站当前血量（0=已摧毁）
+  uint32 outpost_status = 5; // 己方前哨站状态
+
+  uint32 enemy_base_health = 6; // 对方基地当前血量（0=已摧毁）
+  uint32 enemy_base_status = 7; // 对方基地状态
+  uint32 enemy_base_shield = 8; // 对方基地当前护盾值（0=无护盾）
+  uint32 enemy_outpost_health = 9; // 对方前哨站当前血量（0=已摧毁）
+  uint32 enemy_outpost_status = 10; // 对方前哨站状态
+
+  repeated uint32 robot_health = 11; // 所有机器人血量（先己方后对方，按机器人ID顺序排列）
+  repeated int32 robot_bullets = 12; // 己方机器人剩余累计发弹量（按机器人ID顺序排列）
+  uint32 total_damage_ally = 13; // 己方累计总伤害
+  uint32 total_damage_enemy = 14; // 对方累计总伤害
 }
 
 /*
    同步全局后勤信息
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message GlobalLogisticsStatus {
   uint32 remaining_economy = 1; // 己方当前经济（剩余金币数）
@@ -67,35 +182,53 @@ message GlobalLogisticsStatus {
 /*
    同步正在生效的全局特殊机制
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message GlobalSpecialMechanism {
-  repeated uint32 mechanism_id = 1; // 正在生效的机制ID列表，枚举值：1=己方堡垒被对方占领计时，2=对方堡垒被己方占领计时
+  enum MechanismID {
+    MECH_UNKNOWN = 0; // 占位
+    MECH_OWN_FORTRESS_OCCUPIED = 1; // 己方堡垒被对方占领计时
+    MECH_ENEMY_FORTRESS_OCCUPIED = 2; // 对方堡垒被己方占领计时
+  }
+  repeated uint32 mechanism_id = 1; // 正在生效的机制ID列表
   repeated int32 mechanism_time_sec = 2; // 对应机制的剩余时间（单位：秒，与mechanism_id一一对应）
 }
 
 /*
    全局事件通知
    服务器→自定义客户端
-   触发式发送（事件发生时发送）
+   发送频率：触发式发送（事件发生时发送）
 */
 message Event {
-  int32 event_id = 1; // 事件编号，枚举值：
-  // 1=击杀事件（参数为“击杀者ID+被击毁机器人ID”拼接），2=基地/前哨站被摧毁事件（参数为被击毁目标ID），
-  // 3=能量机关可激活次数变化（参数为变化后可激活次数），4=能量单元可进入激活状态（无参数），
-  // 5=能量机关激活成功的灯臂数量与平均环数（参数为“激活臂数+平均环数”拼接），6=能量机关被激活（参数含激活类型），
-  // 7=己方英雄进入部署模式（无参数），8=己方英雄造成狙击伤害（参数为累计伤害量），9=对方英雄造成狙击伤害（参数为累计伤害量），
-  // 10=己方呼叫空中支援（无参数），11=己方空中支援被打断（参数为对方剩余可打断次数），12=对方呼叫空中支援（无参数），
-  // 13=对方空中支援被打断（参数为己方剩余可打断次数），14=飞镖命中（参数为命中目标：1=前哨站，2=基地固定目标等），
-  // 15=飞镖闸门开启（参数：1=己方开启，2=对方开启），16=己方基地遭到攻击（无参数，5秒内置冷却），
-  // 17=前哨站停转（参数：1=己方前哨，2=对方前哨），18=基地护甲展开（参数：1=己方基地，2=对方基地）
+  enum EventID {
+    EVENT_ID_UNKNOWN = 0;
+    EVENT_ID_KILL = 1; // 击杀事件（参数为“击杀者ID+被击毁机器人ID”拼接）
+    EVENT_ID_STRUCTURE_DESTROYED = 2; // 基地/前哨站被摧毁事件（参数为被击毁目标ID）
+    EVENT_ID_RUNE_CHANCES_CHANGED = 3; // 能量机关可激活次数变化（参数为变化后可激活次数）
+    EVENT_ID_RUNE_READY = 4; // 能量单元可进入激活状态（无参数）
+    EVENT_ID_RUNE_ACTIVATION_STATS = 5; // 能量机关激活成功的灯臂数量与平均环数（参数为“激活臂数+平均环数”拼接）
+    EVENT_ID_RUNE_ACTIVATED = 6; // 能量机关被激活（参数含激活类型）
+    EVENT_ID_HERO_DEPLOY_ENTER = 7; // 己方英雄进入部署模式（无参数）
+    EVENT_ID_OWN_HERO_SNIPE_DAMAGE = 8; // 己方英雄造成狙击伤害（参数为累计伤害量）
+    EVENT_ID_ENEMY_HERO_SNIPE_DAMAGE = 9; // 对方英雄造成狙击伤害（参数为累计伤害量）
+    EVENT_ID_AIR_SUPPORT_CALL = 10; // 己方呼叫空中支援（无参数）
+    EVENT_ID_OWN_AIR_SUPPORT_INTERRUPTED = 11; // 己方空中支援被打断（参数为对方剩余可打断次数）
+    EVENT_ID_ENEMY_AIR_SUPPORT_CALL = 12; // 对方呼叫空中支援（无参数）
+    EVENT_ID_ENEMY_AIR_SUPPORT_INTERRUPTED = 13; // 对方空中支援被打断（参数为己方剩余可打断次数）
+    EVENT_ID_DART_HIT = 14; // 飞镖命中（参数为命中目标：1=前哨站，2=基地固定目标等）
+    EVENT_ID_DART_GATE_STATUS = 15; // 飞镖闸门开启（参数：1=己方开启，2=对方开启）
+    EVENT_ID_BASE_UNDER_ATTACK = 16; // 己方基地遭到攻击（无参数，5秒内置冷却）
+    EVENT_ID_OUTPOST_STOP_ROTATING = 17; // 前哨站停转（参数：1=己方前哨，2=对方前哨）
+    EVENT_ID_BASE_ARMOR_EXPANDED = 18; // 基地护甲展开（参数：1=己方基地，2=对方基地）
+  }
+  int32 event_id = 1; // 事件编号
   string param = 2; // 事件参数（含义随event_id变化，无参数时为空字符串）
 }
 
 /*
    机器人一次存活期间累计受伤统计
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message RobotInjuryStat {
   uint32 total_damage = 1; // 该次存活累计受伤总计（单位：血量）
@@ -104,20 +237,20 @@ message RobotInjuryStat {
   uint32 large_projectile_damage = 4; // 42mm弹丸伤害（单位：血量）
   uint32 dart_splash_damage = 5; // 飞镖溅射伤害（单位：血量）
   uint32 module_offline_damage = 6; // 模块离线扣血（单位：血量）
-  uint32 wifi_offline_damage = 7; // WiFi离线扣血（单位：血量）
+  uint32 offline_damage = 7; // 异常离线扣血（单位：血量）
   uint32 penalty_damage = 8; // 判罚扣血（单位：血量）
-  uint32 server_kill_damage = 9; // 服务器强制战亡扣血（单位：血量）
-  uint32 killer_id = 10; // 击杀者ID（未检测到击杀者时为0，ID规则见附录二）
+  uint32 server_kill_damage = 9; // 服务器强制使其战亡扣血（单位：血量）
+  uint32 killer_id = 10; // 击杀者ID（若未检测到击杀者，值为0）
 }
 
 /*
    机器人复活状态同步
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message RobotRespawnStatus {
   bool is_pending_respawn = 1; // 是否处于待复活状态（false=正常，true=待复活）
-  uint32 total_respawn_progress = 2; // 复活所需总读条（固定值，按赛事规则配置）
+  uint32 total_respawn_progress = 2; // 复活所需总读条（固定值）
   uint32 current_respawn_progress = 3; // 当前复活读条进度（0~total_respawn_progress）
   bool can_free_respawn = 4; // 是否可以免费复活（false=不可，true=可）
   uint32 gold_cost_for_respawn = 5; // 花费金币复活所需金币数（免费复活时为0）
@@ -127,298 +260,455 @@ message RobotRespawnStatus {
 /*
    机器人固定属性和配置
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message RobotStaticStatus {
-  uint32 connection_state = 1; // 连接状态，枚举值：0=未连接，1=已连接
-  uint32 field_state = 2; // 上场状态，枚举值：0=已上场，1=未上场
-  uint32 alive_state = 3; // 存活状态，枚举值：0=未知，1=存活，2=战亡
-  uint32 robot_id = 4; // 机器人编号（ID规则见附录二，如1=红方英雄，101=蓝方英雄）
-  uint32 robot_type = 5; // 机器人类型，枚举值：1=英雄，2=工程，3=步兵，4=哨兵，5=空中，6=飞镖，7=雷达
-  uint32 performance_system_shooter = 6; // 性能体系-发射机构，枚举值：1=冷却优先，2=爆发优先，3=英雄近战优先，4=英雄远程优先
-  uint32 performance_system_chassis = 7; // 性能体系-底盘，枚举值：1=血量优先，2=功率优先，3=英雄近战优先，4=英雄远程优先
-  uint32 level = 8; // 当前等级（1~max_level，按赛事规则配置）
-  uint32 max_health = 9; // 最大血量（按等级和性能体系配置）
-  uint32 max_heat = 10; // 最大射击热量（发射机构的热量上限）
+  enum PerformanceSystemShooter {
+    SHOOTER_UNKNOWN = 0;
+    SHOOTER_COOLING_PRIORITY = 1; // 冷却优先
+    SHOOTER_BURST_PRIORITY = 2; // 爆发优先
+    SHOOTER_HERO_MELEE = 3; // 英雄近战优先
+    SHOOTER_HERO_RANGED = 4; // 英雄远程优先
+  }
+
+  enum PerformanceSystemChassis {
+    CHASSIS_UNKNOWN = 0;
+    CHASSIS_HEALTH_PRIORITY = 1; // 血量优先
+    CHASSIS_POWER_PRIORITY = 2; // 功率优先
+    CHASSIS_HERO_MELEE = 3; // 英雄近战优先
+    CHASSIS_HERO_RANGED = 4; // 英雄远程优先
+  }
+
+  uint32 connection_state = 1; // 连接状态：0=未连接，1=已连接
+  uint32 field_state = 2; // 上场状态：0=已上场，1=未上场
+  uint32 alive_state = 3; // 存活状态：0=未知，1=存活，2=战亡
+  uint32 robot_id = 4; // 机器人编号
+  uint32 robot_type = 5; // 机器人类型
+  uint32 performance_system_shooter = 6; // 性能体系-发射机构枚举值
+  uint32 performance_system_chassis = 7; // 性能体系-底盘枚举值
+  uint32 level = 8; // 当前等级
+  uint32 max_health = 9; // 最大血量
+  uint32 max_heat = 10; // 最大射击热量
   float heat_cooldown_rate = 11; // 热量冷却速率（单位：热量/秒）
-  uint32 max_power = 12; // 最大功率（底盘功率上限，单位：W）
-  uint32 max_buffer_energy = 13; // 最大缓冲能量（单位：J）
-  uint32 max_chassis_energy = 14; // 最大底盘能量（单位：J）
+  uint32 max_power = 12; // 最大功率
+  uint32 max_buffer_energy = 13; // 最大缓冲能量
+  uint32 max_chassis_energy = 14; // 最大底盘能量
 }
 
 /*
    机器人实时数据
    服务器→自定义客户端
-   10Hz
+   发送频率：10Hz
 */
 message RobotDynamicStatus {
   uint32 current_health = 1; // 当前血量（0~max_health）
   float current_heat = 2; // 当前射击热量（0~max_heat）
   float last_projectile_fire_rate = 3; // 上一次弹丸射速（单位：Hz）
-  uint32 current_chassis_energy = 4; // 当前剩余底盘能量（0~max_chassis_energy，单位：J）
-  uint32 current_buffer_energy = 5; // 当前缓冲能量（0~max_buffer_energy，单位：J）
-  uint32 current_experience = 6; // 当前经验值（0~experience_for_upgrade）
-  uint32 experience_for_upgrade = 7; // 升级所需经验值（升级后更新）
-  uint32 total_projectiles_fired = 8; // 累计已发弹量（比赛至今总发射数）
-  uint32 remaining_ammo = 9; // 剩余允许发弹量（当前可发射的弹丸数）
-  bool is_out_of_combat = 10; // 是否处于脱战状态（false=战斗中，true=脱战）
-  uint32 out_of_combat_countdown = 11; // 脱战状态倒计时（单位：秒，脱战时递减，非脱战时为0）
-  bool can_remote_heal = 12; // 是否可以远程补血（false=不可，true=可）
-  bool can_remote_ammo = 13; // 是否可以远程补弹（false=不可，true=可）
+  uint32 current_chassis_energy = 4; // 当前剩余底盘能量
+  uint32 current_buffer_energy = 5; // 当前缓冲能量
+  uint32 current_experience = 6; // 当前经验值
+  uint32 experience_for_upgrade = 7; // 距离下一次升级仍需获得的经验
+  uint32 total_projectiles_fired = 8; // 累计已发弹量
+  uint32 remaining_ammo = 9; // 剩余允许发弹量
+  bool is_out_of_combat = 10; // 是否处于脱战状态
+  uint32 out_of_combat_countdown = 11; // 脱战状态倒计时（单位：秒）
+  bool can_remote_heal = 12; // 是否可以远程补血
+  bool can_remote_ammo = 13; // 是否可以远程补弹
 }
 
 /*
    机器人各模块运行状态
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message RobotModuleStatus {
-  uint32 power_manager = 1; // 电源管理模块状态，枚举值：0=离线，1=在线
-  uint32 rfid = 2; // RFID模块状态，枚举值：0=离线，1=在线
-  uint32 light_strip = 3; // 灯条模块状态，枚举值：0=离线，1=在线
-  uint32 small_shooter = 4; // 17mm发射机构状态，枚举值：0=离线，1=在线
-  uint32 big_shooter = 5; // 42mm发射机构状态，枚举值：0=离线，1=在线
-  uint32 uwb = 6; // 定位模块（UWB）状态，枚举值：0=离线，1=在线
-  uint32 armor = 7; // 装甲模块状态，枚举值：0=离线，1=在线
-  uint32 video_transmission = 8; // 图传模块状态，枚举值：0=离线，1=在线
-  uint32 capacitor = 9; // 电容模块状态，枚举值：0=离线，1=在线
-  uint32 main_controller = 10; // 主控模块状态，枚举值：0=离线，1=在线
+  // 模块状态通用定义：0=离线，1=在线，2=因安装不规范被视为离线
+  uint32 power_manager = 1; // 电源管理模块状态
+  uint32 rfid = 2; // RFID模块状态
+  uint32 light_strip = 3; // 灯条模块状态
+  uint32 small_shooter = 4; // 17mm发射机构状态
+  uint32 big_shooter = 5; // 42mm发射机构状态
+  uint32 uwb = 6; // 定位模块（UWB）状态
+  uint32 armor = 7; // 装甲模块状态
+  uint32 video_transmission = 8; // 图传模块状态
+  uint32 capacitor = 9; // 电容模块状态
+  uint32 main_controller = 10; // 主控状态
+  uint32 laser_detection_module = 11; // 激光检测模块状态
 }
 
 /*
    机器人空间坐标和朝向
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message RobotPosition {
-  float x = 1; // 世界坐标X轴（单位：m，场地坐标规则见文档1.3.2）
-  float y = 2; // 世界坐标Y轴（单位：m）
-  float z = 3; // 世界坐标Z轴（单位：m，地面为0，向上为正）
-  float yaw = 4; // 测速模块朝向（单位：度，正北为0度，顺时针递增）
+  float x = 1; // 世界坐标X轴
+  float y = 2; // 世界坐标Y轴
+  float z = 3; // 世界坐标Z轴
+  float yaw = 4; // 本机器人测速模块的朝向，单位：度，正北为 0 度
 }
 
 /*
    Buff效果信息
    服务器→自定义客户端
-   获得增益时触发发送，此后1Hz定频发送直到失去增益
+   发送频率：获得增益时触发，此后1Hz直到失去增益
 */
 message Buff {
-  uint32 robot_id = 1; // 享有Buff的机器人ID（ID规则见附录二）
-  uint32 buff_type = 2; // Buff类型，枚举值：1=攻击增益，2=防御增益，3=射击热量冷却增益，4=底盘功率增益，5=回血增益，6=可兑换允许发弹量，7=地形跨越增益（预备）
-  int32 buff_level = 3; // Buff增益值（百分比或固定值，随buff_type变化：如攻击增益为50表示50%攻击提升）
-  uint32 buff_max_time = 4; // Buff最大持续时间（单位：秒，初始配置值）
-  uint32 buff_left_time = 5; // Buff剩余时间（单位：秒，递减至0时Buff失效）
-  string msg_params = 6; // 额外文字参数（如Buff生效说明，无额外信息时为空）
+  enum BuffType {
+    BUFF_UNKNOWN = 0; // 占位
+    BUFF_ATTACK = 1; // 攻击增益
+    BUFF_DEFENSE = 2; // 防御增益
+    BUFF_COOLDOWN = 3; // 射击热量冷却增益
+    BUFF_POWER = 4; // 底盘功率增益
+    BUFF_HEALING = 5; // 回血增益
+    BUFF_AMMO = 6; // 可兑换允许发弹量
+    BUFF_TERRAIN_BOOST = 7; // 地形跨越增益（预备）
+  }
+
+  uint32 robot_id = 1; // 享有Buff的机器人ID
+  uint32 buff_type = 2; // Buff类型
+  int32 buff_level = 3; // Buff增益值
+  uint32 buff_max_time = 4; // Buff最大持续时间（秒）
+  uint32 buff_left_time = 5; // Buff剩余时间（秒）
+  string msg_params = 6; // 额外文字参数
 }
 
 /*
    判罚信息同步
    服务器→自定义客户端
-   触发式发送（判罚发生时发送）
+   发送频率：触发式发送
 */
 message PenaltyInfo {
-  uint32 penalty_type = 1; // 受罚类型，枚举值：1=黄牌，2=双方黄牌，3=红牌，4=超功率，5=超热量，6=超射速
-  uint32 penalty_effect_sec = 2; // 受罚效果时长（单位：秒，如黄牌禁赛时间）
-  uint32 total_penalty_num = 3; // 当前判罚数量（该场次累计判罚次数）
+  enum PenaltyType {
+    PENALTY_UNKNOWN = 0; // 占位
+    YELLOW_CARD = 1; // 黄牌
+    BOTH_YELLOW_CARD = 2; // 双方黄牌
+    RED_CARD = 3; // 红牌
+    OVER_POWER = 4; // 超功率
+    OVER_HEAT = 5; // 超热量
+    OVER_FIRE_RATE = 6; // 超射速
+  }
+  uint32 penalty_type = 1; // 当前受罚类型
+  uint32 penalty_effect_sec = 2; // 当前受罚效果时长（秒）
+  uint32 total_penalty_num = 3; // 当前判罚数量
 }
 
 /*
    哨兵轨迹规划信息
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message RobotPathPlanInfo {
-  uint32 intention = 1; // 哨兵意图，枚举值：1=攻击，2=防守，3=移动
-  uint32 start_pos_x = 2; // 起始点X坐标（单位：dm，分米，小地图坐标规则见文档1.3.2）
-  uint32 start_pos_y = 3; // 起始点Y坐标（单位：dm）
-  repeated int32 offset_x = 4 [packed = true]; // 相对起始点X增量数组（共49个值，范围-128~+127，单位：dm，与offset_y一一对应组成路径点）
-  repeated int32 offset_y = 5 [packed = true]; // 相对起始点Y增量数组（共49个值，范围-128~+127，单位：dm）
-  uint32 sender_id = 6; // 发送者ID（哨兵机器人ID，如7=红方哨兵，107=蓝方哨兵）
+  enum Intention {
+    INTENTION_UNKNOWN = 0; // 占位
+    INTENTION_ATTACK = 1; // 攻击
+    INTENTION_DEFEND = 2; // 防守
+    INTENTION_MOVE = 3; // 移动
+  }
+  uint32 intention = 1; // 哨兵意图
+  uint32 start_pos_x = 2; // 起始点 X 坐标（分米）
+  uint32 start_pos_y = 3; // 起始点 Y 坐标（分米）
+  repeated int32 offset_x = 4 [packed = true]; // 相对起始点 X 增量数组
+  repeated int32 offset_y = 5 [packed = true]; // 相对起始点 Y 增量数组
+  uint32 sender_id = 6; // 发送者 ID
 }
 
 /*
    云台手地图点击标记
    自定义客户端→服务器
-   触发式发送（点击地图时发送）
+   发送频率：触发式发送
 */
 message MapClickInfoNotify {
-  uint32 is_send_all = 1; // 发送范围，枚举值：0=指定客户端，1=除哨兵外所有己方机器人，2=包含哨兵的所有己方机器人
-  bytes robot_id = 2; // 目标机器人ID列表（固定7字节，按ID顺序填充，未使用位填0；如红方发送给英雄+工程填[1,2,0,0,0,0,0]，蓝方填[101,102,0,0,0,0,0]）
-  uint32 mode = 3; // 标记类型，枚举值：1=攻击，2=防御，3=警戒，4=自定义
-  uint32 enemy_id = 4; // 标定的对方ID（无标定目标时为0，ID规则见附录二）
-  uint32 ascii = 5; // 自定义图标ASCII码（mode=4时生效，如65=字母A，无自定义时为0）
-  uint32 type = 6; // 标记模式，枚举值：1=地图坐标标记，2=对方机器人标记
-  uint32 screen_x = 7; // 屏幕坐标X（单位：像素，分辨率1920×1080，左上角为(0,0)）
-  uint32 screen_y = 8; // 屏幕坐标Y（单位：像素）
-  float map_x = 9; // 地图坐标X（单位：m，type=1时生效，场地坐标规则见文档1.3.2）
-  float map_y = 10; // 地图坐标Y（单位：m，type=1时生效）
+  enum SendRange {
+    SPECIFIC_CLIENT = 0; // 指定客户端
+    TEAM_EXCEPT_SENTINEL = 1; // 除哨兵外所有己方机器人
+    TEAM_ALL = 2; // 包含哨兵的所有己方机器人
+  }
+  enum MarkMode {
+    MODE_UNKNOWN = 0; // 占位
+    MODE_ATTACK = 1; // 攻击
+    MODE_DEFENSE = 2; // 防御
+    MODE_ALERT = 3; // 警戒
+    MODE_CUSTOM = 4; // 自定义
+  }
+  enum MarkType {
+    TYPE_UNKNOWN_MARK = 0; // 占位
+    MAP_COORDINATE = 1; // 地图坐标标记
+    TARGET_ROBOT = 2; // 对方机器人标记
+  }
+  uint32 is_send_all = 1; // 发送范围
+  bytes robot_id = 2; // 目标机器人ID列表
+  uint32 mode = 3; // 标记类型
+  uint32 enemy_id = 4; // 标定的对方ID
+  uint32 ascii = 5; // 自定义图标ASCII码
+  uint32 type = 6; // 标记模式
+  uint32 screen_x = 7; // 屏幕坐标X（像素）
+  uint32 screen_y = 8; // 屏幕坐标Y（像素）
+  float map_x = 9; // 地图坐标X
+  float map_y = 10; // 地图坐标Y
 }
 
 /*
    雷达发送的机器人位置信息
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
-message RaderInfoToClient {
-  uint32 target_robot_id = 1; // 目标机器人ID（对方机器人ID，规则见附录二）
-  float target_pos_x = 2; // 目标位置X（单位：m，场地坐标规则见文档1.3.2）
-  float target_pos_y = 3; // 目标位置Y（单位：m）
-  float torward_angle = 4; // 目标朝向角度（单位：度，正北为0度，顺时针递增）
-  uint32 is_high_light = 5; // 是否特殊标识，枚举值：0=否，1=是（如对方机器人处于易伤状态）
+message RadarInfoToClient {
+  uint32 target_robot_id = 1; // 目标机器人 ID
+  float target_pos_x = 2; // 目标位置 X（米）
+  float target_pos_y = 3; // 目标位置 Y（米）
+  float torward_angle = 4; // 目标朝向角度
+  uint32 is_high_light = 5; // 是否特殊标识（0=否；1=是；2=是，但目标机器人此时定位模块为离线状态）
 }
 
 /*
-   机器人自定义上传数据流（机器人端对应0x0310）
+   机器人自定义上传数据流
    机器人→图传链路→自定义客户端
-   50Hz
+   发送频率：50Hz
 */
 message CustomByteBlock {
-  bytes data = 1; // 自定义数据包（最大1.2kbit，内容由用户自定义，如传感器原始数据、调试信息等）
+  bytes data = 1; // 最大为 2.4 kbit 的自定义数据包
 }
 
 /*
    工程装配指令
    自定义客户端→服务器
-   1Hz
+   发送频率：1Hz
 */
 message AssemblyCommand {
-  uint32 operation = 1; // 装配操作类型，枚举值：1=确认装配，2=取消装配
-  uint32 difficulty = 2; // 选中的装配难度（1~max_difficulty，按赛事规则配置，如1=简单，2=中等，3=困难）
+  enum Operation {
+    OP_UNKNOWN = 0; // 占位
+    CONFIRM = 1; // 确认装配
+    CANCEL = 2; // 取消装配
+  }
+  uint32 operation = 1; // 装配操作类型
+  uint32 difficulty = 2; // 选中的装配难度
 }
 
 /*
    科技核心运动状态同步
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message TechCoreMotionStateSync {
-  uint32 maximum_difficulty_level = 1; // 当前可选择的最高装配难度等级（1~max_difficulty）
-  uint32 status = 2; // 科技核心状态，枚举值：1=未进入装配状态，2=已选难度（科技核心移动中），3=移动完成（可进行首个装配步骤），4=上一步完成（可进行下一步），5=所有步骤完成，6=已确认装配（科技核心移动中）
+  enum CoreStatus {
+    STATUS_UNKNOWN = 0; // 占位
+    IDLE = 1; // 未进入装配状态
+    DIFFICULTY_SELECTED = 2; // 已选难度（科技核心移动中）
+    MOVE_COMPLETED = 3; // 移动完成（可进行首个装配步骤）
+    STEP_COMPLETED = 4; // 上一步完成（可进行下一步）
+    ALL_STEPS_COMPLETED = 5; // 所有步骤完成
+    CONFIRMED = 6; // 已确认装配（科技核心移动中）
+  }
+  uint32 maximum_difficulty_level = 1; // 当前可选择的最高装配难度等级
+  uint32 status = 2; // 科技核心状态
+  uint32 enemy_core_status = 3; // 对方科技核心状态（仅己方四级装配可用时有效）
+  uint32 remain_time_all = 4; // 己方装配总剩余时长（仅己方正在四级装配时有效）
+  uint32 remain_time_step = 5; // 己方单个步骤装配间隔剩余时长（仅己方正在四级装配时有效）
 }
 
 /*
-   步兵/英雄选择性能体系
+   地面机器人选择性能体系或控制方式
    自定义客户端→服务器
-   1Hz
+   发送频率：1Hz
 */
 message RobotPerformanceSelectionCommand {
-  uint32 shooter = 1; // 发射机构性能体系，枚举值：1=冷却优先，2=爆发优先，3=英雄近战优先，4=英雄远程优先
-  uint32 chassis = 2; // 底盘性能体系，枚举值：1=血量优先，2=功率优先，3=英雄近战优先，4=英雄远程优先
+  uint32 shooter = 1; // 发射机构性能体系枚举值
+  uint32 chassis = 2; // 底盘性能体系枚举值
+  uint32 sentry_control = 3; // 哨兵控制方式选择 (0=自动控制, 1=半自动控制)
 }
 
 /*
-   步兵/英雄机器人性能体系状态同步
+   步兵/英雄性能体系状态同步
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message RobotPerformanceSelectionSync {
-  uint32 shooter = 1; // 当前生效的发射机构性能体系（枚举值同RobotPerformanceSelectionCommand.shooter）
-  uint32 chassis = 2; // 当前生效的底盘性能体系（枚举值同RobotPerformanceSelectionCommand.chassis）
+  uint32 shooter = 1; // 当前生效的发射机构性能体系
+  uint32 chassis = 2; // 当前生效的底盘性能体系
+  uint32 sentry_control = 3; // 哨兵控制方式选择
+}
+
+/*
+   机器人多种常用指令
+   自定义客户端→服务器
+   发送频率：触发式发送，最高 10Hz
+*/
+message CommonCommand {
+  enum CmdType {
+    CMD_UNKNOWN = 0; // 占位
+    EXCHANGE_17MM = 1; // 兑换 17mm 发弹量
+    EXCHANGE_42MM = 2; // 兑换 42mm 发弹量
+    CONFIRM_RESPAWN = 3; // 确认复活
+    EXCHANGE_IMMEDIATE_RESPAWN = 4; // 兑换立即复活
+    REMOTE_EXCHANGE_AMMO = 5; // 远程兑换允许发弹量
+    REMOTE_EXCHANGE_HEALTH = 6; // 远程兑换血量
+  }
+  uint32 cmd_type = 1; // 命令类型
+  uint32 param = 2; // 命令类型对应的参数
 }
 
 /*
    英雄部署模式相关指令
    自定义客户端→服务器
-   1Hz
+   发送频率：1Hz
 */
 message HeroDeployModeEventCommand {
-  uint32 mode = 1; // 部署模式指令，枚举值：0=退出部署模式，1=进入部署模式
+  enum DeployModeCmd {
+    EXIT = 0; // 退出部署模式
+    ENTER = 1; // 进入部署模式
+  }
+  uint32 mode = 1; // 部署模式指令
 }
 
 /*
    英雄部署模式状态同步
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message DeployModeStatusSync {
-  uint32 current_deploy_mode = 1; // 当前部署模式状态，枚举值：0=未部署，1=已部署
+  enum DeployStatus {
+    NOT_DEPLOYED = 0; // 未部署
+    DEPLOYED = 1; // 已部署
+  }
+  uint32 status = 1; // 当前部署模式状态
 }
 
 /*
    能量机关激活指令
    自定义客户端→服务器
-   1Hz
+   发送频率：1Hz
 */
 message RuneActivateCommand {
-  uint32 activate = 1; // 激活指令，枚举值：1=开启能量机关激活流程，0=取消（仅1生效）
+  uint32 activate = 1; // 激活指令（1=开启，0=取消）
 }
 
 /*
    能量机关状态同步
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message RuneStatusSync {
-  uint32 rune_status = 1; // 能量机关状态，枚举值：1=未激活，2=正在激活，3=已激活
-  uint32 activated_arms = 2; // 当前已激活的灯臂数量（0~总灯臂数，按赛事场地配置）
-  uint32 average_rings = 3; // 激活过程的平均环数（用于判定激活效果，按赛事规则计算）
+  enum RuneStatus {
+    RUNE_UNKNOWN = 0; // 占位
+    INACTIVE = 1; // 未激活
+    ACTIVATING = 2; // 正在激活
+    ACTIVATED = 3; // 已激活
+  }
+  uint32 rune_status = 1; // 当前能量机关状态枚举
+  uint32 activated_arms = 2; // 当前已激活的灯臂数量
+  uint32 average_rings = 3; // 总环数
 }
 
 /*
    哨兵姿态相关信息同步
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
-message SentinelStatusSync {
-  uint32 posture_id = 1; // 哨兵姿态ID，枚举值：1=进攻姿态，2=防御姿态，3=移动姿态
-  bool is_weakened = 2; // 是否处于弱化状态（false=正常，true=弱化，如被飞镖命中后）
+message SentryStatusSync {
+  enum Posture {
+    POSTURE_UNKNOWN = 0; // 占位
+    POSTURE_ATTACK = 1; // 进攻姿态
+    POSTURE_DEFENSE = 2; // 防御姿态
+    POSTURE_MOVE = 3; // 移动姿态
+  }
+  uint32 posture_id = 1; // 姿态 ID
+  bool is_weakened = 2; // 是否处于弱化状态
 }
 
 /*
    飞镖控制指令
    自定义客户端→服务器
-   1Hz
+   发送频率：1Hz
 */
 message DartCommand {
-  uint32 target_id = 1; // 飞镖击打目标ID，枚举值：1=前哨站，2=基地固定目标，3=基地随机固定目标，4=基地随机移动目标，5=基地末端移动目标
-  bool open = 2; // 飞镖闸门开关，枚举值：true=开启闸门，false=关闭闸门
+  enum DartTarget {
+    TARGET_UNKNOWN = 0; // 占位
+    OUTPOST = 1; // 前哨站
+    BASE_FIXED = 2; // 基地固定目标
+    BASE_RANDOM_FIXED = 3; // 基地随机固定目标
+    BASE_RANDOM_MOVE = 4; // 基地随机移动目标
+    BASE_END_MOVE = 5; // 基地末端移动目标
+  }
+  uint32 target_id = 1; // 目标 ID
+  bool open = 2; // 闸门开关
+  bool launch_confirm = 3; // 是否确认发射（默认为 0，1 为确认发射）
 }
 
 /*
    飞镖目标选择状态同步
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message DartSelectTargetStatusSync {
-  uint32 target_id = 1; // 当前选中的目标ID（枚举值同DartCommand.target_id）
-  bool open = 2; // 当前闸门状态（true=开启，false=关闭）
+  uint32 target_id = 1; // 目标 ID
+  uint32 open = 2; // 闸门状态（0：关闭，1：开启中，2：已开启）
 }
 
 /*
    哨兵控制指令请求
    自定义客户端→服务器
-   1Hz
+   发送频率：1Hz
 */
-message GuardCtrlCommand {
-  uint32 command_id = 1; // 指令编号，枚举值：0=无效指令，1=补血点补弹，2=补给站实体补弹，3=远程补弹，4=远程回血，5=确认免费复活，6=确认花费金币复活，7=地图标点，8=切换为进攻姿态，9=切换为防御姿态，10=切换为移动姿态
+message SentryCtrlCommand {
+  enum GuardCommandID {
+    CMD_INVALID = 0; // 无效指令
+    HEAL_POINT_AMMO = 1; // 补血点补弹
+    SUPPLY_STATION_AMMO = 2; // 补给站实体补弹
+    REMOTE_AMMO = 3; // 远程补弹
+    REMOTE_HEAL = 4; // 远程回血
+    FREE_RESPAWN = 5; // 确认复活
+    GOLD_RESPAWN = 6; // 确认花费金币复活
+    MAP_MARK = 7; // 地图标点
+    SWITCH_ATTACK = 8; // 切换为进攻姿态
+    SWITCH_DEFENSE = 9; // 切换为防御姿态
+    SWITCH_MOVE = 10; // 切换为移动姿态
+  }
+  uint32 command_id = 1; // 指令编号
 }
 
 /*
    哨兵控制指令结果反馈
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
-message GuardCtrlResult {
-  uint32 command_id = 1; // 对应的指令编号（与GuardCtrlCommand.command_id一一对应）
-  uint32 result_code = 2; // 执行结果码，枚举值：0=执行成功，1=参数无效，2=资源不足（如金币不够），3=状态不允许（如非待复活状态无法复活）
+message SentryCtrlResult {
+  uint32 command_id = 1; // 对应的指令编号
+  uint32 result_code = 2; // 执行结果码 (0=成功，其他=失败)
 }
 
 /*
    空中支援指令
    自定义客户端→服务器
-   1Hz
+   发送频率：1Hz
 */
 message AirSupportCommand {
-  uint32 command_id = 1; // 指令类型，枚举值：1=免费呼叫空中支援，2=花费金币呼叫空中支援（优先用免费时长），3=中断空中支援
+  enum AirSupportCmdID {
+    CMD_UNKNOWN = 0; // 占位
+    FREE_CALL = 1; // 免费呼叫空中支援
+    GOLD_CALL = 2; // 花费金币呼叫空中支援
+    INTERRUPT = 3; // 中断空中支援
+  }
+  uint32 command_id = 1; // 指令类型
 }
 
 /*
    空中支援状态反馈
    服务器→自定义客户端
-   1Hz
+   发送频率：1Hz
 */
 message AirSupportStatusSync {
-  uint32 airsupport_status = 1; // 空中支援状态，枚举值：0=未进行空中支援，1=正在空中支援，2=被对方锁定无法开启
-  uint32 left_time = 2; // 免费空中支援剩余时间（单位：秒，无免费时长时为0）
-  uint32 cost_coins = 3; // 付费空中支援已花费金币（累计花费，无付费时为0）
+  enum AirSupportStatus {
+    STATUS_IDLE = 0; // 未进行空中支援
+    STATUS_ACTIVE = 1; // 正在空中支援
+  }
+  enum ShooterStatus {
+    SHOOTER_LOCKED = 0; // 发射机构因雷达反制而被锁定
+    SHOOTER_NORMAL = 1; // 发射机构正常，未被反制
+  }
+  uint32 airsupport_status = 1; // 空中支援状态
+  uint32 left_time = 2; // 免费空中支援剩余时间
+  uint32 cost_coins = 3; // 付费空中支援已花费金币
+  uint32 is_being_targeted = 4; // 当前激光检测模块是否正在检测到被照射（0 为未被照射，1 为被照射）
+  uint32 shooter_status = 5; // 空中机器人被反制状态
 }
