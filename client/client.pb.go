@@ -22,24 +22,24 @@ const (
 )
 
 // 机器人 ID 编号如下所示：
-//  1：红方英雄机器人
-//  2：红方工程机器人
-//  3/4/5：红方步兵机器人（与机器人 ID 3~5 对应）
-//  6：红方空中机器人
-//  7：红方哨兵机器人
-//  8：红方飞镖
-//  9：红方雷达
-//  10：红方前哨站
-//  11：红方基地
-//  101：蓝方英雄机器人
-//  102：蓝方工程机器人
-//  103/104/105：蓝方步兵机器人（与机器人 ID 3~5 对应）
-//  106：蓝方空中机器人
-//  107：蓝方哨兵机器人
-//  108：蓝方飞镖
-//  109：蓝方雷达
-//  110：蓝方前哨站
-//  111：蓝方基地
+// - 1：红方英雄机器人
+// - 2：红方工程机器人
+// - 3/4/5：红方步兵机器人（与机器人 ID 3~5 对应）
+// - 6：红方空中机器人
+// - 7：红方哨兵机器人
+// - 8：红方飞镖
+// - 9：红方雷达
+// - 10：红方前哨站
+// - 11：红方基地
+// - 101：蓝方英雄机器人
+// - 102：蓝方工程机器人
+// - 103/104/105：蓝方步兵机器人（与机器人 ID 3~5 对应）
+// - 106：蓝方空中机器人
+// - 107：蓝方哨兵机器人
+// - 108：蓝方飞镖
+// - 109：蓝方雷达
+// - 110：蓝方前哨站
+// - 111：蓝方基地
 type RobotId int32
 
 const (
@@ -150,15 +150,15 @@ func (RobotId) EnumDescriptor() ([]byte, []int) {
 }
 
 // 选手端 ID 如下所示：
-//  0x0101：红方英雄机器人选手端
-//  0x0102：红方工程机器人选手端
-//  0x0103/0x0104/0x0105：红方步兵机器人选手端（与机器人 ID 3~5 对应）
-//  0x0106：红方空中机器人选手端
-//  0x016A：蓝方空中机器人选手端
-//  0x0165：蓝方英雄机器人选手端
-//  0x0166：蓝方工程机器人选手端
-//  0x0167/0x0168/0x0169：蓝方步兵机器人选手端（与机器人 ID 3~5 对应）
-//  0x8080：裁判系统服务器（用于哨兵和雷达自主决策指令）
+// - 0x0101：红方英雄机器人选手端
+// - 0x0102：红方工程机器人选手端
+// - 0x0103/0x0104/0x0105：红方步兵机器人选手端
+// - 0x0106：红方空中机器人选手端
+// - 0x016A：蓝方空中机器人选手端
+// - 0x0165：蓝方英雄机器人选手端
+// - 0x0166：蓝方工程机器人选手端
+// - 0x0167/0x0168/0x0169：蓝方步兵机器人选手端
+// - 0x8080：裁判系统服务器（用于哨兵和雷达自主决策指令）
 type ClientId int32
 
 const (
@@ -351,28 +351,31 @@ func (GlobalUnitStatus_BaseStatus) EnumDescriptor() ([]byte, []int) {
 type GlobalUnitStatus_OutpostStatus int32
 
 const (
-	GlobalUnitStatus_OUTPOST_INVINCIBLE                 GlobalUnitStatus_OutpostStatus = 0
-	GlobalUnitStatus_OUTPOST_VULNERABLE_ARMOR_RETRACTED GlobalUnitStatus_OutpostStatus = 1 // 存活（解除无敌，中部装甲旋转）
-	GlobalUnitStatus_OUTPOST_VULNERABLE_ARMOR_DEPLOYED  GlobalUnitStatus_OutpostStatus = 2 // 存活（解除无敌，中部装甲停转）
-	GlobalUnitStatus_OUTPOST_DESTROYED_NOT_REBUILDABLE  GlobalUnitStatus_OutpostStatus = 3 // 被击毁（不可重建）
-	GlobalUnitStatus_OUTPOST_DESTROYED_REBUILDABLE      GlobalUnitStatus_OutpostStatus = 4 // 被击毁（可重建）
+	GlobalUnitStatus_OUTPOST_INVINCIBLE                GlobalUnitStatus_OutpostStatus = 0 // 无敌
+	GlobalUnitStatus_OUTPOST_ALIVE_ROTATING            GlobalUnitStatus_OutpostStatus = 1 // 存活，解除无敌，中部装甲旋转
+	GlobalUnitStatus_OUTPOST_ALIVE_STATIONARY          GlobalUnitStatus_OutpostStatus = 2 // 存活，解除无敌，中部装甲停转
+	GlobalUnitStatus_OUTPOST_DESTROYED_NOT_REBUILDABLE GlobalUnitStatus_OutpostStatus = 3 // 被击毁，不可重建
+	GlobalUnitStatus_OUTPOST_DESTROYED_REBUILDABLE     GlobalUnitStatus_OutpostStatus = 4 // 被击毁，可重建
+	GlobalUnitStatus_OUTPOST_REBUILDING                GlobalUnitStatus_OutpostStatus = 5 // 被击毁，重建中
 )
 
 // Enum value maps for GlobalUnitStatus_OutpostStatus.
 var (
 	GlobalUnitStatus_OutpostStatus_name = map[int32]string{
 		0: "OUTPOST_INVINCIBLE",
-		1: "OUTPOST_VULNERABLE_ARMOR_RETRACTED",
-		2: "OUTPOST_VULNERABLE_ARMOR_DEPLOYED",
+		1: "OUTPOST_ALIVE_ROTATING",
+		2: "OUTPOST_ALIVE_STATIONARY",
 		3: "OUTPOST_DESTROYED_NOT_REBUILDABLE",
 		4: "OUTPOST_DESTROYED_REBUILDABLE",
+		5: "OUTPOST_REBUILDING",
 	}
 	GlobalUnitStatus_OutpostStatus_value = map[string]int32{
-		"OUTPOST_INVINCIBLE":                 0,
-		"OUTPOST_VULNERABLE_ARMOR_RETRACTED": 1,
-		"OUTPOST_VULNERABLE_ARMOR_DEPLOYED":  2,
-		"OUTPOST_DESTROYED_NOT_REBUILDABLE":  3,
-		"OUTPOST_DESTROYED_REBUILDABLE":      4,
+		"OUTPOST_INVINCIBLE":                0,
+		"OUTPOST_ALIVE_ROTATING":            1,
+		"OUTPOST_ALIVE_STATIONARY":          2,
+		"OUTPOST_DESTROYED_NOT_REBUILDABLE": 3,
+		"OUTPOST_DESTROYED_REBUILDABLE":     4,
+		"OUTPOST_REBUILDING":                5,
 	}
 )
 
@@ -455,25 +458,22 @@ func (GlobalSpecialMechanism_MechanismID) EnumDescriptor() ([]byte, []int) {
 type Event_EventID int32
 
 const (
-	Event_EVENT_ID_UNKNOWN                       Event_EventID = 0
-	Event_EVENT_ID_KILL                          Event_EventID = 1  // 击杀事件（参数为“击杀者ID+被击毁机器人ID”拼接）
-	Event_EVENT_ID_STRUCTURE_DESTROYED           Event_EventID = 2  // 基地/前哨站被摧毁事件（参数为被击毁目标ID）
-	Event_EVENT_ID_RUNE_CHANCES_CHANGED          Event_EventID = 3  // 能量机关可激活次数变化（参数为变化后可激活次数）
-	Event_EVENT_ID_RUNE_READY                    Event_EventID = 4  // 能量单元可进入激活状态（无参数）
-	Event_EVENT_ID_RUNE_ACTIVATION_STATS         Event_EventID = 5  // 能量机关激活成功的灯臂数量与平均环数（参数为“激活臂数+平均环数”拼接）
-	Event_EVENT_ID_RUNE_ACTIVATED                Event_EventID = 6  // 能量机关被激活（参数含激活类型）
-	Event_EVENT_ID_HERO_DEPLOY_ENTER             Event_EventID = 7  // 己方英雄进入部署模式（无参数）
-	Event_EVENT_ID_OWN_HERO_SNIPE_DAMAGE         Event_EventID = 8  // 己方英雄造成狙击伤害（参数为累计伤害量）
-	Event_EVENT_ID_ENEMY_HERO_SNIPE_DAMAGE       Event_EventID = 9  // 对方英雄造成狙击伤害（参数为累计伤害量）
-	Event_EVENT_ID_AIR_SUPPORT_CALL              Event_EventID = 10 // 己方呼叫空中支援（无参数）
-	Event_EVENT_ID_OWN_AIR_SUPPORT_INTERRUPTED   Event_EventID = 11 // 己方空中支援被打断（参数为对方剩余可打断次数）
-	Event_EVENT_ID_ENEMY_AIR_SUPPORT_CALL        Event_EventID = 12 // 对方呼叫空中支援（无参数）
-	Event_EVENT_ID_ENEMY_AIR_SUPPORT_INTERRUPTED Event_EventID = 13 // 对方空中支援被打断（参数为己方剩余可打断次数）
-	Event_EVENT_ID_DART_HIT                      Event_EventID = 14 // 飞镖命中（参数为命中目标：1=前哨站，2=基地固定目标等）
-	Event_EVENT_ID_DART_GATE_STATUS              Event_EventID = 15 // 飞镖闸门开启（参数：1=己方开启，2=对方开启）
-	Event_EVENT_ID_BASE_UNDER_ATTACK             Event_EventID = 16 // 己方基地遭到攻击（无参数，5秒内置冷却）
-	Event_EVENT_ID_OUTPOST_STOP_ROTATING         Event_EventID = 17 // 前哨站停转（参数：1=己方前哨，2=对方前哨）
-	Event_EVENT_ID_BASE_ARMOR_EXPANDED           Event_EventID = 18 // 基地护甲展开（参数：1=己方基地，2=对方基地）
+	Event_EVENT_ID_UNKNOWN                       Event_EventID = 0  // 占位
+	Event_EVENT_ID_KILL                          Event_EventID = 1  // 击杀事件（参数1为被击杀者，参数2为击杀者）
+	Event_EVENT_ID_OUTPOST_DESTROYED             Event_EventID = 2  // 前哨站被摧毁事件（参数为被击毁目标id）
+	Event_EVENT_ID_RUNE_ACTIVATION_STATS         Event_EventID = 3  // 当前大能量机关被成功激活的灯臂数量、平均环数
+	Event_EVENT_ID_RUNE_ACTIVATED                Event_EventID = 4  // 能量机关进入已激活状态（参数：1为小，2为大）
+	Event_EVENT_ID_OWN_HERO_SNIPE_DAMAGE         Event_EventID = 5  // 己方英雄造成狙击伤害
+	Event_EVENT_ID_ENEMY_HERO_SNIPE_DAMAGE       Event_EventID = 6  // 对方英雄造成狙击伤害
+	Event_EVENT_ID_ENEMY_AIR_SUPPORT_CALL        Event_EventID = 7  // 对方呼叫空中支援
+	Event_EVENT_ID_ENEMY_AIR_SUPPORT_INTERRUPTED Event_EventID = 8  // 对方空中支援被反制
+	Event_EVENT_ID_DART_HIT                      Event_EventID = 9  // 飞镖命中（参数1命中方，参数2命中目标）
+	Event_EVENT_ID_ENEMY_DART_GATE_OPEN          Event_EventID = 10 // 对方飞镖闸门开启
+	Event_EVENT_ID_BASE_UNDER_ATTACK             Event_EventID = 11 // 基地遭到攻击
+	Event_EVENT_ID_ENEMY_OUTPOST_STOP_ROTATING   Event_EventID = 12 // 对方前哨站停转
+	Event_EVENT_ID_ENEMY_BASE_ARMOR_EXPANDED     Event_EventID = 13 // 对方基地护甲展开
+	Event_EVENT_ID_ASSEMBLY_LEVEL4_INTERRUPT     Event_EventID = 14 // 装配过程中对方请求四级装配，进入强制退出缓冲期
+	Event_EVENT_ID_ASSEMBLY_RESULT               Event_EventID = 15 // 装配结果事件(0 成功，1 拔出，2 超时等)
 )
 
 // Enum value maps for Event_EventID.
@@ -481,44 +481,38 @@ var (
 	Event_EventID_name = map[int32]string{
 		0:  "EVENT_ID_UNKNOWN",
 		1:  "EVENT_ID_KILL",
-		2:  "EVENT_ID_STRUCTURE_DESTROYED",
-		3:  "EVENT_ID_RUNE_CHANCES_CHANGED",
-		4:  "EVENT_ID_RUNE_READY",
-		5:  "EVENT_ID_RUNE_ACTIVATION_STATS",
-		6:  "EVENT_ID_RUNE_ACTIVATED",
-		7:  "EVENT_ID_HERO_DEPLOY_ENTER",
-		8:  "EVENT_ID_OWN_HERO_SNIPE_DAMAGE",
-		9:  "EVENT_ID_ENEMY_HERO_SNIPE_DAMAGE",
-		10: "EVENT_ID_AIR_SUPPORT_CALL",
-		11: "EVENT_ID_OWN_AIR_SUPPORT_INTERRUPTED",
-		12: "EVENT_ID_ENEMY_AIR_SUPPORT_CALL",
-		13: "EVENT_ID_ENEMY_AIR_SUPPORT_INTERRUPTED",
-		14: "EVENT_ID_DART_HIT",
-		15: "EVENT_ID_DART_GATE_STATUS",
-		16: "EVENT_ID_BASE_UNDER_ATTACK",
-		17: "EVENT_ID_OUTPOST_STOP_ROTATING",
-		18: "EVENT_ID_BASE_ARMOR_EXPANDED",
+		2:  "EVENT_ID_OUTPOST_DESTROYED",
+		3:  "EVENT_ID_RUNE_ACTIVATION_STATS",
+		4:  "EVENT_ID_RUNE_ACTIVATED",
+		5:  "EVENT_ID_OWN_HERO_SNIPE_DAMAGE",
+		6:  "EVENT_ID_ENEMY_HERO_SNIPE_DAMAGE",
+		7:  "EVENT_ID_ENEMY_AIR_SUPPORT_CALL",
+		8:  "EVENT_ID_ENEMY_AIR_SUPPORT_INTERRUPTED",
+		9:  "EVENT_ID_DART_HIT",
+		10: "EVENT_ID_ENEMY_DART_GATE_OPEN",
+		11: "EVENT_ID_BASE_UNDER_ATTACK",
+		12: "EVENT_ID_ENEMY_OUTPOST_STOP_ROTATING",
+		13: "EVENT_ID_ENEMY_BASE_ARMOR_EXPANDED",
+		14: "EVENT_ID_ASSEMBLY_LEVEL4_INTERRUPT",
+		15: "EVENT_ID_ASSEMBLY_RESULT",
 	}
 	Event_EventID_value = map[string]int32{
 		"EVENT_ID_UNKNOWN":                       0,
 		"EVENT_ID_KILL":                          1,
-		"EVENT_ID_STRUCTURE_DESTROYED":           2,
-		"EVENT_ID_RUNE_CHANCES_CHANGED":          3,
-		"EVENT_ID_RUNE_READY":                    4,
-		"EVENT_ID_RUNE_ACTIVATION_STATS":         5,
-		"EVENT_ID_RUNE_ACTIVATED":                6,
-		"EVENT_ID_HERO_DEPLOY_ENTER":             7,
-		"EVENT_ID_OWN_HERO_SNIPE_DAMAGE":         8,
-		"EVENT_ID_ENEMY_HERO_SNIPE_DAMAGE":       9,
-		"EVENT_ID_AIR_SUPPORT_CALL":              10,
-		"EVENT_ID_OWN_AIR_SUPPORT_INTERRUPTED":   11,
-		"EVENT_ID_ENEMY_AIR_SUPPORT_CALL":        12,
-		"EVENT_ID_ENEMY_AIR_SUPPORT_INTERRUPTED": 13,
-		"EVENT_ID_DART_HIT":                      14,
-		"EVENT_ID_DART_GATE_STATUS":              15,
-		"EVENT_ID_BASE_UNDER_ATTACK":             16,
-		"EVENT_ID_OUTPOST_STOP_ROTATING":         17,
-		"EVENT_ID_BASE_ARMOR_EXPANDED":           18,
+		"EVENT_ID_OUTPOST_DESTROYED":             2,
+		"EVENT_ID_RUNE_ACTIVATION_STATS":         3,
+		"EVENT_ID_RUNE_ACTIVATED":                4,
+		"EVENT_ID_OWN_HERO_SNIPE_DAMAGE":         5,
+		"EVENT_ID_ENEMY_HERO_SNIPE_DAMAGE":       6,
+		"EVENT_ID_ENEMY_AIR_SUPPORT_CALL":        7,
+		"EVENT_ID_ENEMY_AIR_SUPPORT_INTERRUPTED": 8,
+		"EVENT_ID_DART_HIT":                      9,
+		"EVENT_ID_ENEMY_DART_GATE_OPEN":          10,
+		"EVENT_ID_BASE_UNDER_ATTACK":             11,
+		"EVENT_ID_ENEMY_OUTPOST_STOP_ROTATING":   12,
+		"EVENT_ID_ENEMY_BASE_ARMOR_EXPANDED":     13,
+		"EVENT_ID_ASSEMBLY_LEVEL4_INTERRUPT":     14,
+		"EVENT_ID_ASSEMBLY_RESULT":               15,
 	}
 )
 
@@ -664,7 +658,7 @@ type Buff_BuffType int32
 const (
 	Buff_BUFF_UNKNOWN       Buff_BuffType = 0 // 占位
 	Buff_BUFF_ATTACK        Buff_BuffType = 1 // 攻击增益
-	Buff_BUFF_DEFENSE       Buff_BuffType = 2 // 防御增益
+	Buff_BUFF_DEFENSE       Buff_BuffType = 2 // 防御增益/负防御增益（易伤）
 	Buff_BUFF_COOLDOWN      Buff_BuffType = 3 // 射击热量冷却增益
 	Buff_BUFF_POWER         Buff_BuffType = 4 // 底盘功率增益
 	Buff_BUFF_HEALING       Buff_BuffType = 5 // 回血增益
@@ -992,22 +986,22 @@ func (MapClickInfoNotify_MarkType) EnumDescriptor() ([]byte, []int) {
 type AssemblyCommand_Operation int32
 
 const (
-	AssemblyCommand_OP_UNKNOWN AssemblyCommand_Operation = 0 // 占位
-	AssemblyCommand_CONFIRM    AssemblyCommand_Operation = 1 // 确认装配
-	AssemblyCommand_CANCEL     AssemblyCommand_Operation = 2 // 取消装配
+	AssemblyCommand_START_EXCHANGE AssemblyCommand_Operation = 0 // 开始兑换
+	AssemblyCommand_CONFIRM        AssemblyCommand_Operation = 1 // 确认装配
+	AssemblyCommand_CANCEL         AssemblyCommand_Operation = 2 // 取消装配
 )
 
 // Enum value maps for AssemblyCommand_Operation.
 var (
 	AssemblyCommand_Operation_name = map[int32]string{
-		0: "OP_UNKNOWN",
+		0: "START_EXCHANGE",
 		1: "CONFIRM",
 		2: "CANCEL",
 	}
 	AssemblyCommand_Operation_value = map[string]int32{
-		"OP_UNKNOWN": 0,
-		"CONFIRM":    1,
-		"CANCEL":     2,
+		"START_EXCHANGE": 0,
+		"CONFIRM":        1,
+		"CANCEL":         2,
 	}
 )
 
@@ -1035,67 +1029,6 @@ func (x AssemblyCommand_Operation) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AssemblyCommand_Operation.Descriptor instead.
 func (AssemblyCommand_Operation) EnumDescriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{19, 0}
-}
-
-type TechCoreMotionStateSync_CoreStatus int32
-
-const (
-	TechCoreMotionStateSync_STATUS_UNKNOWN      TechCoreMotionStateSync_CoreStatus = 0 // 占位
-	TechCoreMotionStateSync_IDLE                TechCoreMotionStateSync_CoreStatus = 1 // 未进入装配状态
-	TechCoreMotionStateSync_DIFFICULTY_SELECTED TechCoreMotionStateSync_CoreStatus = 2 // 已选难度（科技核心移动中）
-	TechCoreMotionStateSync_MOVE_COMPLETED      TechCoreMotionStateSync_CoreStatus = 3 // 移动完成（可进行首个装配步骤）
-	TechCoreMotionStateSync_STEP_COMPLETED      TechCoreMotionStateSync_CoreStatus = 4 // 上一步完成（可进行下一步）
-	TechCoreMotionStateSync_ALL_STEPS_COMPLETED TechCoreMotionStateSync_CoreStatus = 5 // 所有步骤完成
-	TechCoreMotionStateSync_CONFIRMED           TechCoreMotionStateSync_CoreStatus = 6 // 已确认装配（科技核心移动中）
-)
-
-// Enum value maps for TechCoreMotionStateSync_CoreStatus.
-var (
-	TechCoreMotionStateSync_CoreStatus_name = map[int32]string{
-		0: "STATUS_UNKNOWN",
-		1: "IDLE",
-		2: "DIFFICULTY_SELECTED",
-		3: "MOVE_COMPLETED",
-		4: "STEP_COMPLETED",
-		5: "ALL_STEPS_COMPLETED",
-		6: "CONFIRMED",
-	}
-	TechCoreMotionStateSync_CoreStatus_value = map[string]int32{
-		"STATUS_UNKNOWN":      0,
-		"IDLE":                1,
-		"DIFFICULTY_SELECTED": 2,
-		"MOVE_COMPLETED":      3,
-		"STEP_COMPLETED":      4,
-		"ALL_STEPS_COMPLETED": 5,
-		"CONFIRMED":           6,
-	}
-)
-
-func (x TechCoreMotionStateSync_CoreStatus) Enum() *TechCoreMotionStateSync_CoreStatus {
-	p := new(TechCoreMotionStateSync_CoreStatus)
-	*p = x
-	return p
-}
-
-func (x TechCoreMotionStateSync_CoreStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (TechCoreMotionStateSync_CoreStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_client_client_proto_enumTypes[16].Descriptor()
-}
-
-func (TechCoreMotionStateSync_CoreStatus) Type() protoreflect.EnumType {
-	return &file_client_client_proto_enumTypes[16]
-}
-
-func (x TechCoreMotionStateSync_CoreStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use TechCoreMotionStateSync_CoreStatus.Descriptor instead.
-func (TechCoreMotionStateSync_CoreStatus) EnumDescriptor() ([]byte, []int) {
 	return file_client_client_proto_rawDescGZIP(), []int{20, 0}
 }
 
@@ -1144,11 +1077,11 @@ func (x CommonCommand_CmdType) String() string {
 }
 
 func (CommonCommand_CmdType) Descriptor() protoreflect.EnumDescriptor {
-	return file_client_client_proto_enumTypes[17].Descriptor()
+	return file_client_client_proto_enumTypes[16].Descriptor()
 }
 
 func (CommonCommand_CmdType) Type() protoreflect.EnumType {
-	return &file_client_client_proto_enumTypes[17]
+	return &file_client_client_proto_enumTypes[16]
 }
 
 func (x CommonCommand_CmdType) Number() protoreflect.EnumNumber {
@@ -1157,7 +1090,7 @@ func (x CommonCommand_CmdType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use CommonCommand_CmdType.Descriptor instead.
 func (CommonCommand_CmdType) EnumDescriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{23, 0}
+	return file_client_client_proto_rawDescGZIP(), []int{24, 0}
 }
 
 type HeroDeployModeEventCommand_DeployModeCmd int32
@@ -1190,11 +1123,11 @@ func (x HeroDeployModeEventCommand_DeployModeCmd) String() string {
 }
 
 func (HeroDeployModeEventCommand_DeployModeCmd) Descriptor() protoreflect.EnumDescriptor {
-	return file_client_client_proto_enumTypes[18].Descriptor()
+	return file_client_client_proto_enumTypes[17].Descriptor()
 }
 
 func (HeroDeployModeEventCommand_DeployModeCmd) Type() protoreflect.EnumType {
-	return &file_client_client_proto_enumTypes[18]
+	return &file_client_client_proto_enumTypes[17]
 }
 
 func (x HeroDeployModeEventCommand_DeployModeCmd) Number() protoreflect.EnumNumber {
@@ -1203,7 +1136,7 @@ func (x HeroDeployModeEventCommand_DeployModeCmd) Number() protoreflect.EnumNumb
 
 // Deprecated: Use HeroDeployModeEventCommand_DeployModeCmd.Descriptor instead.
 func (HeroDeployModeEventCommand_DeployModeCmd) EnumDescriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{24, 0}
+	return file_client_client_proto_rawDescGZIP(), []int{25, 0}
 }
 
 type DeployModeStatusSync_DeployStatus int32
@@ -1236,11 +1169,11 @@ func (x DeployModeStatusSync_DeployStatus) String() string {
 }
 
 func (DeployModeStatusSync_DeployStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_client_client_proto_enumTypes[19].Descriptor()
+	return file_client_client_proto_enumTypes[18].Descriptor()
 }
 
 func (DeployModeStatusSync_DeployStatus) Type() protoreflect.EnumType {
-	return &file_client_client_proto_enumTypes[19]
+	return &file_client_client_proto_enumTypes[18]
 }
 
 func (x DeployModeStatusSync_DeployStatus) Number() protoreflect.EnumNumber {
@@ -1249,7 +1182,7 @@ func (x DeployModeStatusSync_DeployStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use DeployModeStatusSync_DeployStatus.Descriptor instead.
 func (DeployModeStatusSync_DeployStatus) EnumDescriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{25, 0}
+	return file_client_client_proto_rawDescGZIP(), []int{26, 0}
 }
 
 type RuneStatusSync_RuneStatus int32
@@ -1288,11 +1221,11 @@ func (x RuneStatusSync_RuneStatus) String() string {
 }
 
 func (RuneStatusSync_RuneStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_client_client_proto_enumTypes[20].Descriptor()
+	return file_client_client_proto_enumTypes[19].Descriptor()
 }
 
 func (RuneStatusSync_RuneStatus) Type() protoreflect.EnumType {
-	return &file_client_client_proto_enumTypes[20]
+	return &file_client_client_proto_enumTypes[19]
 }
 
 func (x RuneStatusSync_RuneStatus) Number() protoreflect.EnumNumber {
@@ -1301,7 +1234,7 @@ func (x RuneStatusSync_RuneStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use RuneStatusSync_RuneStatus.Descriptor instead.
 func (RuneStatusSync_RuneStatus) EnumDescriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{27, 0}
+	return file_client_client_proto_rawDescGZIP(), []int{28, 0}
 }
 
 type SentryStatusSync_Posture int32
@@ -1340,11 +1273,11 @@ func (x SentryStatusSync_Posture) String() string {
 }
 
 func (SentryStatusSync_Posture) Descriptor() protoreflect.EnumDescriptor {
-	return file_client_client_proto_enumTypes[21].Descriptor()
+	return file_client_client_proto_enumTypes[20].Descriptor()
 }
 
 func (SentryStatusSync_Posture) Type() protoreflect.EnumType {
-	return &file_client_client_proto_enumTypes[21]
+	return &file_client_client_proto_enumTypes[20]
 }
 
 func (x SentryStatusSync_Posture) Number() protoreflect.EnumNumber {
@@ -1353,7 +1286,7 @@ func (x SentryStatusSync_Posture) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SentryStatusSync_Posture.Descriptor instead.
 func (SentryStatusSync_Posture) EnumDescriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{28, 0}
+	return file_client_client_proto_rawDescGZIP(), []int{29, 0}
 }
 
 type DartCommand_DartTarget int32
@@ -1398,11 +1331,11 @@ func (x DartCommand_DartTarget) String() string {
 }
 
 func (DartCommand_DartTarget) Descriptor() protoreflect.EnumDescriptor {
-	return file_client_client_proto_enumTypes[22].Descriptor()
+	return file_client_client_proto_enumTypes[21].Descriptor()
 }
 
 func (DartCommand_DartTarget) Type() protoreflect.EnumType {
-	return &file_client_client_proto_enumTypes[22]
+	return &file_client_client_proto_enumTypes[21]
 }
 
 func (x DartCommand_DartTarget) Number() protoreflect.EnumNumber {
@@ -1411,39 +1344,37 @@ func (x DartCommand_DartTarget) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use DartCommand_DartTarget.Descriptor instead.
 func (DartCommand_DartTarget) EnumDescriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{29, 0}
+	return file_client_client_proto_rawDescGZIP(), []int{30, 0}
 }
 
 type SentryCtrlCommand_GuardCommandID int32
 
 const (
-	SentryCtrlCommand_CMD_INVALID         SentryCtrlCommand_GuardCommandID = 0  // 无效指令
-	SentryCtrlCommand_HEAL_POINT_AMMO     SentryCtrlCommand_GuardCommandID = 1  // 补血点补弹
-	SentryCtrlCommand_SUPPLY_STATION_AMMO SentryCtrlCommand_GuardCommandID = 2  // 补给站实体补弹
-	SentryCtrlCommand_REMOTE_AMMO         SentryCtrlCommand_GuardCommandID = 3  // 远程补弹
-	SentryCtrlCommand_REMOTE_HEAL         SentryCtrlCommand_GuardCommandID = 4  // 远程回血
-	SentryCtrlCommand_FREE_RESPAWN        SentryCtrlCommand_GuardCommandID = 5  // 确认复活
-	SentryCtrlCommand_GOLD_RESPAWN        SentryCtrlCommand_GuardCommandID = 6  // 确认花费金币复活
-	SentryCtrlCommand_MAP_MARK            SentryCtrlCommand_GuardCommandID = 7  // 地图标点
-	SentryCtrlCommand_SWITCH_ATTACK       SentryCtrlCommand_GuardCommandID = 8  // 切换为进攻姿态
-	SentryCtrlCommand_SWITCH_DEFENSE      SentryCtrlCommand_GuardCommandID = 9  // 切换为防御姿态
-	SentryCtrlCommand_SWITCH_MOVE         SentryCtrlCommand_GuardCommandID = 10 // 切换为移动姿态
+	SentryCtrlCommand_CMD_INVALID         SentryCtrlCommand_GuardCommandID = 0 // 无效
+	SentryCtrlCommand_HEAL_POINT_AMMO     SentryCtrlCommand_GuardCommandID = 1 // 补血点补弹
+	SentryCtrlCommand_SUPPLY_STATION_AMMO SentryCtrlCommand_GuardCommandID = 2 // 补给站实体补弹
+	SentryCtrlCommand_REMOTE_AMMO         SentryCtrlCommand_GuardCommandID = 3 // 远程补弹
+	SentryCtrlCommand_REMOTE_HEAL         SentryCtrlCommand_GuardCommandID = 4 // 远程回血
+	SentryCtrlCommand_FREE_RESPAWN        SentryCtrlCommand_GuardCommandID = 5 // 确认复活
+	SentryCtrlCommand_GOLD_RESPAWN        SentryCtrlCommand_GuardCommandID = 6 // 确认花费金币复活
+	SentryCtrlCommand_SWITCH_ATTACK       SentryCtrlCommand_GuardCommandID = 7 // 切换为进攻姿态
+	SentryCtrlCommand_SWITCH_DEFENSE      SentryCtrlCommand_GuardCommandID = 8 // 切换为防御姿态
+	SentryCtrlCommand_SWITCH_MOVE         SentryCtrlCommand_GuardCommandID = 9 // 切换为移动姿态
 )
 
 // Enum value maps for SentryCtrlCommand_GuardCommandID.
 var (
 	SentryCtrlCommand_GuardCommandID_name = map[int32]string{
-		0:  "CMD_INVALID",
-		1:  "HEAL_POINT_AMMO",
-		2:  "SUPPLY_STATION_AMMO",
-		3:  "REMOTE_AMMO",
-		4:  "REMOTE_HEAL",
-		5:  "FREE_RESPAWN",
-		6:  "GOLD_RESPAWN",
-		7:  "MAP_MARK",
-		8:  "SWITCH_ATTACK",
-		9:  "SWITCH_DEFENSE",
-		10: "SWITCH_MOVE",
+		0: "CMD_INVALID",
+		1: "HEAL_POINT_AMMO",
+		2: "SUPPLY_STATION_AMMO",
+		3: "REMOTE_AMMO",
+		4: "REMOTE_HEAL",
+		5: "FREE_RESPAWN",
+		6: "GOLD_RESPAWN",
+		7: "SWITCH_ATTACK",
+		8: "SWITCH_DEFENSE",
+		9: "SWITCH_MOVE",
 	}
 	SentryCtrlCommand_GuardCommandID_value = map[string]int32{
 		"CMD_INVALID":         0,
@@ -1453,10 +1384,9 @@ var (
 		"REMOTE_HEAL":         4,
 		"FREE_RESPAWN":        5,
 		"GOLD_RESPAWN":        6,
-		"MAP_MARK":            7,
-		"SWITCH_ATTACK":       8,
-		"SWITCH_DEFENSE":      9,
-		"SWITCH_MOVE":         10,
+		"SWITCH_ATTACK":       7,
+		"SWITCH_DEFENSE":      8,
+		"SWITCH_MOVE":         9,
 	}
 )
 
@@ -1471,11 +1401,11 @@ func (x SentryCtrlCommand_GuardCommandID) String() string {
 }
 
 func (SentryCtrlCommand_GuardCommandID) Descriptor() protoreflect.EnumDescriptor {
-	return file_client_client_proto_enumTypes[23].Descriptor()
+	return file_client_client_proto_enumTypes[22].Descriptor()
 }
 
 func (SentryCtrlCommand_GuardCommandID) Type() protoreflect.EnumType {
-	return &file_client_client_proto_enumTypes[23]
+	return &file_client_client_proto_enumTypes[22]
 }
 
 func (x SentryCtrlCommand_GuardCommandID) Number() protoreflect.EnumNumber {
@@ -1484,31 +1414,28 @@ func (x SentryCtrlCommand_GuardCommandID) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SentryCtrlCommand_GuardCommandID.Descriptor instead.
 func (SentryCtrlCommand_GuardCommandID) EnumDescriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{31, 0}
+	return file_client_client_proto_rawDescGZIP(), []int{32, 0}
 }
 
 type AirSupportCommand_AirSupportCmdID int32
 
 const (
-	AirSupportCommand_CMD_UNKNOWN AirSupportCommand_AirSupportCmdID = 0 // 占位
-	AirSupportCommand_FREE_CALL   AirSupportCommand_AirSupportCmdID = 1 // 免费呼叫空中支援
-	AirSupportCommand_GOLD_CALL   AirSupportCommand_AirSupportCmdID = 2 // 花费金币呼叫空中支援
-	AirSupportCommand_INTERRUPT   AirSupportCommand_AirSupportCmdID = 3 // 中断空中支援
+	AirSupportCommand_CANCEL_SUPPORT AirSupportCommand_AirSupportCmdID = 0 // 取消空中支援
+	AirSupportCommand_FREE_CALL      AirSupportCommand_AirSupportCmdID = 1 // 免费呼叫空中支援
+	AirSupportCommand_GOLD_CALL      AirSupportCommand_AirSupportCmdID = 2 // 花费金币呼叫空中支援
 )
 
 // Enum value maps for AirSupportCommand_AirSupportCmdID.
 var (
 	AirSupportCommand_AirSupportCmdID_name = map[int32]string{
-		0: "CMD_UNKNOWN",
+		0: "CANCEL_SUPPORT",
 		1: "FREE_CALL",
 		2: "GOLD_CALL",
-		3: "INTERRUPT",
 	}
 	AirSupportCommand_AirSupportCmdID_value = map[string]int32{
-		"CMD_UNKNOWN": 0,
-		"FREE_CALL":   1,
-		"GOLD_CALL":   2,
-		"INTERRUPT":   3,
+		"CANCEL_SUPPORT": 0,
+		"FREE_CALL":      1,
+		"GOLD_CALL":      2,
 	}
 )
 
@@ -1523,11 +1450,11 @@ func (x AirSupportCommand_AirSupportCmdID) String() string {
 }
 
 func (AirSupportCommand_AirSupportCmdID) Descriptor() protoreflect.EnumDescriptor {
-	return file_client_client_proto_enumTypes[24].Descriptor()
+	return file_client_client_proto_enumTypes[23].Descriptor()
 }
 
 func (AirSupportCommand_AirSupportCmdID) Type() protoreflect.EnumType {
-	return &file_client_client_proto_enumTypes[24]
+	return &file_client_client_proto_enumTypes[23]
 }
 
 func (x AirSupportCommand_AirSupportCmdID) Number() protoreflect.EnumNumber {
@@ -1536,7 +1463,7 @@ func (x AirSupportCommand_AirSupportCmdID) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AirSupportCommand_AirSupportCmdID.Descriptor instead.
 func (AirSupportCommand_AirSupportCmdID) EnumDescriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{33, 0}
+	return file_client_client_proto_rawDescGZIP(), []int{34, 0}
 }
 
 type AirSupportStatusSync_AirSupportStatus int32
@@ -1569,11 +1496,11 @@ func (x AirSupportStatusSync_AirSupportStatus) String() string {
 }
 
 func (AirSupportStatusSync_AirSupportStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_client_client_proto_enumTypes[25].Descriptor()
+	return file_client_client_proto_enumTypes[24].Descriptor()
 }
 
 func (AirSupportStatusSync_AirSupportStatus) Type() protoreflect.EnumType {
-	return &file_client_client_proto_enumTypes[25]
+	return &file_client_client_proto_enumTypes[24]
 }
 
 func (x AirSupportStatusSync_AirSupportStatus) Number() protoreflect.EnumNumber {
@@ -1582,7 +1509,7 @@ func (x AirSupportStatusSync_AirSupportStatus) Number() protoreflect.EnumNumber 
 
 // Deprecated: Use AirSupportStatusSync_AirSupportStatus.Descriptor instead.
 func (AirSupportStatusSync_AirSupportStatus) EnumDescriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{34, 0}
+	return file_client_client_proto_rawDescGZIP(), []int{35, 0}
 }
 
 type AirSupportStatusSync_ShooterStatus int32
@@ -1615,11 +1542,11 @@ func (x AirSupportStatusSync_ShooterStatus) String() string {
 }
 
 func (AirSupportStatusSync_ShooterStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_client_client_proto_enumTypes[26].Descriptor()
+	return file_client_client_proto_enumTypes[25].Descriptor()
 }
 
 func (AirSupportStatusSync_ShooterStatus) Type() protoreflect.EnumType {
-	return &file_client_client_proto_enumTypes[26]
+	return &file_client_client_proto_enumTypes[25]
 }
 
 func (x AirSupportStatusSync_ShooterStatus) Number() protoreflect.EnumNumber {
@@ -1628,21 +1555,21 @@ func (x AirSupportStatusSync_ShooterStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AirSupportStatusSync_ShooterStatus.Descriptor instead.
 func (AirSupportStatusSync_ShooterStatus) EnumDescriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{34, 1}
+	return file_client_client_proto_rawDescGZIP(), []int{35, 1}
 }
 
-// 传输鼠标键盘输入和自定义数据
-// 自定义客户端→服务器
+// 传输鼠标键盘输入
+// 自定义客户端→图传链路→机器人
 // 发送频率：75Hz
 type KeyboardMouseControl struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	MouseX          int32                  `protobuf:"varint,1,opt,name=mouse_x,json=mouseX,proto3" json:"mouse_x,omitempty"`                              // 鼠标 x 轴移动速度，负值标识向左移动
-	MouseY          int32                  `protobuf:"varint,2,opt,name=mouse_y,json=mouseY,proto3" json:"mouse_y,omitempty"`                              // 鼠标 y 轴移动速度，负值标识向下移动
-	MouseZ          int32                  `protobuf:"varint,3,opt,name=mouse_z,json=mouseZ,proto3" json:"mouse_z,omitempty"`                              // 鼠标滚轮移动速度，负值标识向后滚动
-	LeftButtonDown  bool                   `protobuf:"varint,4,opt,name=left_button_down,json=leftButtonDown,proto3" json:"left_button_down,omitempty"`    // 左键是否按下（false=抬起, true=按下）
-	RightButtonDown bool                   `protobuf:"varint,5,opt,name=right_button_down,json=rightButtonDown,proto3" json:"right_button_down,omitempty"` // 右键是否按下（false=抬起, true=按下）
-	KeyboardValue   uint32                 `protobuf:"varint,6,opt,name=keyboard_value,json=keyboardValue,proto3" json:"keyboard_value,omitempty"`         // 键盘按键位掩码
-	MidButtonDown   bool                   `protobuf:"varint,7,opt,name=mid_button_down,json=midButtonDown,proto3" json:"mid_button_down,omitempty"`       // 中键是否按下（false=抬起, true=按下）
+	MouseX          *int32                 `protobuf:"varint,1,opt,name=mouse_x,json=mouseX,proto3,oneof" json:"mouse_x,omitempty"`                              // 鼠标 x 轴移动速度，负值标识向左移动
+	MouseY          *int32                 `protobuf:"varint,2,opt,name=mouse_y,json=mouseY,proto3,oneof" json:"mouse_y,omitempty"`                              // 鼠标 y 轴移动速度，负值标识向下移动
+	MouseZ          *int32                 `protobuf:"varint,3,opt,name=mouse_z,json=mouseZ,proto3,oneof" json:"mouse_z,omitempty"`                              // 鼠标滚轮移动速度，负值标识向后滚动
+	LeftButtonDown  *bool                  `protobuf:"varint,4,opt,name=left_button_down,json=leftButtonDown,proto3,oneof" json:"left_button_down,omitempty"`    // 左键是否按下
+	RightButtonDown *bool                  `protobuf:"varint,5,opt,name=right_button_down,json=rightButtonDown,proto3,oneof" json:"right_button_down,omitempty"` // 右键是否按下
+	KeyboardValue   *uint32                `protobuf:"varint,6,opt,name=keyboard_value,json=keyboardValue,proto3,oneof" json:"keyboard_value,omitempty"`         // 键盘按键位掩码
+	MidButtonDown   *bool                  `protobuf:"varint,7,opt,name=mid_button_down,json=midButtonDown,proto3,oneof" json:"mid_button_down,omitempty"`       // 中键是否按下
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -1678,50 +1605,50 @@ func (*KeyboardMouseControl) Descriptor() ([]byte, []int) {
 }
 
 func (x *KeyboardMouseControl) GetMouseX() int32 {
-	if x != nil {
-		return x.MouseX
+	if x != nil && x.MouseX != nil {
+		return *x.MouseX
 	}
 	return 0
 }
 
 func (x *KeyboardMouseControl) GetMouseY() int32 {
-	if x != nil {
-		return x.MouseY
+	if x != nil && x.MouseY != nil {
+		return *x.MouseY
 	}
 	return 0
 }
 
 func (x *KeyboardMouseControl) GetMouseZ() int32 {
-	if x != nil {
-		return x.MouseZ
+	if x != nil && x.MouseZ != nil {
+		return *x.MouseZ
 	}
 	return 0
 }
 
 func (x *KeyboardMouseControl) GetLeftButtonDown() bool {
-	if x != nil {
-		return x.LeftButtonDown
+	if x != nil && x.LeftButtonDown != nil {
+		return *x.LeftButtonDown
 	}
 	return false
 }
 
 func (x *KeyboardMouseControl) GetRightButtonDown() bool {
-	if x != nil {
-		return x.RightButtonDown
+	if x != nil && x.RightButtonDown != nil {
+		return *x.RightButtonDown
 	}
 	return false
 }
 
 func (x *KeyboardMouseControl) GetKeyboardValue() uint32 {
-	if x != nil {
-		return x.KeyboardValue
+	if x != nil && x.KeyboardValue != nil {
+		return *x.KeyboardValue
 	}
 	return 0
 }
 
 func (x *KeyboardMouseControl) GetMidButtonDown() bool {
-	if x != nil {
-		return x.MidButtonDown
+	if x != nil && x.MidButtonDown != nil {
+		return *x.MidButtonDown
 	}
 	return false
 }
@@ -1731,7 +1658,7 @@ func (x *KeyboardMouseControl) GetMidButtonDown() bool {
 // 发送频率：75Hz
 type CustomControl struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Data          []byte                 `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"` // 最大30字节的自定义数据
+	Data          []byte                 `protobuf:"bytes,1,opt,name=data,proto3,oneof" json:"data,omitempty"` // 最大30字节的自定义数据
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1778,14 +1705,14 @@ func (x *CustomControl) GetData() []byte {
 // 发送频率：5Hz
 type GameStatus struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
-	CurrentRound      uint32                 `protobuf:"varint,1,opt,name=current_round,json=currentRound,proto3" json:"current_round,omitempty"`                  // 当前局号（从1开始）
-	TotalRounds       uint32                 `protobuf:"varint,2,opt,name=total_rounds,json=totalRounds,proto3" json:"total_rounds,omitempty"`                     // 总局数
-	RedScore          uint32                 `protobuf:"varint,3,opt,name=red_score,json=redScore,proto3" json:"red_score,omitempty"`                              // 红方得分
-	BlueScore         uint32                 `protobuf:"varint,4,opt,name=blue_score,json=blueScore,proto3" json:"blue_score,omitempty"`                           // 蓝方得分
-	CurrentStage      uint32                 `protobuf:"varint,5,opt,name=current_stage,json=currentStage,proto3" json:"current_stage,omitempty"`                  // 当前比赛阶段
-	StageCountdownSec int32                  `protobuf:"varint,6,opt,name=stage_countdown_sec,json=stageCountdownSec,proto3" json:"stage_countdown_sec,omitempty"` // 当前阶段剩余时间（单位：秒）
-	StageElapsedSec   int32                  `protobuf:"varint,7,opt,name=stage_elapsed_sec,json=stageElapsedSec,proto3" json:"stage_elapsed_sec,omitempty"`       // 当前阶段已过时间（单位：秒）
-	IsPaused          bool                   `protobuf:"varint,8,opt,name=is_paused,json=isPaused,proto3" json:"is_paused,omitempty"`                              // 比赛是否暂停（false=未暂停，true=暂停）
+	CurrentRound      *uint32                `protobuf:"varint,1,opt,name=current_round,json=currentRound,proto3,oneof" json:"current_round,omitempty"`                  // 当前局号（从1开始）
+	TotalRounds       *uint32                `protobuf:"varint,2,opt,name=total_rounds,json=totalRounds,proto3,oneof" json:"total_rounds,omitempty"`                     // 总局数
+	RedScore          *uint32                `protobuf:"varint,3,opt,name=red_score,json=redScore,proto3,oneof" json:"red_score,omitempty"`                              // 红方得分
+	BlueScore         *uint32                `protobuf:"varint,4,opt,name=blue_score,json=blueScore,proto3,oneof" json:"blue_score,omitempty"`                           // 蓝方得分
+	CurrentStage      *uint32                `protobuf:"varint,5,opt,name=current_stage,json=currentStage,proto3,oneof" json:"current_stage,omitempty"`                  // 当前比赛阶段
+	StageCountdownSec *int32                 `protobuf:"varint,6,opt,name=stage_countdown_sec,json=stageCountdownSec,proto3,oneof" json:"stage_countdown_sec,omitempty"` // 当前阶段剩余时间(秒)
+	StageElapsedSec   *int32                 `protobuf:"varint,7,opt,name=stage_elapsed_sec,json=stageElapsedSec,proto3,oneof" json:"stage_elapsed_sec,omitempty"`       // 当前阶段已过时间(秒)
+	IsPaused          *bool                  `protobuf:"varint,8,opt,name=is_paused,json=isPaused,proto3,oneof" json:"is_paused,omitempty"`                              // 是否暂停
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -1821,57 +1748,57 @@ func (*GameStatus) Descriptor() ([]byte, []int) {
 }
 
 func (x *GameStatus) GetCurrentRound() uint32 {
-	if x != nil {
-		return x.CurrentRound
+	if x != nil && x.CurrentRound != nil {
+		return *x.CurrentRound
 	}
 	return 0
 }
 
 func (x *GameStatus) GetTotalRounds() uint32 {
-	if x != nil {
-		return x.TotalRounds
+	if x != nil && x.TotalRounds != nil {
+		return *x.TotalRounds
 	}
 	return 0
 }
 
 func (x *GameStatus) GetRedScore() uint32 {
-	if x != nil {
-		return x.RedScore
+	if x != nil && x.RedScore != nil {
+		return *x.RedScore
 	}
 	return 0
 }
 
 func (x *GameStatus) GetBlueScore() uint32 {
-	if x != nil {
-		return x.BlueScore
+	if x != nil && x.BlueScore != nil {
+		return *x.BlueScore
 	}
 	return 0
 }
 
 func (x *GameStatus) GetCurrentStage() uint32 {
-	if x != nil {
-		return x.CurrentStage
+	if x != nil && x.CurrentStage != nil {
+		return *x.CurrentStage
 	}
 	return 0
 }
 
 func (x *GameStatus) GetStageCountdownSec() int32 {
-	if x != nil {
-		return x.StageCountdownSec
+	if x != nil && x.StageCountdownSec != nil {
+		return *x.StageCountdownSec
 	}
 	return 0
 }
 
 func (x *GameStatus) GetStageElapsedSec() int32 {
-	if x != nil {
-		return x.StageElapsedSec
+	if x != nil && x.StageElapsedSec != nil {
+		return *x.StageElapsedSec
 	}
 	return 0
 }
 
 func (x *GameStatus) GetIsPaused() bool {
-	if x != nil {
-		return x.IsPaused
+	if x != nil && x.IsPaused != nil {
+		return *x.IsPaused
 	}
 	return false
 }
@@ -1881,20 +1808,20 @@ func (x *GameStatus) GetIsPaused() bool {
 // 发送频率：1Hz
 type GlobalUnitStatus struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
-	BaseHealth         uint32                 `protobuf:"varint,1,opt,name=base_health,json=baseHealth,proto3" json:"base_health,omitempty"`                            // 己方基地当前血量（0=已摧毁）
-	BaseStatus         uint32                 `protobuf:"varint,2,opt,name=base_status,json=baseStatus,proto3" json:"base_status,omitempty"`                            // 己方基地状态：0=无敌，1=解除无敌（护甲未展开），2=解除无敌（护甲展开）
-	BaseShield         uint32                 `protobuf:"varint,3,opt,name=base_shield,json=baseShield,proto3" json:"base_shield,omitempty"`                            // 己方基地当前护盾值（0=无护盾）
-	OutpostHealth      uint32                 `protobuf:"varint,4,opt,name=outpost_health,json=outpostHealth,proto3" json:"outpost_health,omitempty"`                   // 己方前哨站当前血量（0=已摧毁）
-	OutpostStatus      uint32                 `protobuf:"varint,5,opt,name=outpost_status,json=outpostStatus,proto3" json:"outpost_status,omitempty"`                   // 己方前哨站状态
-	EnemyBaseHealth    uint32                 `protobuf:"varint,6,opt,name=enemy_base_health,json=enemyBaseHealth,proto3" json:"enemy_base_health,omitempty"`           // 对方基地当前血量（0=已摧毁）
-	EnemyBaseStatus    uint32                 `protobuf:"varint,7,opt,name=enemy_base_status,json=enemyBaseStatus,proto3" json:"enemy_base_status,omitempty"`           // 对方基地状态
-	EnemyBaseShield    uint32                 `protobuf:"varint,8,opt,name=enemy_base_shield,json=enemyBaseShield,proto3" json:"enemy_base_shield,omitempty"`           // 对方基地当前护盾值（0=无护盾）
-	EnemyOutpostHealth uint32                 `protobuf:"varint,9,opt,name=enemy_outpost_health,json=enemyOutpostHealth,proto3" json:"enemy_outpost_health,omitempty"`  // 对方前哨站当前血量（0=已摧毁）
-	EnemyOutpostStatus uint32                 `protobuf:"varint,10,opt,name=enemy_outpost_status,json=enemyOutpostStatus,proto3" json:"enemy_outpost_status,omitempty"` // 对方前哨站状态
-	RobotHealth        []uint32               `protobuf:"varint,11,rep,packed,name=robot_health,json=robotHealth,proto3" json:"robot_health,omitempty"`                 // 所有机器人血量（先己方后对方，按机器人ID顺序排列）
-	RobotBullets       []int32                `protobuf:"varint,12,rep,packed,name=robot_bullets,json=robotBullets,proto3" json:"robot_bullets,omitempty"`              // 己方机器人剩余累计发弹量（按机器人ID顺序排列）
-	TotalDamageAlly    uint32                 `protobuf:"varint,13,opt,name=total_damage_ally,json=totalDamageAlly,proto3" json:"total_damage_ally,omitempty"`          // 己方累计总伤害
-	TotalDamageEnemy   uint32                 `protobuf:"varint,14,opt,name=total_damage_enemy,json=totalDamageEnemy,proto3" json:"total_damage_enemy,omitempty"`       // 对方累计总伤害
+	BaseHealth         *uint32                `protobuf:"varint,1,opt,name=base_health,json=baseHealth,proto3,oneof" json:"base_health,omitempty"`                            // 己方基地当前血量（0=已摧毁）
+	BaseStatus         *uint32                `protobuf:"varint,2,opt,name=base_status,json=baseStatus,proto3,oneof" json:"base_status,omitempty"`                            // 己方基地状态
+	BaseShield         *uint32                `protobuf:"varint,3,opt,name=base_shield,json=baseShield,proto3,oneof" json:"base_shield,omitempty"`                            // 己方基地当前护盾值（0=无护盾）
+	OutpostHealth      *uint32                `protobuf:"varint,4,opt,name=outpost_health,json=outpostHealth,proto3,oneof" json:"outpost_health,omitempty"`                   // 己方前哨站当前血量（0=已摧毁）
+	OutpostStatus      *uint32                `protobuf:"varint,5,opt,name=outpost_status,json=outpostStatus,proto3,oneof" json:"outpost_status,omitempty"`                   // 己方前哨站状态
+	EnemyBaseHealth    *uint32                `protobuf:"varint,6,opt,name=enemy_base_health,json=enemyBaseHealth,proto3,oneof" json:"enemy_base_health,omitempty"`           // 对方基地当前血量（0=已摧毁）
+	EnemyBaseStatus    *uint32                `protobuf:"varint,7,opt,name=enemy_base_status,json=enemyBaseStatus,proto3,oneof" json:"enemy_base_status,omitempty"`           // 对方基地状态
+	EnemyBaseShield    *uint32                `protobuf:"varint,8,opt,name=enemy_base_shield,json=enemyBaseShield,proto3,oneof" json:"enemy_base_shield,omitempty"`           // 对方基地当前护盾值（0=无护盾）
+	EnemyOutpostHealth *uint32                `protobuf:"varint,9,opt,name=enemy_outpost_health,json=enemyOutpostHealth,proto3,oneof" json:"enemy_outpost_health,omitempty"`  // 对方前哨站当前血量（0=已摧毁）
+	EnemyOutpostStatus *uint32                `protobuf:"varint,10,opt,name=enemy_outpost_status,json=enemyOutpostStatus,proto3,oneof" json:"enemy_outpost_status,omitempty"` // 对方前哨站状态
+	RobotHealth        []uint32               `protobuf:"varint,11,rep,packed,name=robot_health,json=robotHealth,proto3" json:"robot_health,omitempty"`                       // 所有机器人血量（按己方1,2,3,4,7，对方1,2,3,4,7顺序）
+	RobotBullets       []int32                `protobuf:"varint,12,rep,packed,name=robot_bullets,json=robotBullets,proto3" json:"robot_bullets,omitempty"`                    // 己方机器人剩余累计发弹量
+	TotalDamageAlly    *uint32                `protobuf:"varint,13,opt,name=total_damage_ally,json=totalDamageAlly,proto3,oneof" json:"total_damage_ally,omitempty"`          // 己方累计总伤害
+	TotalDamageEnemy   *uint32                `protobuf:"varint,14,opt,name=total_damage_enemy,json=totalDamageEnemy,proto3,oneof" json:"total_damage_enemy,omitempty"`       // 对方累计总伤害
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -1930,71 +1857,71 @@ func (*GlobalUnitStatus) Descriptor() ([]byte, []int) {
 }
 
 func (x *GlobalUnitStatus) GetBaseHealth() uint32 {
-	if x != nil {
-		return x.BaseHealth
+	if x != nil && x.BaseHealth != nil {
+		return *x.BaseHealth
 	}
 	return 0
 }
 
 func (x *GlobalUnitStatus) GetBaseStatus() uint32 {
-	if x != nil {
-		return x.BaseStatus
+	if x != nil && x.BaseStatus != nil {
+		return *x.BaseStatus
 	}
 	return 0
 }
 
 func (x *GlobalUnitStatus) GetBaseShield() uint32 {
-	if x != nil {
-		return x.BaseShield
+	if x != nil && x.BaseShield != nil {
+		return *x.BaseShield
 	}
 	return 0
 }
 
 func (x *GlobalUnitStatus) GetOutpostHealth() uint32 {
-	if x != nil {
-		return x.OutpostHealth
+	if x != nil && x.OutpostHealth != nil {
+		return *x.OutpostHealth
 	}
 	return 0
 }
 
 func (x *GlobalUnitStatus) GetOutpostStatus() uint32 {
-	if x != nil {
-		return x.OutpostStatus
+	if x != nil && x.OutpostStatus != nil {
+		return *x.OutpostStatus
 	}
 	return 0
 }
 
 func (x *GlobalUnitStatus) GetEnemyBaseHealth() uint32 {
-	if x != nil {
-		return x.EnemyBaseHealth
+	if x != nil && x.EnemyBaseHealth != nil {
+		return *x.EnemyBaseHealth
 	}
 	return 0
 }
 
 func (x *GlobalUnitStatus) GetEnemyBaseStatus() uint32 {
-	if x != nil {
-		return x.EnemyBaseStatus
+	if x != nil && x.EnemyBaseStatus != nil {
+		return *x.EnemyBaseStatus
 	}
 	return 0
 }
 
 func (x *GlobalUnitStatus) GetEnemyBaseShield() uint32 {
-	if x != nil {
-		return x.EnemyBaseShield
+	if x != nil && x.EnemyBaseShield != nil {
+		return *x.EnemyBaseShield
 	}
 	return 0
 }
 
 func (x *GlobalUnitStatus) GetEnemyOutpostHealth() uint32 {
-	if x != nil {
-		return x.EnemyOutpostHealth
+	if x != nil && x.EnemyOutpostHealth != nil {
+		return *x.EnemyOutpostHealth
 	}
 	return 0
 }
 
 func (x *GlobalUnitStatus) GetEnemyOutpostStatus() uint32 {
-	if x != nil {
-		return x.EnemyOutpostStatus
+	if x != nil && x.EnemyOutpostStatus != nil {
+		return *x.EnemyOutpostStatus
 	}
 	return 0
 }
@@ -2014,15 +1941,15 @@ func (x *GlobalUnitStatus) GetRobotBullets() []int32 {
 }
 
 func (x *GlobalUnitStatus) GetTotalDamageAlly() uint32 {
-	if x != nil {
-		return x.TotalDamageAlly
+	if x != nil && x.TotalDamageAlly != nil {
+		return *x.TotalDamageAlly
 	}
 	return 0
 }
 
 func (x *GlobalUnitStatus) GetTotalDamageEnemy() uint32 {
-	if x != nil {
-		return x.TotalDamageEnemy
+	if x != nil && x.TotalDamageEnemy != nil {
+		return *x.TotalDamageEnemy
 	}
 	return 0
 }
@@ -2032,10 +1959,10 @@ func (x *GlobalUnitStatus) GetTotalDamageEnemy() uint32 {
 // 发送频率：1Hz
 type GlobalLogisticsStatus struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
-	RemainingEconomy     uint32                 `protobuf:"varint,1,opt,name=remaining_economy,json=remainingEconomy,proto3" json:"remaining_economy,omitempty"`               // 己方当前经济（剩余金币数）
-	TotalEconomyObtained uint64                 `protobuf:"varint,2,opt,name=total_economy_obtained,json=totalEconomyObtained,proto3" json:"total_economy_obtained,omitempty"` // 己方累计总经济（比赛至今获得的总金币数）
-	TechLevel            uint32                 `protobuf:"varint,3,opt,name=tech_level,json=techLevel,proto3" json:"tech_level,omitempty"`                                    // 己方科技等级（工程机器人曾装配的最高难度等级）
-	EncryptionLevel      uint32                 `protobuf:"varint,4,opt,name=encryption_level,json=encryptionLevel,proto3" json:"encryption_level,omitempty"`                  // 己方加密等级（雷达解析信息波机制难度，1~3级）
+	RemainingEconomy     *uint32                `protobuf:"varint,1,opt,name=remaining_economy,json=remainingEconomy,proto3,oneof" json:"remaining_economy,omitempty"`               // 己方当前经济
+	TotalEconomyObtained *uint64                `protobuf:"varint,2,opt,name=total_economy_obtained,json=totalEconomyObtained,proto3,oneof" json:"total_economy_obtained,omitempty"` // 己方累计总经济
+	TechLevel            *uint32                `protobuf:"varint,3,opt,name=tech_level,json=techLevel,proto3,oneof" json:"tech_level,omitempty"`                                    // 己方科技等级（工程曾装配最高难度）
+	EncryptionLevel      *uint32                `protobuf:"varint,4,opt,name=encryption_level,json=encryptionLevel,proto3,oneof" json:"encryption_level,omitempty"`                  // 己方加密等级（雷达解析机制）
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -2071,29 +1998,29 @@ func (*GlobalLogisticsStatus) Descriptor() ([]byte, []int) {
 }
 
 func (x *GlobalLogisticsStatus) GetRemainingEconomy() uint32 {
-	if x != nil {
-		return x.RemainingEconomy
+	if x != nil && x.RemainingEconomy != nil {
+		return *x.RemainingEconomy
 	}
 	return 0
 }
 
 func (x *GlobalLogisticsStatus) GetTotalEconomyObtained() uint64 {
-	if x != nil {
-		return x.TotalEconomyObtained
+	if x != nil && x.TotalEconomyObtained != nil {
+		return *x.TotalEconomyObtained
 	}
 	return 0
 }
 
 func (x *GlobalLogisticsStatus) GetTechLevel() uint32 {
-	if x != nil {
-		return x.TechLevel
+	if x != nil && x.TechLevel != nil {
+		return *x.TechLevel
 	}
 	return 0
 }
 
 func (x *GlobalLogisticsStatus) GetEncryptionLevel() uint32 {
-	if x != nil {
-		return x.EncryptionLevel
+	if x != nil && x.EncryptionLevel != nil {
+		return *x.EncryptionLevel
 	}
 	return 0
 }
@@ -2103,8 +2030,8 @@ func (x *GlobalLogisticsStatus) GetEncryptionLevel() uint32 {
 // 发送频率：1Hz
 type GlobalSpecialMechanism struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
-	MechanismId      []uint32               `protobuf:"varint,1,rep,packed,name=mechanism_id,json=mechanismId,proto3" json:"mechanism_id,omitempty"`                  // 正在生效的机制ID列表
-	MechanismTimeSec []int32                `protobuf:"varint,2,rep,packed,name=mechanism_time_sec,json=mechanismTimeSec,proto3" json:"mechanism_time_sec,omitempty"` // 对应机制的剩余时间（单位：秒，与mechanism_id一一对应）
+	MechanismId      []uint32               `protobuf:"varint,1,rep,packed,name=mechanism_id,json=mechanismId,proto3" json:"mechanism_id,omitempty"`                  // 正在生效的机制 ID 列表
+	MechanismTimeSec []int32                `protobuf:"varint,2,rep,packed,name=mechanism_time_sec,json=mechanismTimeSec,proto3" json:"mechanism_time_sec,omitempty"` // 对应的时间参数
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -2155,11 +2082,11 @@ func (x *GlobalSpecialMechanism) GetMechanismTimeSec() []int32 {
 
 // 全局事件通知
 // 服务器→自定义客户端
-// 发送频率：触发式发送（事件发生时发送）
+// 发送频率：触发式发送
 type Event struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	EventId       int32                  `protobuf:"varint,1,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"` // 事件编号
-	Param         string                 `protobuf:"bytes,2,opt,name=param,proto3" json:"param,omitempty"`                     // 事件参数（含义随event_id变化，无参数时为空字符串）
+	EventId       *int32                 `protobuf:"varint,1,opt,name=event_id,json=eventId,proto3,oneof" json:"event_id,omitempty"` // 事件编号
+	Param         *string                `protobuf:"bytes,2,opt,name=param,proto3,oneof" json:"param,omitempty"`                     // 事件参数（含义随 event_id 变化）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2195,15 +2122,15 @@ func (*Event) Descriptor() ([]byte, []int) {
 }
 
 func (x *Event) GetEventId() int32 {
-	if x != nil {
-		return x.EventId
+	if x != nil && x.EventId != nil {
+		return *x.EventId
 	}
 	return 0
 }
 
 func (x *Event) GetParam() string {
-	if x != nil {
-		return x.Param
+	if x != nil && x.Param != nil {
+		return *x.Param
 	}
 	return ""
 }
@@ -2213,16 +2140,16 @@ func (x *Event) GetParam() string {
 // 发送频率：1Hz
 type RobotInjuryStat struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
-	TotalDamage           uint32                 `protobuf:"varint,1,opt,name=total_damage,json=totalDamage,proto3" json:"total_damage,omitempty"`                                 // 该次存活累计受伤总计（单位：血量）
-	CollisionDamage       uint32                 `protobuf:"varint,2,opt,name=collision_damage,json=collisionDamage,proto3" json:"collision_damage,omitempty"`                     // 撞击伤害（单位：血量）
-	SmallProjectileDamage uint32                 `protobuf:"varint,3,opt,name=small_projectile_damage,json=smallProjectileDamage,proto3" json:"small_projectile_damage,omitempty"` // 17mm弹丸伤害（单位：血量）
-	LargeProjectileDamage uint32                 `protobuf:"varint,4,opt,name=large_projectile_damage,json=largeProjectileDamage,proto3" json:"large_projectile_damage,omitempty"` // 42mm弹丸伤害（单位：血量）
-	DartSplashDamage      uint32                 `protobuf:"varint,5,opt,name=dart_splash_damage,json=dartSplashDamage,proto3" json:"dart_splash_damage,omitempty"`                // 飞镖溅射伤害（单位：血量）
-	ModuleOfflineDamage   uint32                 `protobuf:"varint,6,opt,name=module_offline_damage,json=moduleOfflineDamage,proto3" json:"module_offline_damage,omitempty"`       // 模块离线扣血（单位：血量）
-	OfflineDamage         uint32                 `protobuf:"varint,7,opt,name=offline_damage,json=offlineDamage,proto3" json:"offline_damage,omitempty"`                           // 异常离线扣血（单位：血量）
-	PenaltyDamage         uint32                 `protobuf:"varint,8,opt,name=penalty_damage,json=penaltyDamage,proto3" json:"penalty_damage,omitempty"`                           // 判罚扣血（单位：血量）
-	ServerKillDamage      uint32                 `protobuf:"varint,9,opt,name=server_kill_damage,json=serverKillDamage,proto3" json:"server_kill_damage,omitempty"`                // 服务器强制使其战亡扣血（单位：血量）
-	KillerId              uint32                 `protobuf:"varint,10,opt,name=killer_id,json=killerId,proto3" json:"killer_id,omitempty"`                                         // 击杀者ID（若未检测到击杀者，值为0）
+	TotalDamage           *uint32                `protobuf:"varint,1,opt,name=total_damage,json=totalDamage,proto3,oneof" json:"total_damage,omitempty"`                                 // 该次存活累计受伤总计
+	CollisionDamage       *uint32                `protobuf:"varint,2,opt,name=collision_damage,json=collisionDamage,proto3,oneof" json:"collision_damage,omitempty"`                     // 撞击伤害
+	SmallProjectileDamage *uint32                `protobuf:"varint,3,opt,name=small_projectile_damage,json=smallProjectileDamage,proto3,oneof" json:"small_projectile_damage,omitempty"` // 17mm 弹丸伤害
+	LargeProjectileDamage *uint32                `protobuf:"varint,4,opt,name=large_projectile_damage,json=largeProjectileDamage,proto3,oneof" json:"large_projectile_damage,omitempty"` // 42mm 弹丸伤害
+	DartSplashDamage      *uint32                `protobuf:"varint,5,opt,name=dart_splash_damage,json=dartSplashDamage,proto3,oneof" json:"dart_splash_damage,omitempty"`                // 飞镖溅射伤害
+	ModuleOfflineDamage   *uint32                `protobuf:"varint,6,opt,name=module_offline_damage,json=moduleOfflineDamage,proto3,oneof" json:"module_offline_damage,omitempty"`       // 模块离线扣血
+	OfflineDamage         *uint32                `protobuf:"varint,7,opt,name=offline_damage,json=offlineDamage,proto3,oneof" json:"offline_damage,omitempty"`                           // 异常离线扣血
+	PenaltyDamage         *uint32                `protobuf:"varint,8,opt,name=penalty_damage,json=penaltyDamage,proto3,oneof" json:"penalty_damage,omitempty"`                           // 判罚扣血
+	ServerKillDamage      *uint32                `protobuf:"varint,9,opt,name=server_kill_damage,json=serverKillDamage,proto3,oneof" json:"server_kill_damage,omitempty"`                // 服务器强制使其战亡扣血
+	KillerId              *uint32                `protobuf:"varint,10,opt,name=killer_id,json=killerId,proto3,oneof" json:"killer_id,omitempty"`                                         // 击杀者 ID
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -2258,71 +2185,71 @@ func (*RobotInjuryStat) Descriptor() ([]byte, []int) {
 }
 
 func (x *RobotInjuryStat) GetTotalDamage() uint32 {
-	if x != nil {
-		return x.TotalDamage
+	if x != nil && x.TotalDamage != nil {
+		return *x.TotalDamage
 	}
 	return 0
 }
 
 func (x *RobotInjuryStat) GetCollisionDamage() uint32 {
-	if x != nil {
-		return x.CollisionDamage
+	if x != nil && x.CollisionDamage != nil {
+		return *x.CollisionDamage
 	}
 	return 0
 }
 
 func (x *RobotInjuryStat) GetSmallProjectileDamage() uint32 {
-	if x != nil {
-		return x.SmallProjectileDamage
+	if x != nil && x.SmallProjectileDamage != nil {
+		return *x.SmallProjectileDamage
 	}
 	return 0
 }
 
 func (x *RobotInjuryStat) GetLargeProjectileDamage() uint32 {
-	if x != nil {
-		return x.LargeProjectileDamage
+	if x != nil && x.LargeProjectileDamage != nil {
+		return *x.LargeProjectileDamage
 	}
 	return 0
 }
 
 func (x *RobotInjuryStat) GetDartSplashDamage() uint32 {
-	if x != nil {
-		return x.DartSplashDamage
+	if x != nil && x.DartSplashDamage != nil {
+		return *x.DartSplashDamage
 	}
 	return 0
 }
 
 func (x *RobotInjuryStat) GetModuleOfflineDamage() uint32 {
-	if x != nil {
-		return x.ModuleOfflineDamage
+	if x != nil && x.ModuleOfflineDamage != nil {
+		return *x.ModuleOfflineDamage
 	}
 	return 0
 }
 
 func (x *RobotInjuryStat) GetOfflineDamage() uint32 {
-	if x != nil {
-		return x.OfflineDamage
+	if x != nil && x.OfflineDamage != nil {
+		return *x.OfflineDamage
 	}
 	return 0
 }
 
 func (x *RobotInjuryStat) GetPenaltyDamage() uint32 {
-	if x != nil {
-		return x.PenaltyDamage
+	if x != nil && x.PenaltyDamage != nil {
+		return *x.PenaltyDamage
 	}
 	return 0
 }
 
 func (x *RobotInjuryStat) GetServerKillDamage() uint32 {
-	if x != nil {
-		return x.ServerKillDamage
+	if x != nil && x.ServerKillDamage != nil {
+		return *x.ServerKillDamage
 	}
 	return 0
 }
 
 func (x *RobotInjuryStat) GetKillerId() uint32 {
-	if x != nil {
-		return x.KillerId
+	if x != nil && x.KillerId != nil {
+		return *x.KillerId
 	}
 	return 0
 }
@@ -2332,12 +2259,12 @@ func (x *RobotInjuryStat) GetKillerId() uint32 {
 // 发送频率：1Hz
 type RobotRespawnStatus struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
-	IsPendingRespawn       bool                   `protobuf:"varint,1,opt,name=is_pending_respawn,json=isPendingRespawn,proto3" json:"is_pending_respawn,omitempty"`                   // 是否处于待复活状态（false=正常，true=待复活）
-	TotalRespawnProgress   uint32                 `protobuf:"varint,2,opt,name=total_respawn_progress,json=totalRespawnProgress,proto3" json:"total_respawn_progress,omitempty"`       // 复活所需总读条（固定值）
-	CurrentRespawnProgress uint32                 `protobuf:"varint,3,opt,name=current_respawn_progress,json=currentRespawnProgress,proto3" json:"current_respawn_progress,omitempty"` // 当前复活读条进度（0~total_respawn_progress）
-	CanFreeRespawn         bool                   `protobuf:"varint,4,opt,name=can_free_respawn,json=canFreeRespawn,proto3" json:"can_free_respawn,omitempty"`                         // 是否可以免费复活（false=不可，true=可）
-	GoldCostForRespawn     uint32                 `protobuf:"varint,5,opt,name=gold_cost_for_respawn,json=goldCostForRespawn,proto3" json:"gold_cost_for_respawn,omitempty"`           // 花费金币复活所需金币数（免费复活时为0）
-	CanPayForRespawn       bool                   `protobuf:"varint,6,opt,name=can_pay_for_respawn,json=canPayForRespawn,proto3" json:"can_pay_for_respawn,omitempty"`                 // 是否允许花费金币复活（false=不可，true=可）
+	IsPendingRespawn       *bool                  `protobuf:"varint,1,opt,name=is_pending_respawn,json=isPendingRespawn,proto3,oneof" json:"is_pending_respawn,omitempty"`                   // 是否处于待复活状态
+	TotalRespawnProgress   *uint32                `protobuf:"varint,2,opt,name=total_respawn_progress,json=totalRespawnProgress,proto3,oneof" json:"total_respawn_progress,omitempty"`       // 复活所需总读条
+	CurrentRespawnProgress *uint32                `protobuf:"varint,3,opt,name=current_respawn_progress,json=currentRespawnProgress,proto3,oneof" json:"current_respawn_progress,omitempty"` // 当前复活读条进度
+	CanFreeRespawn         *bool                  `protobuf:"varint,4,opt,name=can_free_respawn,json=canFreeRespawn,proto3,oneof" json:"can_free_respawn,omitempty"`                         // 是否可以免费复活
+	GoldCostForRespawn     *uint32                `protobuf:"varint,5,opt,name=gold_cost_for_respawn,json=goldCostForRespawn,proto3,oneof" json:"gold_cost_for_respawn,omitempty"`           // 花费金币复活所需金币数
+	CanPayForRespawn       *bool                  `protobuf:"varint,6,opt,name=can_pay_for_respawn,json=canPayForRespawn,proto3,oneof" json:"can_pay_for_respawn,omitempty"`                 // 是否允许花费金币复活
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -2373,43 +2300,43 @@ func (*RobotRespawnStatus) Descriptor() ([]byte, []int) {
 }
 
 func (x *RobotRespawnStatus) GetIsPendingRespawn() bool {
-	if x != nil {
-		return x.IsPendingRespawn
+	if x != nil && x.IsPendingRespawn != nil {
+		return *x.IsPendingRespawn
 	}
 	return false
 }
 
 func (x *RobotRespawnStatus) GetTotalRespawnProgress() uint32 {
-	if x != nil {
-		return x.TotalRespawnProgress
+	if x != nil && x.TotalRespawnProgress != nil {
+		return *x.TotalRespawnProgress
 	}
 	return 0
 }
 
 func (x *RobotRespawnStatus) GetCurrentRespawnProgress() uint32 {
-	if x != nil {
-		return x.CurrentRespawnProgress
+	if x != nil && x.CurrentRespawnProgress != nil {
+		return *x.CurrentRespawnProgress
 	}
 	return 0
 }
 
 func (x *RobotRespawnStatus) GetCanFreeRespawn() bool {
-	if x != nil {
-		return x.CanFreeRespawn
+	if x != nil && x.CanFreeRespawn != nil {
+		return *x.CanFreeRespawn
 	}
 	return false
 }
 
 func (x *RobotRespawnStatus) GetGoldCostForRespawn() uint32 {
-	if x != nil {
-		return x.GoldCostForRespawn
+	if x != nil && x.GoldCostForRespawn != nil {
+		return *x.GoldCostForRespawn
 	}
 	return 0
 }
 
 func (x *RobotRespawnStatus) GetCanPayForRespawn() bool {
-	if x != nil {
-		return x.CanPayForRespawn
+	if x != nil && x.CanPayForRespawn != nil {
+		return *x.CanPayForRespawn
 	}
 	return false
 }
@@ -2419,20 +2346,20 @@ func (x *RobotRespawnStatus) GetCanPayForRespawn() bool {
 // 发送频率：1Hz
 type RobotStaticStatus struct {
 	state                    protoimpl.MessageState `protogen:"open.v1"`
-	ConnectionState          uint32                 `protobuf:"varint,1,opt,name=connection_state,json=connectionState,proto3" json:"connection_state,omitempty"`                              // 连接状态：0=未连接，1=已连接
-	FieldState               uint32                 `protobuf:"varint,2,opt,name=field_state,json=fieldState,proto3" json:"field_state,omitempty"`                                             // 上场状态：0=已上场，1=未上场
-	AliveState               uint32                 `protobuf:"varint,3,opt,name=alive_state,json=aliveState,proto3" json:"alive_state,omitempty"`                                             // 存活状态：0=未知，1=存活，2=战亡
-	RobotId                  uint32                 `protobuf:"varint,4,opt,name=robot_id,json=robotId,proto3" json:"robot_id,omitempty"`                                                      // 机器人编号
-	RobotType                uint32                 `protobuf:"varint,5,opt,name=robot_type,json=robotType,proto3" json:"robot_type,omitempty"`                                                // 机器人类型
-	PerformanceSystemShooter uint32                 `protobuf:"varint,6,opt,name=performance_system_shooter,json=performanceSystemShooter,proto3" json:"performance_system_shooter,omitempty"` // 性能体系-发射机构枚举值
-	PerformanceSystemChassis uint32                 `protobuf:"varint,7,opt,name=performance_system_chassis,json=performanceSystemChassis,proto3" json:"performance_system_chassis,omitempty"` // 性能体系-底盘枚举值
-	Level                    uint32                 `protobuf:"varint,8,opt,name=level,proto3" json:"level,omitempty"`                                                                         // 当前等级
-	MaxHealth                uint32                 `protobuf:"varint,9,opt,name=max_health,json=maxHealth,proto3" json:"max_health,omitempty"`                                                // 最大血量
-	MaxHeat                  uint32                 `protobuf:"varint,10,opt,name=max_heat,json=maxHeat,proto3" json:"max_heat,omitempty"`                                                     // 最大射击热量
-	HeatCooldownRate         float32                `protobuf:"fixed32,11,opt,name=heat_cooldown_rate,json=heatCooldownRate,proto3" json:"heat_cooldown_rate,omitempty"`                       // 热量冷却速率（单位：热量/秒）
-	MaxPower                 uint32                 `protobuf:"varint,12,opt,name=max_power,json=maxPower,proto3" json:"max_power,omitempty"`                                                  // 最大功率
-	MaxBufferEnergy          uint32                 `protobuf:"varint,13,opt,name=max_buffer_energy,json=maxBufferEnergy,proto3" json:"max_buffer_energy,omitempty"`                           // 最大缓冲能量
-	MaxChassisEnergy         uint32                 `protobuf:"varint,14,opt,name=max_chassis_energy,json=maxChassisEnergy,proto3" json:"max_chassis_energy,omitempty"`                        // 最大底盘能量
+	ConnectionState          *uint32                `protobuf:"varint,1,opt,name=connection_state,json=connectionState,proto3,oneof" json:"connection_state,omitempty"`                              // 连接状态（0=未连接, 1=已连接）
+	FieldState               *uint32                `protobuf:"varint,2,opt,name=field_state,json=fieldState,proto3,oneof" json:"field_state,omitempty"`                                             // 上场状态（0=已上场, 1=未上场）
+	AliveState               *uint32                `protobuf:"varint,3,opt,name=alive_state,json=aliveState,proto3,oneof" json:"alive_state,omitempty"`                                             // 存活状态（0=未知, 1=存活, 2=战亡）
+	RobotId                  *uint32                `protobuf:"varint,4,opt,name=robot_id,json=robotId,proto3,oneof" json:"robot_id,omitempty"`                                                      // 机器人编号
+	RobotType                *uint32                `protobuf:"varint,5,opt,name=robot_type,json=robotType,proto3,oneof" json:"robot_type,omitempty"`                                                // 机器人类型
+	PerformanceSystemShooter *uint32                `protobuf:"varint,6,opt,name=performance_system_shooter,json=performanceSystemShooter,proto3,oneof" json:"performance_system_shooter,omitempty"` // 性能体系-发射机构
+	PerformanceSystemChassis *uint32                `protobuf:"varint,7,opt,name=performance_system_chassis,json=performanceSystemChassis,proto3,oneof" json:"performance_system_chassis,omitempty"` // 性能体系-底盘
+	Level                    *uint32                `protobuf:"varint,8,opt,name=level,proto3,oneof" json:"level,omitempty"`                                                                         // 当前等级
+	MaxHealth                *uint32                `protobuf:"varint,9,opt,name=max_health,json=maxHealth,proto3,oneof" json:"max_health,omitempty"`                                                // 最大血量
+	MaxHeat                  *uint32                `protobuf:"varint,10,opt,name=max_heat,json=maxHeat,proto3,oneof" json:"max_heat,omitempty"`                                                     // 最大热量
+	HeatCooldownRate         *float32               `protobuf:"fixed32,11,opt,name=heat_cooldown_rate,json=heatCooldownRate,proto3,oneof" json:"heat_cooldown_rate,omitempty"`                       // 热量冷却速率（每秒）
+	MaxPower                 *uint32                `protobuf:"varint,12,opt,name=max_power,json=maxPower,proto3,oneof" json:"max_power,omitempty"`                                                  // 最大功率
+	MaxBufferEnergy          *uint32                `protobuf:"varint,13,opt,name=max_buffer_energy,json=maxBufferEnergy,proto3,oneof" json:"max_buffer_energy,omitempty"`                           // 最大缓冲能量
+	MaxChassisEnergy         *uint32                `protobuf:"varint,14,opt,name=max_chassis_energy,json=maxChassisEnergy,proto3,oneof" json:"max_chassis_energy,omitempty"`                        // 最大底盘能量
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
@@ -2468,99 +2395,99 @@ func (*RobotStaticStatus) Descriptor() ([]byte, []int) {
 }
 
 func (x *RobotStaticStatus) GetConnectionState() uint32 {
-	if x != nil {
-		return x.ConnectionState
+	if x != nil && x.ConnectionState != nil {
+		return *x.ConnectionState
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetFieldState() uint32 {
-	if x != nil {
-		return x.FieldState
+	if x != nil && x.FieldState != nil {
+		return *x.FieldState
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetAliveState() uint32 {
-	if x != nil {
-		return x.AliveState
+	if x != nil && x.AliveState != nil {
+		return *x.AliveState
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetRobotId() uint32 {
-	if x != nil {
-		return x.RobotId
+	if x != nil && x.RobotId != nil {
+		return *x.RobotId
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetRobotType() uint32 {
-	if x != nil {
-		return x.RobotType
+	if x != nil && x.RobotType != nil {
+		return *x.RobotType
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetPerformanceSystemShooter() uint32 {
-	if x != nil {
-		return x.PerformanceSystemShooter
+	if x != nil && x.PerformanceSystemShooter != nil {
+		return *x.PerformanceSystemShooter
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetPerformanceSystemChassis() uint32 {
-	if x != nil {
-		return x.PerformanceSystemChassis
+	if x != nil && x.PerformanceSystemChassis != nil {
+		return *x.PerformanceSystemChassis
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetLevel() uint32 {
-	if x != nil {
-		return x.Level
+	if x != nil && x.Level != nil {
+		return *x.Level
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetMaxHealth() uint32 {
-	if x != nil {
-		return x.MaxHealth
+	if x != nil && x.MaxHealth != nil {
+		return *x.MaxHealth
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetMaxHeat() uint32 {
-	if x != nil {
-		return x.MaxHeat
+	if x != nil && x.MaxHeat != nil {
+		return *x.MaxHeat
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetHeatCooldownRate() float32 {
-	if x != nil {
-		return x.HeatCooldownRate
+	if x != nil && x.HeatCooldownRate != nil {
+		return *x.HeatCooldownRate
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetMaxPower() uint32 {
-	if x != nil {
-		return x.MaxPower
+	if x != nil && x.MaxPower != nil {
+		return *x.MaxPower
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetMaxBufferEnergy() uint32 {
-	if x != nil {
-		return x.MaxBufferEnergy
+	if x != nil && x.MaxBufferEnergy != nil {
+		return *x.MaxBufferEnergy
 	}
 	return 0
 }
 
 func (x *RobotStaticStatus) GetMaxChassisEnergy() uint32 {
-	if x != nil {
-		return x.MaxChassisEnergy
+	if x != nil && x.MaxChassisEnergy != nil {
+		return *x.MaxChassisEnergy
 	}
 	return 0
 }
@@ -2570,19 +2497,19 @@ func (x *RobotStaticStatus) GetMaxChassisEnergy() uint32 {
 // 发送频率：10Hz
 type RobotDynamicStatus struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
-	CurrentHealth          uint32                 `protobuf:"varint,1,opt,name=current_health,json=currentHealth,proto3" json:"current_health,omitempty"`                                 // 当前血量（0~max_health）
-	CurrentHeat            float32                `protobuf:"fixed32,2,opt,name=current_heat,json=currentHeat,proto3" json:"current_heat,omitempty"`                                      // 当前射击热量（0~max_heat）
-	LastProjectileFireRate float32                `protobuf:"fixed32,3,opt,name=last_projectile_fire_rate,json=lastProjectileFireRate,proto3" json:"last_projectile_fire_rate,omitempty"` // 上一次弹丸射速（单位：Hz）
-	CurrentChassisEnergy   uint32                 `protobuf:"varint,4,opt,name=current_chassis_energy,json=currentChassisEnergy,proto3" json:"current_chassis_energy,omitempty"`          // 当前剩余底盘能量
-	CurrentBufferEnergy    uint32                 `protobuf:"varint,5,opt,name=current_buffer_energy,json=currentBufferEnergy,proto3" json:"current_buffer_energy,omitempty"`             // 当前缓冲能量
-	CurrentExperience      uint32                 `protobuf:"varint,6,opt,name=current_experience,json=currentExperience,proto3" json:"current_experience,omitempty"`                     // 当前经验值
-	ExperienceForUpgrade   uint32                 `protobuf:"varint,7,opt,name=experience_for_upgrade,json=experienceForUpgrade,proto3" json:"experience_for_upgrade,omitempty"`          // 距离下一次升级仍需获得的经验
-	TotalProjectilesFired  uint32                 `protobuf:"varint,8,opt,name=total_projectiles_fired,json=totalProjectilesFired,proto3" json:"total_projectiles_fired,omitempty"`       // 累计已发弹量
-	RemainingAmmo          uint32                 `protobuf:"varint,9,opt,name=remaining_ammo,json=remainingAmmo,proto3" json:"remaining_ammo,omitempty"`                                 // 剩余允许发弹量
-	IsOutOfCombat          bool                   `protobuf:"varint,10,opt,name=is_out_of_combat,json=isOutOfCombat,proto3" json:"is_out_of_combat,omitempty"`                            // 是否处于脱战状态
-	OutOfCombatCountdown   uint32                 `protobuf:"varint,11,opt,name=out_of_combat_countdown,json=outOfCombatCountdown,proto3" json:"out_of_combat_countdown,omitempty"`       // 脱战状态倒计时（单位：秒）
-	CanRemoteHeal          bool                   `protobuf:"varint,12,opt,name=can_remote_heal,json=canRemoteHeal,proto3" json:"can_remote_heal,omitempty"`                              // 是否可以远程补血
-	CanRemoteAmmo          bool                   `protobuf:"varint,13,opt,name=can_remote_ammo,json=canRemoteAmmo,proto3" json:"can_remote_ammo,omitempty"`                              // 是否可以远程补弹
+	CurrentHealth          *uint32                `protobuf:"varint,1,opt,name=current_health,json=currentHealth,proto3,oneof" json:"current_health,omitempty"`                                 // 当前血量
+	CurrentHeat            *float32               `protobuf:"fixed32,2,opt,name=current_heat,json=currentHeat,proto3,oneof" json:"current_heat,omitempty"`                                      // 当前热量
+	LastProjectileFireRate *float32               `protobuf:"fixed32,3,opt,name=last_projectile_fire_rate,json=lastProjectileFireRate,proto3,oneof" json:"last_projectile_fire_rate,omitempty"` // 上一次弹丸射速
+	CurrentChassisEnergy   *uint32                `protobuf:"varint,4,opt,name=current_chassis_energy,json=currentChassisEnergy,proto3,oneof" json:"current_chassis_energy,omitempty"`          // 当前剩余底盘能量
+	CurrentBufferEnergy    *uint32                `protobuf:"varint,5,opt,name=current_buffer_energy,json=currentBufferEnergy,proto3,oneof" json:"current_buffer_energy,omitempty"`             // 当前缓冲能量
+	CurrentExperience      *uint32                `protobuf:"varint,6,opt,name=current_experience,json=currentExperience,proto3,oneof" json:"current_experience,omitempty"`                     // 当前经验值
+	ExperienceForUpgrade   *uint32                `protobuf:"varint,7,opt,name=experience_for_upgrade,json=experienceForUpgrade,proto3,oneof" json:"experience_for_upgrade,omitempty"`          // 距离下一次升级仍需获得的经验
+	TotalProjectilesFired  *uint32                `protobuf:"varint,8,opt,name=total_projectiles_fired,json=totalProjectilesFired,proto3,oneof" json:"total_projectiles_fired,omitempty"`       // 累计已发弹量
+	RemainingAmmo          *uint32                `protobuf:"varint,9,opt,name=remaining_ammo,json=remainingAmmo,proto3,oneof" json:"remaining_ammo,omitempty"`                                 // 剩余允许发弹量
+	IsOutOfCombat          *bool                  `protobuf:"varint,10,opt,name=is_out_of_combat,json=isOutOfCombat,proto3,oneof" json:"is_out_of_combat,omitempty"`                            // 是否处于脱战状态
+	OutOfCombatCountdown   *uint32                `protobuf:"varint,11,opt,name=out_of_combat_countdown,json=outOfCombatCountdown,proto3,oneof" json:"out_of_combat_countdown,omitempty"`       // 脱战状态倒计时
+	CanRemoteHeal          *bool                  `protobuf:"varint,12,opt,name=can_remote_heal,json=canRemoteHeal,proto3,oneof" json:"can_remote_heal,omitempty"`                              // 是否可以远程补血
+	CanRemoteAmmo          *bool                  `protobuf:"varint,13,opt,name=can_remote_ammo,json=canRemoteAmmo,proto3,oneof" json:"can_remote_ammo,omitempty"`                              // 是否可以远程补弹
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -2618,92 +2545,92 @@ func (*RobotDynamicStatus) Descriptor() ([]byte, []int) {
 }
 
 func (x *RobotDynamicStatus) GetCurrentHealth() uint32 {
-	if x != nil {
-		return x.CurrentHealth
+	if x != nil && x.CurrentHealth != nil {
+		return *x.CurrentHealth
 	}
 	return 0
 }
 
 func (x *RobotDynamicStatus) GetCurrentHeat() float32 {
-	if x != nil {
-		return x.CurrentHeat
+	if x != nil && x.CurrentHeat != nil {
+		return *x.CurrentHeat
 	}
 	return 0
 }
 
 func (x *RobotDynamicStatus) GetLastProjectileFireRate() float32 {
-	if x != nil {
-		return x.LastProjectileFireRate
+	if x != nil && x.LastProjectileFireRate != nil {
+		return *x.LastProjectileFireRate
 	}
 	return 0
 }
 
 func (x *RobotDynamicStatus) GetCurrentChassisEnergy() uint32 {
-	if x != nil {
-		return x.CurrentChassisEnergy
+	if x != nil && x.CurrentChassisEnergy != nil {
+		return *x.CurrentChassisEnergy
 	}
 	return 0
 }
 
 func (x *RobotDynamicStatus) GetCurrentBufferEnergy() uint32 {
-	if x != nil {
-		return x.CurrentBufferEnergy
+	if x != nil && x.CurrentBufferEnergy != nil {
+		return *x.CurrentBufferEnergy
 	}
 	return 0
 }
 
 func (x *RobotDynamicStatus) GetCurrentExperience() uint32 {
-	if x != nil {
-		return x.CurrentExperience
+	if x != nil && x.CurrentExperience != nil {
+		return *x.CurrentExperience
 	}
 	return 0
 }
 
 func (x *RobotDynamicStatus) GetExperienceForUpgrade() uint32 {
-	if x != nil {
-		return x.ExperienceForUpgrade
+	if x != nil && x.ExperienceForUpgrade != nil {
+		return *x.ExperienceForUpgrade
 	}
 	return 0
 }
 
 func (x *RobotDynamicStatus) GetTotalProjectilesFired() uint32 {
-	if x != nil {
-		return x.TotalProjectilesFired
+	if x != nil && x.TotalProjectilesFired != nil {
+		return *x.TotalProjectilesFired
 	}
 	return 0
 }
 
 func (x *RobotDynamicStatus) GetRemainingAmmo() uint32 {
-	if x != nil {
-		return x.RemainingAmmo
+	if x != nil && x.RemainingAmmo != nil {
+		return *x.RemainingAmmo
 	}
 	return 0
 }
 
 func (x *RobotDynamicStatus) GetIsOutOfCombat() bool {
-	if x != nil {
-		return x.IsOutOfCombat
+	if x != nil && x.IsOutOfCombat != nil {
+		return *x.IsOutOfCombat
 	}
 	return false
 }
 
 func (x *RobotDynamicStatus) GetOutOfCombatCountdown() uint32 {
-	if x != nil {
-		return x.OutOfCombatCountdown
+	if x != nil && x.OutOfCombatCountdown != nil {
+		return *x.OutOfCombatCountdown
 	}
 	return 0
 }
 
 func (x *RobotDynamicStatus) GetCanRemoteHeal() bool {
-	if x != nil {
-		return x.CanRemoteHeal
+	if x != nil && x.CanRemoteHeal != nil {
+		return *x.CanRemoteHeal
 	}
 	return false
 }
 
 func (x *RobotDynamicStatus) GetCanRemoteAmmo() bool {
-	if x != nil {
-		return x.CanRemoteAmmo
+	if x != nil && x.CanRemoteAmmo != nil {
+		return *x.CanRemoteAmmo
 	}
 	return false
 }
@@ -2714,17 +2641,17 @@ func (x *RobotDynamicStatus) GetCanRemoteAmmo() bool {
 type RobotModuleStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// 模块状态通用定义：0=离线，1=在线，2=因安装不规范被视为离线
-	PowerManager         uint32 `protobuf:"varint,1,opt,name=power_manager,json=powerManager,proto3" json:"power_manager,omitempty"`                            // 电源管理模块状态
-	Rfid                 uint32 `protobuf:"varint,2,opt,name=rfid,proto3" json:"rfid,omitempty"`                                                                // RFID模块状态
-	LightStrip           uint32 `protobuf:"varint,3,opt,name=light_strip,json=lightStrip,proto3" json:"light_strip,omitempty"`                                  // 灯条模块状态
-	SmallShooter         uint32 `protobuf:"varint,4,opt,name=small_shooter,json=smallShooter,proto3" json:"small_shooter,omitempty"`                            // 17mm发射机构状态
-	BigShooter           uint32 `protobuf:"varint,5,opt,name=big_shooter,json=bigShooter,proto3" json:"big_shooter,omitempty"`                                  // 42mm发射机构状态
-	Uwb                  uint32 `protobuf:"varint,6,opt,name=uwb,proto3" json:"uwb,omitempty"`                                                                  // 定位模块（UWB）状态
-	Armor                uint32 `protobuf:"varint,7,opt,name=armor,proto3" json:"armor,omitempty"`                                                              // 装甲模块状态
-	VideoTransmission    uint32 `protobuf:"varint,8,opt,name=video_transmission,json=videoTransmission,proto3" json:"video_transmission,omitempty"`             // 图传模块状态
-	Capacitor            uint32 `protobuf:"varint,9,opt,name=capacitor,proto3" json:"capacitor,omitempty"`                                                      // 电容模块状态
-	MainController       uint32 `protobuf:"varint,10,opt,name=main_controller,json=mainController,proto3" json:"main_controller,omitempty"`                     // 主控状态
-	LaserDetectionModule uint32 `protobuf:"varint,11,opt,name=laser_detection_module,json=laserDetectionModule,proto3" json:"laser_detection_module,omitempty"` // 激光检测模块状态
+	PowerManager         *uint32 `protobuf:"varint,1,opt,name=power_manager,json=powerManager,proto3,oneof" json:"power_manager,omitempty"`                            // 电源管理模块状态
+	Rfid                 *uint32 `protobuf:"varint,2,opt,name=rfid,proto3,oneof" json:"rfid,omitempty"`                                                                // RFID 模块状态
+	LightStrip           *uint32 `protobuf:"varint,3,opt,name=light_strip,json=lightStrip,proto3,oneof" json:"light_strip,omitempty"`                                  // 灯条模块状态
+	SmallShooter         *uint32 `protobuf:"varint,4,opt,name=small_shooter,json=smallShooter,proto3,oneof" json:"small_shooter,omitempty"`                            // 17mm 发射机构状态
+	BigShooter           *uint32 `protobuf:"varint,5,opt,name=big_shooter,json=bigShooter,proto3,oneof" json:"big_shooter,omitempty"`                                  // 42mm 发射机构状态
+	Uwb                  *uint32 `protobuf:"varint,6,opt,name=uwb,proto3,oneof" json:"uwb,omitempty"`                                                                  // 定位模块状态
+	Armor                *uint32 `protobuf:"varint,7,opt,name=armor,proto3,oneof" json:"armor,omitempty"`                                                              // 装甲模块状态
+	VideoTransmission    *uint32 `protobuf:"varint,8,opt,name=video_transmission,json=videoTransmission,proto3,oneof" json:"video_transmission,omitempty"`             // 图传模块状态
+	Capacitor            *uint32 `protobuf:"varint,9,opt,name=capacitor,proto3,oneof" json:"capacitor,omitempty"`                                                      // 电容模块状态
+	MainController       *uint32 `protobuf:"varint,10,opt,name=main_controller,json=mainController,proto3,oneof" json:"main_controller,omitempty"`                     // 主控状态
+	LaserDetectionModule *uint32 `protobuf:"varint,11,opt,name=laser_detection_module,json=laserDetectionModule,proto3,oneof" json:"laser_detection_module,omitempty"` // 激光检测模块状态
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -2760,78 +2687,78 @@ func (*RobotModuleStatus) Descriptor() ([]byte, []int) {
 }
 
 func (x *RobotModuleStatus) GetPowerManager() uint32 {
-	if x != nil {
-		return x.PowerManager
+	if x != nil && x.PowerManager != nil {
+		return *x.PowerManager
 	}
 	return 0
 }
 
 func (x *RobotModuleStatus) GetRfid() uint32 {
-	if x != nil {
-		return x.Rfid
+	if x != nil && x.Rfid != nil {
+		return *x.Rfid
 	}
 	return 0
 }
 
 func (x *RobotModuleStatus) GetLightStrip() uint32 {
-	if x != nil {
-		return x.LightStrip
+	if x != nil && x.LightStrip != nil {
+		return *x.LightStrip
 	}
 	return 0
 }
 
 func (x *RobotModuleStatus) GetSmallShooter() uint32 {
-	if x != nil {
-		return x.SmallShooter
+	if x != nil && x.SmallShooter != nil {
+		return *x.SmallShooter
 	}
 	return 0
 }
 
 func (x *RobotModuleStatus) GetBigShooter() uint32 {
-	if x != nil {
-		return x.BigShooter
+	if x != nil && x.BigShooter != nil {
+		return *x.BigShooter
 	}
 	return 0
 }
 
 func (x *RobotModuleStatus) GetUwb() uint32 {
-	if x != nil {
-		return x.Uwb
+	if x != nil && x.Uwb != nil {
+		return *x.Uwb
 	}
 	return 0
 }
 
 func (x *RobotModuleStatus) GetArmor() uint32 {
-	if x != nil {
-		return x.Armor
+	if x != nil && x.Armor != nil {
+		return *x.Armor
 	}
 	return 0
 }
 
 func (x *RobotModuleStatus) GetVideoTransmission() uint32 {
-	if x != nil {
-		return x.VideoTransmission
+	if x != nil && x.VideoTransmission != nil {
+		return *x.VideoTransmission
 	}
 	return 0
 }
 
 func (x *RobotModuleStatus) GetCapacitor() uint32 {
-	if x != nil {
-		return x.Capacitor
+	if x != nil && x.Capacitor != nil {
+		return *x.Capacitor
 	}
 	return 0
 }
 
 func (x *RobotModuleStatus) GetMainController() uint32 {
-	if x != nil {
-		return x.MainController
+	if x != nil && x.MainController != nil {
+		return *x.MainController
 	}
 	return 0
 }
 
 func (x *RobotModuleStatus) GetLaserDetectionModule() uint32 {
-	if x != nil {
-		return x.LaserDetectionModule
+	if x != nil && x.LaserDetectionModule != nil {
+		return *x.LaserDetectionModule
 	}
 	return 0
 }
@@ -2841,10 +2768,11 @@ func (x *RobotModuleStatus) GetLaserDetectionModule() uint32 {
 // 发送频率：1Hz
 type RobotPosition struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	X             float32                `protobuf:"fixed32,1,opt,name=x,proto3" json:"x,omitempty"`     // 世界坐标X轴
-	Y             float32                `protobuf:"fixed32,2,opt,name=y,proto3" json:"y,omitempty"`     // 世界坐标Y轴
-	Z             float32                `protobuf:"fixed32,3,opt,name=z,proto3" json:"z,omitempty"`     // 世界坐标Z轴
-	Yaw           float32                `protobuf:"fixed32,4,opt,name=yaw,proto3" json:"yaw,omitempty"` // 本机器人测速模块的朝向，单位：度，正北为 0 度
+	X             *float32               `protobuf:"fixed32,1,opt,name=x,proto3,oneof" json:"x,omitempty"`                           // 世界坐标 X 轴
+	Y             *float32               `protobuf:"fixed32,2,opt,name=y,proto3,oneof" json:"y,omitempty"`                           // 世界坐标 Y 轴
+	Z             *float32               `protobuf:"fixed32,3,opt,name=z,proto3,oneof" json:"z,omitempty"`                           // 世界坐标 Z 轴
+	Yaw           *float32               `protobuf:"fixed32,4,opt,name=yaw,proto3,oneof" json:"yaw,omitempty"`                       // 本机器人测速模块的朝向，单位：度，正北为 0 度
+	RobotId       *uint32                `protobuf:"varint,5,opt,name=robot_id,json=robotId,proto3,oneof" json:"robot_id,omitempty"` // 接受到的坐标归属机器人（6/106 为空中，7/107 为哨兵）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2880,29 +2808,36 @@ func (*RobotPosition) Descriptor() ([]byte, []int) {
 }
 
 func (x *RobotPosition) GetX() float32 {
-	if x != nil {
-		return x.X
+	if x != nil && x.X != nil {
+		return *x.X
 	}
 	return 0
 }
 
 func (x *RobotPosition) GetY() float32 {
-	if x != nil {
-		return x.Y
+	if x != nil && x.Y != nil {
+		return *x.Y
 	}
 	return 0
 }
 
 func (x *RobotPosition) GetZ() float32 {
-	if x != nil {
-		return x.Z
+	if x != nil && x.Z != nil {
+		return *x.Z
 	}
 	return 0
 }
 
 func (x *RobotPosition) GetYaw() float32 {
-	if x != nil {
-		return x.Yaw
+	if x != nil && x.Yaw != nil {
+		return *x.Yaw
+	}
+	return 0
+}
+
+func (x *RobotPosition) GetRobotId() uint32 {
+	if x != nil && x.RobotId != nil {
+		return *x.RobotId
 	}
 	return 0
 }
@@ -2912,12 +2847,11 @@ func (x *RobotPosition) GetYaw() float32 {
 // 发送频率：获得增益时触发，此后1Hz直到失去增益
 type Buff struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RobotId       uint32                 `protobuf:"varint,1,opt,name=robot_id,json=robotId,proto3" json:"robot_id,omitempty"`                  // 享有Buff的机器人ID
-	BuffType      uint32                 `protobuf:"varint,2,opt,name=buff_type,json=buffType,proto3" json:"buff_type,omitempty"`               // Buff类型
-	BuffLevel     int32                  `protobuf:"varint,3,opt,name=buff_level,json=buffLevel,proto3" json:"buff_level,omitempty"`            // Buff增益值
-	BuffMaxTime   uint32                 `protobuf:"varint,4,opt,name=buff_max_time,json=buffMaxTime,proto3" json:"buff_max_time,omitempty"`    // Buff最大持续时间（秒）
-	BuffLeftTime  uint32                 `protobuf:"varint,5,opt,name=buff_left_time,json=buffLeftTime,proto3" json:"buff_left_time,omitempty"` // Buff剩余时间（秒）
-	MsgParams     string                 `protobuf:"bytes,6,opt,name=msg_params,json=msgParams,proto3" json:"msg_params,omitempty"`             // 额外文字参数
+	RobotId       *uint32                `protobuf:"varint,1,opt,name=robot_id,json=robotId,proto3,oneof" json:"robot_id,omitempty"`                  // 机器人 ID
+	BuffType      *uint32                `protobuf:"varint,2,opt,name=buff_type,json=buffType,proto3,oneof" json:"buff_type,omitempty"`               // Buff 类型
+	BuffLevel     *int32                 `protobuf:"varint,3,opt,name=buff_level,json=buffLevel,proto3,oneof" json:"buff_level,omitempty"`            // Buff 增益值 (百分比或直接值)
+	BuffMaxTime   *uint32                `protobuf:"varint,4,opt,name=buff_max_time,json=buffMaxTime,proto3,oneof" json:"buff_max_time,omitempty"`    // Buff 最大剩余时间
+	BuffLeftTime  *uint32                `protobuf:"varint,5,opt,name=buff_left_time,json=buffLeftTime,proto3,oneof" json:"buff_left_time,omitempty"` // Buff 剩余时间
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2953,45 +2887,38 @@ func (*Buff) Descriptor() ([]byte, []int) {
 }
 
 func (x *Buff) GetRobotId() uint32 {
-	if x != nil {
-		return x.RobotId
+	if x != nil && x.RobotId != nil {
+		return *x.RobotId
 	}
 	return 0
 }
 
 func (x *Buff) GetBuffType() uint32 {
-	if x != nil {
-		return x.BuffType
+	if x != nil && x.BuffType != nil {
+		return *x.BuffType
 	}
 	return 0
 }
 
 func (x *Buff) GetBuffLevel() int32 {
-	if x != nil {
-		return x.BuffLevel
+	if x != nil && x.BuffLevel != nil {
+		return *x.BuffLevel
 	}
 	return 0
 }
 
 func (x *Buff) GetBuffMaxTime() uint32 {
-	if x != nil {
-		return x.BuffMaxTime
+	if x != nil && x.BuffMaxTime != nil {
+		return *x.BuffMaxTime
 	}
 	return 0
 }
 
 func (x *Buff) GetBuffLeftTime() uint32 {
-	if x != nil {
-		return x.BuffLeftTime
+	if x != nil && x.BuffLeftTime != nil {
+		return *x.BuffLeftTime
 	}
 	return 0
-}
-
-func (x *Buff) GetMsgParams() string {
-	if x != nil {
-		return x.MsgParams
-	}
-	return ""
 }
 
 // 判罚信息同步
@@ -2999,9 +2926,9 @@ func (x *Buff) GetMsgParams() string {
 // 发送频率：触发式发送
 type PenaltyInfo struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
-	PenaltyType      uint32                 `protobuf:"varint,1,opt,name=penalty_type,json=penaltyType,proto3" json:"penalty_type,omitempty"`                  // 当前受罚类型
-	PenaltyEffectSec uint32                 `protobuf:"varint,2,opt,name=penalty_effect_sec,json=penaltyEffectSec,proto3" json:"penalty_effect_sec,omitempty"` // 当前受罚效果时长（秒）
-	TotalPenaltyNum  uint32                 `protobuf:"varint,3,opt,name=total_penalty_num,json=totalPenaltyNum,proto3" json:"total_penalty_num,omitempty"`    // 当前判罚数量
+	PenaltyType      *uint32                `protobuf:"varint,1,opt,name=penalty_type,json=penaltyType,proto3,oneof" json:"penalty_type,omitempty"`                  // 当前受罚类型
+	PenaltyEffectSec *uint32                `protobuf:"varint,2,opt,name=penalty_effect_sec,json=penaltyEffectSec,proto3,oneof" json:"penalty_effect_sec,omitempty"` // 当前受罚效果时长（秒）
+	TotalPenaltyNum  *uint32                `protobuf:"varint,3,opt,name=total_penalty_num,json=totalPenaltyNum,proto3,oneof" json:"total_penalty_num,omitempty"`    // 当前判罚数量
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -3037,37 +2964,37 @@ func (*PenaltyInfo) Descriptor() ([]byte, []int) {
 }
 
 func (x *PenaltyInfo) GetPenaltyType() uint32 {
-	if x != nil {
-		return x.PenaltyType
+	if x != nil && x.PenaltyType != nil {
+		return *x.PenaltyType
 	}
 	return 0
 }
 
 func (x *PenaltyInfo) GetPenaltyEffectSec() uint32 {
-	if x != nil {
-		return x.PenaltyEffectSec
+	if x != nil && x.PenaltyEffectSec != nil {
+		return *x.PenaltyEffectSec
 	}
 	return 0
 }
 
 func (x *PenaltyInfo) GetTotalPenaltyNum() uint32 {
-	if x != nil {
-		return x.TotalPenaltyNum
+	if x != nil && x.TotalPenaltyNum != nil {
+		return *x.TotalPenaltyNum
 	}
 	return 0
 }
 
 // 哨兵轨迹规划信息
 // 服务器→自定义客户端
-// 发送频率：1Hz
+// 发送频率：触发式发送
 type RobotPathPlanInfo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Intention     uint32                 `protobuf:"varint,1,opt,name=intention,proto3" json:"intention,omitempty"`                    // 哨兵意图
-	StartPosX     uint32                 `protobuf:"varint,2,opt,name=start_pos_x,json=startPosX,proto3" json:"start_pos_x,omitempty"` // 起始点 X 坐标（分米）
-	StartPosY     uint32                 `protobuf:"varint,3,opt,name=start_pos_y,json=startPosY,proto3" json:"start_pos_y,omitempty"` // 起始点 Y 坐标（分米）
-	OffsetX       []int32                `protobuf:"varint,4,rep,packed,name=offset_x,json=offsetX,proto3" json:"offset_x,omitempty"`  // 相对起始点 X 增量数组
-	OffsetY       []int32                `protobuf:"varint,5,rep,packed,name=offset_y,json=offsetY,proto3" json:"offset_y,omitempty"`  // 相对起始点 Y 增量数组
-	SenderId      uint32                 `protobuf:"varint,6,opt,name=sender_id,json=senderId,proto3" json:"sender_id,omitempty"`      // 发送者 ID
+	Intention     *uint32                `protobuf:"varint,1,opt,name=intention,proto3,oneof" json:"intention,omitempty"`                    // 哨兵意图
+	StartPosX     *uint32                `protobuf:"varint,2,opt,name=start_pos_x,json=startPosX,proto3,oneof" json:"start_pos_x,omitempty"` // 起始点 X 坐标（分米）
+	StartPosY     *uint32                `protobuf:"varint,3,opt,name=start_pos_y,json=startPosY,proto3,oneof" json:"start_pos_y,omitempty"` // 起始点 Y 坐标（分米）
+	OffsetX       []int32                `protobuf:"varint,4,rep,packed,name=offset_x,json=offsetX,proto3" json:"offset_x,omitempty"`        // 相对起始点 X 增量数组（-128~+127, 长度 49）
+	OffsetY       []int32                `protobuf:"varint,5,rep,packed,name=offset_y,json=offsetY,proto3" json:"offset_y,omitempty"`        // 相对起始点 Y 增量数组（-128~+127, 长度 49）
+	SenderId      *uint32                `protobuf:"varint,6,opt,name=sender_id,json=senderId,proto3,oneof" json:"sender_id,omitempty"`      // 发送者 ID
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3103,22 +3030,22 @@ func (*RobotPathPlanInfo) Descriptor() ([]byte, []int) {
 }
 
 func (x *RobotPathPlanInfo) GetIntention() uint32 {
-	if x != nil {
-		return x.Intention
+	if x != nil && x.Intention != nil {
+		return *x.Intention
 	}
 	return 0
 }
 
 func (x *RobotPathPlanInfo) GetStartPosX() uint32 {
-	if x != nil {
-		return x.StartPosX
+	if x != nil && x.StartPosX != nil {
+		return *x.StartPosX
 	}
 	return 0
 }
 
 func (x *RobotPathPlanInfo) GetStartPosY() uint32 {
-	if x != nil {
-		return x.StartPosY
+	if x != nil && x.StartPosY != nil {
+		return *x.StartPosY
 	}
 	return 0
 }
@@ -3138,27 +3065,25 @@ func (x *RobotPathPlanInfo) GetOffsetY() []int32 {
 }
 
 func (x *RobotPathPlanInfo) GetSenderId() uint32 {
-	if x != nil {
-		return x.SenderId
+	if x != nil && x.SenderId != nil {
+		return *x.SenderId
 	}
 	return 0
 }
 
 // 云台手地图点击标记
-// 自定义客户端→服务器
+// 自定义客户端→服务器 ; 服务器→自定义客户端
 // 发送频率：触发式发送
 type MapClickInfoNotify struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsSendAll     uint32                 `protobuf:"varint,1,opt,name=is_send_all,json=isSendAll,proto3" json:"is_send_all,omitempty"` // 发送范围
-	RobotId       []byte                 `protobuf:"bytes,2,opt,name=robot_id,json=robotId,proto3" json:"robot_id,omitempty"`          // 目标机器人ID列表
-	Mode          uint32                 `protobuf:"varint,3,opt,name=mode,proto3" json:"mode,omitempty"`                              // 标记类型
-	EnemyId       uint32                 `protobuf:"varint,4,opt,name=enemy_id,json=enemyId,proto3" json:"enemy_id,omitempty"`         // 标定的对方ID
-	Ascii         uint32                 `protobuf:"varint,5,opt,name=ascii,proto3" json:"ascii,omitempty"`                            // 自定义图标ASCII码
-	Type          uint32                 `protobuf:"varint,6,opt,name=type,proto3" json:"type,omitempty"`                              // 标记模式
-	ScreenX       uint32                 `protobuf:"varint,7,opt,name=screen_x,json=screenX,proto3" json:"screen_x,omitempty"`         // 屏幕坐标X（像素）
-	ScreenY       uint32                 `protobuf:"varint,8,opt,name=screen_y,json=screenY,proto3" json:"screen_y,omitempty"`         // 屏幕坐标Y（像素）
-	MapX          float32                `protobuf:"fixed32,9,opt,name=map_x,json=mapX,proto3" json:"map_x,omitempty"`                 // 地图坐标X
-	MapY          float32                `protobuf:"fixed32,10,opt,name=map_y,json=mapY,proto3" json:"map_y,omitempty"`                // 地图坐标Y
+	IsSendAll     *uint32                `protobuf:"varint,1,opt,name=is_send_all,json=isSendAll,proto3,oneof" json:"is_send_all,omitempty"` // 发送范围
+	RobotId       []byte                 `protobuf:"bytes,2,opt,name=robot_id,json=robotId,proto3,oneof" json:"robot_id,omitempty"`          // 目标机器人 ID 列表
+	Mode          *uint32                `protobuf:"varint,3,opt,name=mode,proto3,oneof" json:"mode,omitempty"`                              // 标记类型
+	EnemyId       *uint32                `protobuf:"varint,4,opt,name=enemy_id,json=enemyId,proto3,oneof" json:"enemy_id,omitempty"`         // 标定的对方 ID
+	Ascii         *uint32                `protobuf:"varint,5,opt,name=ascii,proto3,oneof" json:"ascii,omitempty"`                            // 自定义图标 ASCII 码
+	Type          *uint32                `protobuf:"varint,6,opt,name=type,proto3,oneof" json:"type,omitempty"`                              // 标记模式
+	MapX          *float32               `protobuf:"fixed32,7,opt,name=map_x,json=mapX,proto3,oneof" json:"map_x,omitempty"`                 // 地图坐标 X
+	MapY          *float32               `protobuf:"fixed32,8,opt,name=map_y,json=mapY,proto3,oneof" json:"map_y,omitempty"`                 // 地图坐标 Y
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3194,8 +3119,8 @@ func (*MapClickInfoNotify) Descriptor() ([]byte, []int) {
 }
 
 func (x *MapClickInfoNotify) GetIsSendAll() uint32 {
-	if x != nil {
-		return x.IsSendAll
+	if x != nil && x.IsSendAll != nil {
+		return *x.IsSendAll
 	}
 	return 0
 }
@@ -3208,73 +3133,55 @@ func (x *MapClickInfoNotify) GetRobotId() []byte {
 }
 
 func (x *MapClickInfoNotify) GetMode() uint32 {
-	if x != nil {
-		return x.Mode
+	if x != nil && x.Mode != nil {
+		return *x.Mode
 	}
 	return 0
 }
 
 func (x *MapClickInfoNotify) GetEnemyId() uint32 {
-	if x != nil {
-		return x.EnemyId
+	if x != nil && x.EnemyId != nil {
+		return *x.EnemyId
 	}
 	return 0
 }
 
 func (x *MapClickInfoNotify) GetAscii() uint32 {
-	if x != nil {
-		return x.Ascii
+	if x != nil && x.Ascii != nil {
+		return *x.Ascii
 	}
 	return 0
 }
 
 func (x *MapClickInfoNotify) GetType() uint32 {
-	if x != nil {
-		return x.Type
-	}
-	return 0
-}
-
-func (x *MapClickInfoNotify) GetScreenX() uint32 {
-	if x != nil {
-		return x.ScreenX
-	}
-	return 0
-}
-
-func (x *MapClickInfoNotify) GetScreenY() uint32 {
-	if x != nil {
-		return x.ScreenY
+	if x != nil && x.Type != nil {
+		return *x.Type
 	}
 	return 0
 }
 
 func (x *MapClickInfoNotify) GetMapX() float32 {
-	if x != nil {
-		return x.MapX
+	if x != nil && x.MapX != nil {
+		return *x.MapX
 	}
 	return 0
 }
 
 func (x *MapClickInfoNotify) GetMapY() float32 {
-	if x != nil {
-		return x.MapY
+	if x != nil && x.MapY != nil {
+		return *x.MapY
 	}
 	return 0
 }
 
 // 雷达发送的机器人位置信息
 // 服务器→自定义客户端
-// 发送频率：1Hz
+// 发送频率：触发式发送
 type RadarInfoToClient struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TargetRobotId uint32                 `protobuf:"varint,1,opt,name=target_robot_id,json=targetRobotId,proto3" json:"target_robot_id,omitempty"` // 目标机器人 ID
-	TargetPosX    float32                `protobuf:"fixed32,2,opt,name=target_pos_x,json=targetPosX,proto3" json:"target_pos_x,omitempty"`         // 目标位置 X（米）
-	TargetPosY    float32                `protobuf:"fixed32,3,opt,name=target_pos_y,json=targetPosY,proto3" json:"target_pos_y,omitempty"`         // 目标位置 Y（米）
-	TorwardAngle  float32                `protobuf:"fixed32,4,opt,name=torward_angle,json=torwardAngle,proto3" json:"torward_angle,omitempty"`     // 目标朝向角度
-	IsHighLight   uint32                 `protobuf:"varint,5,opt,name=is_high_light,json=isHighLight,proto3" json:"is_high_light,omitempty"`       // 是否特殊标识（0=否；1=是；2=是，但目标机器人此时定位模块为离线状态）
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                protoimpl.MessageState  `protogen:"open.v1"`
+	RadarSingleRobotInfo []*RadarSingleRobotInfo `protobuf:"bytes,1,rep,name=RadarSingleRobotInfo,proto3" json:"RadarSingleRobotInfo,omitempty"` // 包含所有机器人位置信息的数组
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *RadarInfoToClient) Reset() {
@@ -3307,37 +3214,69 @@ func (*RadarInfoToClient) Descriptor() ([]byte, []int) {
 	return file_client_client_proto_rawDescGZIP(), []int{17}
 }
 
-func (x *RadarInfoToClient) GetTargetRobotId() uint32 {
+func (x *RadarInfoToClient) GetRadarSingleRobotInfo() []*RadarSingleRobotInfo {
 	if x != nil {
-		return x.TargetRobotId
+		return x.RadarSingleRobotInfo
+	}
+	return nil
+}
+
+type RadarSingleRobotInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TargetPosX    *uint32                `protobuf:"varint,1,opt,name=target_pos_x,json=targetPosX,proto3,oneof" json:"target_pos_x,omitempty"`    // 机器人位置 x（cm）
+	TargetPosY    *uint32                `protobuf:"varint,2,opt,name=target_pos_y,json=targetPosY,proto3,oneof" json:"target_pos_y,omitempty"`    // 机器人位置 y（cm）
+	IsHighLight   *uint32                `protobuf:"varint,3,opt,name=is_high_light,json=isHighLight,proto3,oneof" json:"is_high_light,omitempty"` // 机器人是否特殊标识（0=否；1=是；2=是，但目标机器人定位离线）
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RadarSingleRobotInfo) Reset() {
+	*x = RadarSingleRobotInfo{}
+	mi := &file_client_client_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RadarSingleRobotInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RadarSingleRobotInfo) ProtoMessage() {}
+
+func (x *RadarSingleRobotInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_client_client_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RadarSingleRobotInfo.ProtoReflect.Descriptor instead.
+func (*RadarSingleRobotInfo) Descriptor() ([]byte, []int) {
+	return file_client_client_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *RadarSingleRobotInfo) GetTargetPosX() uint32 {
+	if x != nil && x.TargetPosX != nil {
+		return *x.TargetPosX
 	}
 	return 0
 }
 
-func (x *RadarInfoToClient) GetTargetPosX() float32 {
-	if x != nil {
-		return x.TargetPosX
+func (x *RadarSingleRobotInfo) GetTargetPosY() uint32 {
+	if x != nil && x.TargetPosY != nil {
+		return *x.TargetPosY
 	}
 	return 0
 }
 
-func (x *RadarInfoToClient) GetTargetPosY() float32 {
-	if x != nil {
-		return x.TargetPosY
-	}
-	return 0
-}
-
-func (x *RadarInfoToClient) GetTorwardAngle() float32 {
-	if x != nil {
-		return x.TorwardAngle
-	}
-	return 0
-}
-
-func (x *RadarInfoToClient) GetIsHighLight() uint32 {
-	if x != nil {
-		return x.IsHighLight
+func (x *RadarSingleRobotInfo) GetIsHighLight() uint32 {
+	if x != nil && x.IsHighLight != nil {
+		return *x.IsHighLight
 	}
 	return 0
 }
@@ -3347,14 +3286,14 @@ func (x *RadarInfoToClient) GetIsHighLight() uint32 {
 // 发送频率：50Hz
 type CustomByteBlock struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Data          []byte                 `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"` // 最大为 2.4 kbit 的自定义数据包
+	Data          []byte                 `protobuf:"bytes,1,opt,name=data,proto3,oneof" json:"data,omitempty"` // 最大为 2.4 kbit 的自定义数据包
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CustomByteBlock) Reset() {
 	*x = CustomByteBlock{}
-	mi := &file_client_client_proto_msgTypes[18]
+	mi := &file_client_client_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3366,7 +3305,7 @@ func (x *CustomByteBlock) String() string {
 func (*CustomByteBlock) ProtoMessage() {}
 
 func (x *CustomByteBlock) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[18]
+	mi := &file_client_client_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3379,7 +3318,7 @@ func (x *CustomByteBlock) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomByteBlock.ProtoReflect.Descriptor instead.
 func (*CustomByteBlock) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{18}
+	return file_client_client_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *CustomByteBlock) GetData() []byte {
@@ -3391,18 +3330,18 @@ func (x *CustomByteBlock) GetData() []byte {
 
 // 工程装配指令
 // 自定义客户端→服务器
-// 发送频率：1Hz
+// 发送频率：触发式发送，最高 10Hz
 type AssemblyCommand struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Operation     uint32                 `protobuf:"varint,1,opt,name=operation,proto3" json:"operation,omitempty"`   // 装配操作类型
-	Difficulty    uint32                 `protobuf:"varint,2,opt,name=difficulty,proto3" json:"difficulty,omitempty"` // 选中的装配难度
+	Operation     *uint32                `protobuf:"varint,1,opt,name=operation,proto3,oneof" json:"operation,omitempty"`   // 装配操作类型
+	Difficulty    *uint32                `protobuf:"varint,2,opt,name=difficulty,proto3,oneof" json:"difficulty,omitempty"` // 选中的装配难度
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AssemblyCommand) Reset() {
 	*x = AssemblyCommand{}
-	mi := &file_client_client_proto_msgTypes[19]
+	mi := &file_client_client_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3414,7 +3353,7 @@ func (x *AssemblyCommand) String() string {
 func (*AssemblyCommand) ProtoMessage() {}
 
 func (x *AssemblyCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[19]
+	mi := &file_client_client_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3427,19 +3366,19 @@ func (x *AssemblyCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssemblyCommand.ProtoReflect.Descriptor instead.
 func (*AssemblyCommand) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{19}
+	return file_client_client_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *AssemblyCommand) GetOperation() uint32 {
-	if x != nil {
-		return x.Operation
+	if x != nil && x.Operation != nil {
+		return *x.Operation
 	}
 	return 0
 }
 
 func (x *AssemblyCommand) GetDifficulty() uint32 {
-	if x != nil {
-		return x.Difficulty
+	if x != nil && x.Difficulty != nil {
+		return *x.Difficulty
 	}
 	return 0
 }
@@ -3449,18 +3388,21 @@ func (x *AssemblyCommand) GetDifficulty() uint32 {
 // 发送频率：1Hz
 type TechCoreMotionStateSync struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
-	MaximumDifficultyLevel uint32                 `protobuf:"varint,1,opt,name=maximum_difficulty_level,json=maximumDifficultyLevel,proto3" json:"maximum_difficulty_level,omitempty"` // 当前可选择的最高装配难度等级
-	Status                 uint32                 `protobuf:"varint,2,opt,name=status,proto3" json:"status,omitempty"`                                                                 // 科技核心状态
-	EnemyCoreStatus        uint32                 `protobuf:"varint,3,opt,name=enemy_core_status,json=enemyCoreStatus,proto3" json:"enemy_core_status,omitempty"`                      // 对方科技核心状态（仅己方四级装配可用时有效）
-	RemainTimeAll          uint32                 `protobuf:"varint,4,opt,name=remain_time_all,json=remainTimeAll,proto3" json:"remain_time_all,omitempty"`                            // 己方装配总剩余时长（仅己方正在四级装配时有效）
-	RemainTimeStep         uint32                 `protobuf:"varint,5,opt,name=remain_time_step,json=remainTimeStep,proto3" json:"remain_time_step,omitempty"`                         // 己方单个步骤装配间隔剩余时长（仅己方正在四级装配时有效）
+	MaximumDifficultyLevel *uint32                `protobuf:"varint,1,opt,name=maximum_difficulty_level,json=maximumDifficultyLevel,proto3,oneof" json:"maximum_difficulty_level,omitempty"` // 当前可选择的最高装配难度等级
+	BasicState             *uint32                `protobuf:"varint,2,opt,name=basic_state,json=basicState,proto3,oneof" json:"basic_state,omitempty"`                                       // 科技核心基础状态，1 为初始位置，2 为运动中，3 为已到达对应位姿
+	PutinState             *uint32                `protobuf:"varint,3,opt,name=putin_state,json=putinState,proto3,oneof" json:"putin_state,omitempty"`                                       // 能量单元放入状态，0 为未放入，1 为已经放入
+	MoveState              *uint32                `protobuf:"varint,4,opt,name=move_state,json=moveState,proto3,oneof" json:"move_state,omitempty"`                                          // 能量单元平移状态，0 为未平移，1 为已经平移
+	RotateState            *uint32                `protobuf:"varint,5,opt,name=rotate_state,json=rotateState,proto3,oneof" json:"rotate_state,omitempty"`                                    // 能量单元旋转状态，0 为未旋转，1 为已经旋转
+	EnemyCoreStatus        *uint32                `protobuf:"varint,6,opt,name=enemy_core_status,json=enemyCoreStatus,proto3,oneof" json:"enemy_core_status,omitempty"`                      // 对方科技核心状态（0=未装配，1=非四级难度，2=四级难度）
+	RemainTimeAll          *uint32                `protobuf:"varint,7,opt,name=remain_time_all,json=remainTimeAll,proto3,oneof" json:"remain_time_all,omitempty"`                            // 己方装配总剩余时长（仅己方正在四级装配时有效）
+	RemainTimeStep         *uint32                `protobuf:"varint,8,opt,name=remain_time_step,json=remainTimeStep,proto3,oneof" json:"remain_time_step,omitempty"`                         // 己方单个步骤装配间隔剩余时长（仅己方正在四级装配时有效）
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
 
 func (x *TechCoreMotionStateSync) Reset() {
 	*x = TechCoreMotionStateSync{}
-	mi := &file_client_client_proto_msgTypes[20]
+	mi := &file_client_client_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3472,7 +3414,7 @@ func (x *TechCoreMotionStateSync) String() string {
 func (*TechCoreMotionStateSync) ProtoMessage() {}
 
 func (x *TechCoreMotionStateSync) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[20]
+	mi := &file_client_client_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3485,59 +3427,80 @@ func (x *TechCoreMotionStateSync) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TechCoreMotionStateSync.ProtoReflect.Descriptor instead.
 func (*TechCoreMotionStateSync) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{20}
+	return file_client_client_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *TechCoreMotionStateSync) GetMaximumDifficultyLevel() uint32 {
-	if x != nil {
-		return x.MaximumDifficultyLevel
+	if x != nil && x.MaximumDifficultyLevel != nil {
+		return *x.MaximumDifficultyLevel
 	}
 	return 0
 }
 
-func (x *TechCoreMotionStateSync) GetStatus() uint32 {
-	if x != nil {
-		return x.Status
+func (x *TechCoreMotionStateSync) GetBasicState() uint32 {
+	if x != nil && x.BasicState != nil {
+		return *x.BasicState
+	}
+	return 0
+}
+
+func (x *TechCoreMotionStateSync) GetPutinState() uint32 {
+	if x != nil && x.PutinState != nil {
+		return *x.PutinState
+	}
+	return 0
+}
+
+func (x *TechCoreMotionStateSync) GetMoveState() uint32 {
+	if x != nil && x.MoveState != nil {
+		return *x.MoveState
+	}
+	return 0
+}
+
+func (x *TechCoreMotionStateSync) GetRotateState() uint32 {
+	if x != nil && x.RotateState != nil {
+		return *x.RotateState
 	}
 	return 0
 }
 
 func (x *TechCoreMotionStateSync) GetEnemyCoreStatus() uint32 {
-	if x != nil {
-		return x.EnemyCoreStatus
+	if x != nil && x.EnemyCoreStatus != nil {
+		return *x.EnemyCoreStatus
 	}
 	return 0
 }
 
 func (x *TechCoreMotionStateSync) GetRemainTimeAll() uint32 {
-	if x != nil {
-		return x.RemainTimeAll
+	if x != nil && x.RemainTimeAll != nil {
+		return *x.RemainTimeAll
 	}
 	return 0
 }
 
 func (x *TechCoreMotionStateSync) GetRemainTimeStep() uint32 {
-	if x != nil {
-		return x.RemainTimeStep
+	if x != nil && x.RemainTimeStep != nil {
+		return *x.RemainTimeStep
 	}
 	return 0
 }
 
 // 地面机器人选择性能体系或控制方式
 // 自定义客户端→服务器
-// 发送频率：1Hz
+// 发送频率：触发式发送，最高 10Hz
 type RobotPerformanceSelectionCommand struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Shooter       uint32                 `protobuf:"varint,1,opt,name=shooter,proto3" json:"shooter,omitempty"`                                  // 发射机构性能体系枚举值
-	Chassis       uint32                 `protobuf:"varint,2,opt,name=chassis,proto3" json:"chassis,omitempty"`                                  // 底盘性能体系枚举值
-	SentryControl uint32                 `protobuf:"varint,3,opt,name=sentry_control,json=sentryControl,proto3" json:"sentry_control,omitempty"` // 哨兵控制方式选择 (0=自动控制, 1=半自动控制)
+	Shooter       *uint32                `protobuf:"varint,1,opt,name=shooter,proto3,oneof" json:"shooter,omitempty"`                                  // 发射机构性能体系枚举值
+	Chassis       *uint32                `protobuf:"varint,2,opt,name=chassis,proto3,oneof" json:"chassis,omitempty"`                                  // 底盘性能体系枚举值
+	SentryControl *uint32                `protobuf:"varint,3,opt,name=sentry_control,json=sentryControl,proto3,oneof" json:"sentry_control,omitempty"` // 哨兵控制方式选择 (0=自动控制, 1=半自动控制)
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *RobotPerformanceSelectionCommand) Reset() {
 	*x = RobotPerformanceSelectionCommand{}
-	mi := &file_client_client_proto_msgTypes[21]
+	mi := &file_client_client_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3549,7 +3512,7 @@ func (x *RobotPerformanceSelectionCommand) String() string {
 func (*RobotPerformanceSelectionCommand) ProtoMessage() {}
 
 func (x *RobotPerformanceSelectionCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[21]
+	mi := &file_client_client_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3562,26 +3525,26 @@ func (x *RobotPerformanceSelectionCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RobotPerformanceSelectionCommand.ProtoReflect.Descriptor instead.
 func (*RobotPerformanceSelectionCommand) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{21}
+	return file_client_client_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *RobotPerformanceSelectionCommand) GetShooter() uint32 {
-	if x != nil {
-		return x.Shooter
+	if x != nil && x.Shooter != nil {
+		return *x.Shooter
 	}
 	return 0
 }
 
 func (x *RobotPerformanceSelectionCommand) GetChassis() uint32 {
-	if x != nil {
-		return x.Chassis
+	if x != nil && x.Chassis != nil {
+		return *x.Chassis
 	}
 	return 0
 }
 
 func (x *RobotPerformanceSelectionCommand) GetSentryControl() uint32 {
-	if x != nil {
-		return x.SentryControl
+	if x != nil && x.SentryControl != nil {
+		return *x.SentryControl
 	}
 	return 0
 }
@@ -3591,16 +3554,16 @@ func (x *RobotPerformanceSelectionCommand) GetSentryControl() uint32 {
 // 发送频率：1Hz
 type RobotPerformanceSelectionSync struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Shooter       uint32                 `protobuf:"varint,1,opt,name=shooter,proto3" json:"shooter,omitempty"`                                  // 当前生效的发射机构性能体系
-	Chassis       uint32                 `protobuf:"varint,2,opt,name=chassis,proto3" json:"chassis,omitempty"`                                  // 当前生效的底盘性能体系
-	SentryControl uint32                 `protobuf:"varint,3,opt,name=sentry_control,json=sentryControl,proto3" json:"sentry_control,omitempty"` // 哨兵控制方式选择
+	Shooter       *uint32                `protobuf:"varint,1,opt,name=shooter,proto3,oneof" json:"shooter,omitempty"`                                  // 发射机构性能体系
+	Chassis       *uint32                `protobuf:"varint,2,opt,name=chassis,proto3,oneof" json:"chassis,omitempty"`                                  // 底盘性能体系
+	SentryControl *uint32                `protobuf:"varint,3,opt,name=sentry_control,json=sentryControl,proto3,oneof" json:"sentry_control,omitempty"` // 哨兵控制方式选择
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *RobotPerformanceSelectionSync) Reset() {
 	*x = RobotPerformanceSelectionSync{}
-	mi := &file_client_client_proto_msgTypes[22]
+	mi := &file_client_client_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3612,7 +3575,7 @@ func (x *RobotPerformanceSelectionSync) String() string {
 func (*RobotPerformanceSelectionSync) ProtoMessage() {}
 
 func (x *RobotPerformanceSelectionSync) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[22]
+	mi := &file_client_client_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3625,26 +3588,26 @@ func (x *RobotPerformanceSelectionSync) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RobotPerformanceSelectionSync.ProtoReflect.Descriptor instead.
 func (*RobotPerformanceSelectionSync) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{22}
+	return file_client_client_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *RobotPerformanceSelectionSync) GetShooter() uint32 {
-	if x != nil {
-		return x.Shooter
+	if x != nil && x.Shooter != nil {
+		return *x.Shooter
 	}
 	return 0
 }
 
 func (x *RobotPerformanceSelectionSync) GetChassis() uint32 {
-	if x != nil {
-		return x.Chassis
+	if x != nil && x.Chassis != nil {
+		return *x.Chassis
 	}
 	return 0
 }
 
 func (x *RobotPerformanceSelectionSync) GetSentryControl() uint32 {
-	if x != nil {
-		return x.SentryControl
+	if x != nil && x.SentryControl != nil {
+		return *x.SentryControl
 	}
 	return 0
 }
@@ -3654,15 +3617,15 @@ func (x *RobotPerformanceSelectionSync) GetSentryControl() uint32 {
 // 发送频率：触发式发送，最高 10Hz
 type CommonCommand struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CmdType       uint32                 `protobuf:"varint,1,opt,name=cmd_type,json=cmdType,proto3" json:"cmd_type,omitempty"` // 命令类型
-	Param         uint32                 `protobuf:"varint,2,opt,name=param,proto3" json:"param,omitempty"`                    // 命令类型对应的参数
+	CmdType       *uint32                `protobuf:"varint,1,opt,name=cmd_type,json=cmdType,proto3,oneof" json:"cmd_type,omitempty"` // 命令类型
+	Param         *uint32                `protobuf:"varint,2,opt,name=param,proto3,oneof" json:"param,omitempty"`                    // 命令类型对应的参数
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CommonCommand) Reset() {
 	*x = CommonCommand{}
-	mi := &file_client_client_proto_msgTypes[23]
+	mi := &file_client_client_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3674,7 +3637,7 @@ func (x *CommonCommand) String() string {
 func (*CommonCommand) ProtoMessage() {}
 
 func (x *CommonCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[23]
+	mi := &file_client_client_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3687,36 +3650,36 @@ func (x *CommonCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CommonCommand.ProtoReflect.Descriptor instead.
 func (*CommonCommand) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{23}
+	return file_client_client_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *CommonCommand) GetCmdType() uint32 {
-	if x != nil {
-		return x.CmdType
+	if x != nil && x.CmdType != nil {
+		return *x.CmdType
 	}
 	return 0
 }
 
 func (x *CommonCommand) GetParam() uint32 {
-	if x != nil {
-		return x.Param
+	if x != nil && x.Param != nil {
+		return *x.Param
 	}
 	return 0
 }
 
 // 英雄部署模式相关指令
 // 自定义客户端→服务器
-// 发送频率：1Hz
+// 发送频率：触发式发送，最高 10Hz
 type HeroDeployModeEventCommand struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Mode          uint32                 `protobuf:"varint,1,opt,name=mode,proto3" json:"mode,omitempty"` // 部署模式指令
+	Mode          *uint32                `protobuf:"varint,1,opt,name=mode,proto3,oneof" json:"mode,omitempty"` // 模式
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *HeroDeployModeEventCommand) Reset() {
 	*x = HeroDeployModeEventCommand{}
-	mi := &file_client_client_proto_msgTypes[24]
+	mi := &file_client_client_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3728,7 +3691,7 @@ func (x *HeroDeployModeEventCommand) String() string {
 func (*HeroDeployModeEventCommand) ProtoMessage() {}
 
 func (x *HeroDeployModeEventCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[24]
+	mi := &file_client_client_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3741,12 +3704,12 @@ func (x *HeroDeployModeEventCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HeroDeployModeEventCommand.ProtoReflect.Descriptor instead.
 func (*HeroDeployModeEventCommand) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{24}
+	return file_client_client_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *HeroDeployModeEventCommand) GetMode() uint32 {
-	if x != nil {
-		return x.Mode
+	if x != nil && x.Mode != nil {
+		return *x.Mode
 	}
 	return 0
 }
@@ -3756,14 +3719,14 @@ func (x *HeroDeployModeEventCommand) GetMode() uint32 {
 // 发送频率：1Hz
 type DeployModeStatusSync struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Status        uint32                 `protobuf:"varint,1,opt,name=status,proto3" json:"status,omitempty"` // 当前部署模式状态
+	Status        *uint32                `protobuf:"varint,1,opt,name=status,proto3,oneof" json:"status,omitempty"` // 当前部署模式状态
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DeployModeStatusSync) Reset() {
 	*x = DeployModeStatusSync{}
-	mi := &file_client_client_proto_msgTypes[25]
+	mi := &file_client_client_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3775,7 +3738,7 @@ func (x *DeployModeStatusSync) String() string {
 func (*DeployModeStatusSync) ProtoMessage() {}
 
 func (x *DeployModeStatusSync) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[25]
+	mi := &file_client_client_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3788,29 +3751,29 @@ func (x *DeployModeStatusSync) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeployModeStatusSync.ProtoReflect.Descriptor instead.
 func (*DeployModeStatusSync) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{25}
+	return file_client_client_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *DeployModeStatusSync) GetStatus() uint32 {
-	if x != nil {
-		return x.Status
+	if x != nil && x.Status != nil {
+		return *x.Status
 	}
 	return 0
 }
 
 // 能量机关激活指令
 // 自定义客户端→服务器
-// 发送频率：1Hz
+// 发送频率：触发式发送，最高 10Hz
 type RuneActivateCommand struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Activate      uint32                 `protobuf:"varint,1,opt,name=activate,proto3" json:"activate,omitempty"` // 激活指令（1=开启，0=取消）
+	Activate      *uint32                `protobuf:"varint,1,opt,name=activate,proto3,oneof" json:"activate,omitempty"` // 激活指令（1=开启）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *RuneActivateCommand) Reset() {
 	*x = RuneActivateCommand{}
-	mi := &file_client_client_proto_msgTypes[26]
+	mi := &file_client_client_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3822,7 +3785,7 @@ func (x *RuneActivateCommand) String() string {
 func (*RuneActivateCommand) ProtoMessage() {}
 
 func (x *RuneActivateCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[26]
+	mi := &file_client_client_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3835,12 +3798,12 @@ func (x *RuneActivateCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RuneActivateCommand.ProtoReflect.Descriptor instead.
 func (*RuneActivateCommand) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{26}
+	return file_client_client_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *RuneActivateCommand) GetActivate() uint32 {
-	if x != nil {
-		return x.Activate
+	if x != nil && x.Activate != nil {
+		return *x.Activate
 	}
 	return 0
 }
@@ -3850,16 +3813,16 @@ func (x *RuneActivateCommand) GetActivate() uint32 {
 // 发送频率：1Hz
 type RuneStatusSync struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RuneStatus    uint32                 `protobuf:"varint,1,opt,name=rune_status,json=runeStatus,proto3" json:"rune_status,omitempty"`          // 当前能量机关状态枚举
-	ActivatedArms uint32                 `protobuf:"varint,2,opt,name=activated_arms,json=activatedArms,proto3" json:"activated_arms,omitempty"` // 当前已激活的灯臂数量
-	AverageRings  uint32                 `protobuf:"varint,3,opt,name=average_rings,json=averageRings,proto3" json:"average_rings,omitempty"`    // 总环数
+	RuneStatus    *uint32                `protobuf:"varint,1,opt,name=rune_status,json=runeStatus,proto3,oneof" json:"rune_status,omitempty"`          // 当前能量机关状态枚举
+	ActivatedArms *uint32                `protobuf:"varint,2,opt,name=activated_arms,json=activatedArms,proto3,oneof" json:"activated_arms,omitempty"` // 当前已激活的灯臂数量
+	AverageRings  *float32               `protobuf:"fixed32,3,opt,name=average_rings,json=averageRings,proto3,oneof" json:"average_rings,omitempty"`   // 平均环数（仅大能量机关正在激活状态有效）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *RuneStatusSync) Reset() {
 	*x = RuneStatusSync{}
-	mi := &file_client_client_proto_msgTypes[27]
+	mi := &file_client_client_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3871,7 +3834,7 @@ func (x *RuneStatusSync) String() string {
 func (*RuneStatusSync) ProtoMessage() {}
 
 func (x *RuneStatusSync) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[27]
+	mi := &file_client_client_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3884,26 +3847,26 @@ func (x *RuneStatusSync) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RuneStatusSync.ProtoReflect.Descriptor instead.
 func (*RuneStatusSync) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{27}
+	return file_client_client_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *RuneStatusSync) GetRuneStatus() uint32 {
-	if x != nil {
-		return x.RuneStatus
+	if x != nil && x.RuneStatus != nil {
+		return *x.RuneStatus
 	}
 	return 0
 }
 
 func (x *RuneStatusSync) GetActivatedArms() uint32 {
-	if x != nil {
-		return x.ActivatedArms
+	if x != nil && x.ActivatedArms != nil {
+		return *x.ActivatedArms
 	}
 	return 0
 }
 
-func (x *RuneStatusSync) GetAverageRings() uint32 {
-	if x != nil {
-		return x.AverageRings
+func (x *RuneStatusSync) GetAverageRings() float32 {
+	if x != nil && x.AverageRings != nil {
+		return *x.AverageRings
 	}
 	return 0
 }
@@ -3913,15 +3876,15 @@ func (x *RuneStatusSync) GetAverageRings() uint32 {
 // 发送频率：1Hz
 type SentryStatusSync struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	PostureId     uint32                 `protobuf:"varint,1,opt,name=posture_id,json=postureId,proto3" json:"posture_id,omitempty"`    // 姿态 ID
-	IsWeakened    bool                   `protobuf:"varint,2,opt,name=is_weakened,json=isWeakened,proto3" json:"is_weakened,omitempty"` // 是否处于弱化状态
+	PostureId     *uint32                `protobuf:"varint,1,opt,name=posture_id,json=postureId,proto3,oneof" json:"posture_id,omitempty"`    // 姿态 ID
+	IsWeakened    *bool                  `protobuf:"varint,2,opt,name=is_weakened,json=isWeakened,proto3,oneof" json:"is_weakened,omitempty"` // 是否弱化
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SentryStatusSync) Reset() {
 	*x = SentryStatusSync{}
-	mi := &file_client_client_proto_msgTypes[28]
+	mi := &file_client_client_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3933,7 +3896,7 @@ func (x *SentryStatusSync) String() string {
 func (*SentryStatusSync) ProtoMessage() {}
 
 func (x *SentryStatusSync) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[28]
+	mi := &file_client_client_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3946,38 +3909,38 @@ func (x *SentryStatusSync) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SentryStatusSync.ProtoReflect.Descriptor instead.
 func (*SentryStatusSync) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{28}
+	return file_client_client_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *SentryStatusSync) GetPostureId() uint32 {
-	if x != nil {
-		return x.PostureId
+	if x != nil && x.PostureId != nil {
+		return *x.PostureId
 	}
 	return 0
 }
 
 func (x *SentryStatusSync) GetIsWeakened() bool {
-	if x != nil {
-		return x.IsWeakened
+	if x != nil && x.IsWeakened != nil {
+		return *x.IsWeakened
 	}
 	return false
 }
 
 // 飞镖控制指令
 // 自定义客户端→服务器
-// 发送频率：1Hz
+// 发送频率：触发式发送，最高 10Hz
 type DartCommand struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TargetId      uint32                 `protobuf:"varint,1,opt,name=target_id,json=targetId,proto3" json:"target_id,omitempty"`                // 目标 ID
-	Open          bool                   `protobuf:"varint,2,opt,name=open,proto3" json:"open,omitempty"`                                        // 闸门开关
-	LaunchConfirm bool                   `protobuf:"varint,3,opt,name=launch_confirm,json=launchConfirm,proto3" json:"launch_confirm,omitempty"` // 是否确认发射（默认为 0，1 为确认发射）
+	TargetId      *uint32                `protobuf:"varint,1,opt,name=target_id,json=targetId,proto3,oneof" json:"target_id,omitempty"`                // 目标 ID
+	Open          *bool                  `protobuf:"varint,2,opt,name=open,proto3,oneof" json:"open,omitempty"`                                        // 闸门开关
+	LaunchConfirm *bool                  `protobuf:"varint,3,opt,name=launch_confirm,json=launchConfirm,proto3,oneof" json:"launch_confirm,omitempty"` // 是否确认发射（默认为 0，1 为确认发射）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DartCommand) Reset() {
 	*x = DartCommand{}
-	mi := &file_client_client_proto_msgTypes[29]
+	mi := &file_client_client_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3989,7 +3952,7 @@ func (x *DartCommand) String() string {
 func (*DartCommand) ProtoMessage() {}
 
 func (x *DartCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[29]
+	mi := &file_client_client_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4002,26 +3965,26 @@ func (x *DartCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DartCommand.ProtoReflect.Descriptor instead.
 func (*DartCommand) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{29}
+	return file_client_client_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *DartCommand) GetTargetId() uint32 {
-	if x != nil {
-		return x.TargetId
+	if x != nil && x.TargetId != nil {
+		return *x.TargetId
 	}
 	return 0
 }
 
 func (x *DartCommand) GetOpen() bool {
-	if x != nil {
-		return x.Open
+	if x != nil && x.Open != nil {
+		return *x.Open
 	}
 	return false
 }
 
 func (x *DartCommand) GetLaunchConfirm() bool {
-	if x != nil {
-		return x.LaunchConfirm
+	if x != nil && x.LaunchConfirm != nil {
+		return *x.LaunchConfirm
 	}
 	return false
 }
@@ -4031,15 +3994,15 @@ func (x *DartCommand) GetLaunchConfirm() bool {
 // 发送频率：1Hz
 type DartSelectTargetStatusSync struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TargetId      uint32                 `protobuf:"varint,1,opt,name=target_id,json=targetId,proto3" json:"target_id,omitempty"` // 目标 ID
-	Open          uint32                 `protobuf:"varint,2,opt,name=open,proto3" json:"open,omitempty"`                         // 闸门状态（0：关闭，1：开启中，2：已开启）
+	TargetId      *uint32                `protobuf:"varint,1,opt,name=target_id,json=targetId,proto3,oneof" json:"target_id,omitempty"` // 目标 ID
+	Open          *uint32                `protobuf:"varint,2,opt,name=open,proto3,oneof" json:"open,omitempty"`                         // 闸门状态（0：关闭，1：开启中，2：已开启）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DartSelectTargetStatusSync) Reset() {
 	*x = DartSelectTargetStatusSync{}
-	mi := &file_client_client_proto_msgTypes[30]
+	mi := &file_client_client_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4051,7 +4014,7 @@ func (x *DartSelectTargetStatusSync) String() string {
 func (*DartSelectTargetStatusSync) ProtoMessage() {}
 
 func (x *DartSelectTargetStatusSync) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[30]
+	mi := &file_client_client_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4064,36 +4027,36 @@ func (x *DartSelectTargetStatusSync) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DartSelectTargetStatusSync.ProtoReflect.Descriptor instead.
 func (*DartSelectTargetStatusSync) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{30}
+	return file_client_client_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *DartSelectTargetStatusSync) GetTargetId() uint32 {
-	if x != nil {
-		return x.TargetId
+	if x != nil && x.TargetId != nil {
+		return *x.TargetId
 	}
 	return 0
 }
 
 func (x *DartSelectTargetStatusSync) GetOpen() uint32 {
-	if x != nil {
-		return x.Open
+	if x != nil && x.Open != nil {
+		return *x.Open
 	}
 	return 0
 }
 
 // 哨兵控制指令请求
 // 自定义客户端→服务器
-// 发送频率：1Hz
+// 发送频率：触发式发送，最高 10Hz
 type SentryCtrlCommand struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CommandId     uint32                 `protobuf:"varint,1,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"` // 指令编号
+	CommandId     *uint32                `protobuf:"varint,1,opt,name=command_id,json=commandId,proto3,oneof" json:"command_id,omitempty"` // 指令编号
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SentryCtrlCommand) Reset() {
 	*x = SentryCtrlCommand{}
-	mi := &file_client_client_proto_msgTypes[31]
+	mi := &file_client_client_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4105,7 +4068,7 @@ func (x *SentryCtrlCommand) String() string {
 func (*SentryCtrlCommand) ProtoMessage() {}
 
 func (x *SentryCtrlCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[31]
+	mi := &file_client_client_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4118,30 +4081,30 @@ func (x *SentryCtrlCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SentryCtrlCommand.ProtoReflect.Descriptor instead.
 func (*SentryCtrlCommand) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{31}
+	return file_client_client_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *SentryCtrlCommand) GetCommandId() uint32 {
-	if x != nil {
-		return x.CommandId
+	if x != nil && x.CommandId != nil {
+		return *x.CommandId
 	}
 	return 0
 }
 
 // 哨兵控制指令结果反馈
 // 服务器→自定义客户端
-// 发送频率：1Hz
+// 发送频率：触发式发送
 type SentryCtrlResult struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CommandId     uint32                 `protobuf:"varint,1,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`    // 对应的指令编号
-	ResultCode    uint32                 `protobuf:"varint,2,opt,name=result_code,json=resultCode,proto3" json:"result_code,omitempty"` // 执行结果码 (0=成功，其他=失败)
+	CommandId     *uint32                `protobuf:"varint,1,opt,name=command_id,json=commandId,proto3,oneof" json:"command_id,omitempty"`    // 对应的指令编号
+	ResultCode    *uint32                `protobuf:"varint,2,opt,name=result_code,json=resultCode,proto3,oneof" json:"result_code,omitempty"` // 执行结果码 (0：成功，其他：失败)
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SentryCtrlResult) Reset() {
 	*x = SentryCtrlResult{}
-	mi := &file_client_client_proto_msgTypes[32]
+	mi := &file_client_client_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4153,7 +4116,7 @@ func (x *SentryCtrlResult) String() string {
 func (*SentryCtrlResult) ProtoMessage() {}
 
 func (x *SentryCtrlResult) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[32]
+	mi := &file_client_client_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4166,36 +4129,36 @@ func (x *SentryCtrlResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SentryCtrlResult.ProtoReflect.Descriptor instead.
 func (*SentryCtrlResult) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{32}
+	return file_client_client_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *SentryCtrlResult) GetCommandId() uint32 {
-	if x != nil {
-		return x.CommandId
+	if x != nil && x.CommandId != nil {
+		return *x.CommandId
 	}
 	return 0
 }
 
 func (x *SentryCtrlResult) GetResultCode() uint32 {
-	if x != nil {
-		return x.ResultCode
+	if x != nil && x.ResultCode != nil {
+		return *x.ResultCode
 	}
 	return 0
 }
 
 // 空中支援指令
 // 自定义客户端→服务器
-// 发送频率：1Hz
+// 发送频率：触发式发送
 type AirSupportCommand struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CommandId     uint32                 `protobuf:"varint,1,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"` // 指令类型
+	CommandId     *uint32                `protobuf:"varint,1,opt,name=command_id,json=commandId,proto3,oneof" json:"command_id,omitempty"` // 指令类型
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AirSupportCommand) Reset() {
 	*x = AirSupportCommand{}
-	mi := &file_client_client_proto_msgTypes[33]
+	mi := &file_client_client_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4207,7 +4170,7 @@ func (x *AirSupportCommand) String() string {
 func (*AirSupportCommand) ProtoMessage() {}
 
 func (x *AirSupportCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[33]
+	mi := &file_client_client_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4220,12 +4183,12 @@ func (x *AirSupportCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AirSupportCommand.ProtoReflect.Descriptor instead.
 func (*AirSupportCommand) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{33}
+	return file_client_client_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *AirSupportCommand) GetCommandId() uint32 {
-	if x != nil {
-		return x.CommandId
+	if x != nil && x.CommandId != nil {
+		return *x.CommandId
 	}
 	return 0
 }
@@ -4235,18 +4198,18 @@ func (x *AirSupportCommand) GetCommandId() uint32 {
 // 发送频率：1Hz
 type AirSupportStatusSync struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
-	AirsupportStatus uint32                 `protobuf:"varint,1,opt,name=airsupport_status,json=airsupportStatus,proto3" json:"airsupport_status,omitempty"` // 空中支援状态
-	LeftTime         uint32                 `protobuf:"varint,2,opt,name=left_time,json=leftTime,proto3" json:"left_time,omitempty"`                         // 免费空中支援剩余时间
-	CostCoins        uint32                 `protobuf:"varint,3,opt,name=cost_coins,json=costCoins,proto3" json:"cost_coins,omitempty"`                      // 付费空中支援已花费金币
-	IsBeingTargeted  uint32                 `protobuf:"varint,4,opt,name=is_being_targeted,json=isBeingTargeted,proto3" json:"is_being_targeted,omitempty"`  // 当前激光检测模块是否正在检测到被照射（0 为未被照射，1 为被照射）
-	ShooterStatus    uint32                 `protobuf:"varint,5,opt,name=shooter_status,json=shooterStatus,proto3" json:"shooter_status,omitempty"`          // 空中机器人被反制状态
+	AirsupportStatus *uint32                `protobuf:"varint,1,opt,name=airsupport_status,json=airsupportStatus,proto3,oneof" json:"airsupport_status,omitempty"` // 空中支援状态
+	LeftTime         *uint32                `protobuf:"varint,2,opt,name=left_time,json=leftTime,proto3,oneof" json:"left_time,omitempty"`                         // 免费空中支援剩余时间
+	CostCoins        *uint32                `protobuf:"varint,3,opt,name=cost_coins,json=costCoins,proto3,oneof" json:"cost_coins,omitempty"`                      // 付费空中支援已花费金币
+	IsBeingTargeted  *uint32                `protobuf:"varint,4,opt,name=is_being_targeted,json=isBeingTargeted,proto3,oneof" json:"is_being_targeted,omitempty"`  // 当前激光检测模块是否正在检测到被照射
+	ShooterStatus    *uint32                `protobuf:"varint,5,opt,name=shooter_status,json=shooterStatus,proto3,oneof" json:"shooter_status,omitempty"`          // 空中机器人被反制状态
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
 
 func (x *AirSupportStatusSync) Reset() {
 	*x = AirSupportStatusSync{}
-	mi := &file_client_client_proto_msgTypes[34]
+	mi := &file_client_client_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4258,7 +4221,7 @@ func (x *AirSupportStatusSync) String() string {
 func (*AirSupportStatusSync) ProtoMessage() {}
 
 func (x *AirSupportStatusSync) ProtoReflect() protoreflect.Message {
-	mi := &file_client_client_proto_msgTypes[34]
+	mi := &file_client_client_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4271,40 +4234,40 @@ func (x *AirSupportStatusSync) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AirSupportStatusSync.ProtoReflect.Descriptor instead.
 func (*AirSupportStatusSync) Descriptor() ([]byte, []int) {
-	return file_client_client_proto_rawDescGZIP(), []int{34}
+	return file_client_client_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *AirSupportStatusSync) GetAirsupportStatus() uint32 {
-	if x != nil {
-		return x.AirsupportStatus
+	if x != nil && x.AirsupportStatus != nil {
+		return *x.AirsupportStatus
 	}
 	return 0
 }
 
 func (x *AirSupportStatusSync) GetLeftTime() uint32 {
-	if x != nil {
-		return x.LeftTime
+	if x != nil && x.LeftTime != nil {
+		return *x.LeftTime
 	}
 	return 0
 }
 
 func (x *AirSupportStatusSync) GetCostCoins() uint32 {
-	if x != nil {
-		return x.CostCoins
+	if x != nil && x.CostCoins != nil {
+		return *x.CostCoins
 	}
 	return 0
 }
 
 func (x *AirSupportStatusSync) GetIsBeingTargeted() uint32 {
-	if x != nil {
-		return x.IsBeingTargeted
+	if x != nil && x.IsBeingTargeted != nil {
+		return *x.IsBeingTargeted
 	}
 	return 0
 }
 
 func (x *AirSupportStatusSync) GetShooterStatus() uint32 {
-	if x != nil {
-		return x.ShooterStatus
+	if x != nil && x.ShooterStatus != nil {
+		return *x.ShooterStatus
 	}
 	return 0
 }
@@ -4313,141 +4276,197 @@ var File_client_client_proto protoreflect.FileDescriptor
 
 const file_client_client_proto_rawDesc = "" +
 	"\n" +
-	"\x13client/client.proto\x12\x1erobosouls.rmproto.v2026.client\"\x86\x02\n" +
-	"\x14KeyboardMouseControl\x12\x17\n" +
-	"\amouse_x\x18\x01 \x01(\x05R\x06mouseX\x12\x17\n" +
-	"\amouse_y\x18\x02 \x01(\x05R\x06mouseY\x12\x17\n" +
-	"\amouse_z\x18\x03 \x01(\x05R\x06mouseZ\x12(\n" +
-	"\x10left_button_down\x18\x04 \x01(\bR\x0eleftButtonDown\x12*\n" +
-	"\x11right_button_down\x18\x05 \x01(\bR\x0frightButtonDown\x12%\n" +
-	"\x0ekeyboard_value\x18\x06 \x01(\rR\rkeyboardValue\x12&\n" +
-	"\x0fmid_button_down\x18\a \x01(\bR\rmidButtonDown\"#\n" +
-	"\rCustomControl\x12\x12\n" +
-	"\x04data\x18\x01 \x01(\fR\x04data\"\xba\x03\n" +
+	"\x13client/client.proto\x12\x1erobosouls.rmproto.v2026.client\"\x9f\x03\n" +
+	"\x14KeyboardMouseControl\x12\x1c\n" +
+	"\amouse_x\x18\x01 \x01(\x05H\x00R\x06mouseX\x88\x01\x01\x12\x1c\n" +
+	"\amouse_y\x18\x02 \x01(\x05H\x01R\x06mouseY\x88\x01\x01\x12\x1c\n" +
+	"\amouse_z\x18\x03 \x01(\x05H\x02R\x06mouseZ\x88\x01\x01\x12-\n" +
+	"\x10left_button_down\x18\x04 \x01(\bH\x03R\x0eleftButtonDown\x88\x01\x01\x12/\n" +
+	"\x11right_button_down\x18\x05 \x01(\bH\x04R\x0frightButtonDown\x88\x01\x01\x12*\n" +
+	"\x0ekeyboard_value\x18\x06 \x01(\rH\x05R\rkeyboardValue\x88\x01\x01\x12+\n" +
+	"\x0fmid_button_down\x18\a \x01(\bH\x06R\rmidButtonDown\x88\x01\x01B\n" +
 	"\n" +
-	"GameStatus\x12#\n" +
-	"\rcurrent_round\x18\x01 \x01(\rR\fcurrentRound\x12!\n" +
-	"\ftotal_rounds\x18\x02 \x01(\rR\vtotalRounds\x12\x1b\n" +
-	"\tred_score\x18\x03 \x01(\rR\bredScore\x12\x1d\n" +
+	"\b_mouse_xB\n" +
 	"\n" +
-	"blue_score\x18\x04 \x01(\rR\tblueScore\x12#\n" +
-	"\rcurrent_stage\x18\x05 \x01(\rR\fcurrentStage\x12.\n" +
-	"\x13stage_countdown_sec\x18\x06 \x01(\x05R\x11stageCountdownSec\x12*\n" +
-	"\x11stage_elapsed_sec\x18\a \x01(\x05R\x0fstageElapsedSec\x12\x1b\n" +
-	"\tis_paused\x18\b \x01(\bR\bisPaused\"\x89\x01\n" +
+	"\b_mouse_yB\n" +
+	"\n" +
+	"\b_mouse_zB\x13\n" +
+	"\x11_left_button_downB\x14\n" +
+	"\x12_right_button_downB\x11\n" +
+	"\x0f_keyboard_valueB\x12\n" +
+	"\x10_mid_button_down\"1\n" +
+	"\rCustomControl\x12\x17\n" +
+	"\x04data\x18\x01 \x01(\fH\x00R\x04data\x88\x01\x01B\a\n" +
+	"\x05_data\"\xf0\x04\n" +
+	"\n" +
+	"GameStatus\x12(\n" +
+	"\rcurrent_round\x18\x01 \x01(\rH\x00R\fcurrentRound\x88\x01\x01\x12&\n" +
+	"\ftotal_rounds\x18\x02 \x01(\rH\x01R\vtotalRounds\x88\x01\x01\x12 \n" +
+	"\tred_score\x18\x03 \x01(\rH\x02R\bredScore\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"blue_score\x18\x04 \x01(\rH\x03R\tblueScore\x88\x01\x01\x12(\n" +
+	"\rcurrent_stage\x18\x05 \x01(\rH\x04R\fcurrentStage\x88\x01\x01\x123\n" +
+	"\x13stage_countdown_sec\x18\x06 \x01(\x05H\x05R\x11stageCountdownSec\x88\x01\x01\x12/\n" +
+	"\x11stage_elapsed_sec\x18\a \x01(\x05H\x06R\x0fstageElapsedSec\x88\x01\x01\x12 \n" +
+	"\tis_paused\x18\b \x01(\bH\aR\bisPaused\x88\x01\x01\"\x89\x01\n" +
 	"\x05Stage\x12\x15\n" +
 	"\x11STAGE_NOT_STARTED\x10\x00\x12\x15\n" +
 	"\x11STAGE_PREPARATION\x10\x01\x12\x14\n" +
 	"\x10STAGE_SELF_CHECK\x10\x02\x12\x13\n" +
 	"\x0fSTAGE_COUNTDOWN\x10\x03\x12\x11\n" +
 	"\rSTAGE_IN_GAME\x10\x04\x12\x14\n" +
-	"\x10STAGE_SETTLEMENT\x10\x05\"\xfc\x06\n" +
-	"\x10GlobalUnitStatus\x12\x1f\n" +
-	"\vbase_health\x18\x01 \x01(\rR\n" +
-	"baseHealth\x12\x1f\n" +
-	"\vbase_status\x18\x02 \x01(\rR\n" +
-	"baseStatus\x12\x1f\n" +
-	"\vbase_shield\x18\x03 \x01(\rR\n" +
-	"baseShield\x12%\n" +
-	"\x0eoutpost_health\x18\x04 \x01(\rR\routpostHealth\x12%\n" +
-	"\x0eoutpost_status\x18\x05 \x01(\rR\routpostStatus\x12*\n" +
-	"\x11enemy_base_health\x18\x06 \x01(\rR\x0fenemyBaseHealth\x12*\n" +
-	"\x11enemy_base_status\x18\a \x01(\rR\x0fenemyBaseStatus\x12*\n" +
-	"\x11enemy_base_shield\x18\b \x01(\rR\x0fenemyBaseShield\x120\n" +
-	"\x14enemy_outpost_health\x18\t \x01(\rR\x12enemyOutpostHealth\x120\n" +
+	"\x10STAGE_SETTLEMENT\x10\x05B\x10\n" +
+	"\x0e_current_roundB\x0f\n" +
+	"\r_total_roundsB\f\n" +
+	"\n" +
+	"_red_scoreB\r\n" +
+	"\v_blue_scoreB\x10\n" +
+	"\x0e_current_stageB\x16\n" +
+	"\x14_stage_countdown_secB\x14\n" +
+	"\x12_stage_elapsed_secB\f\n" +
+	"\n" +
+	"_is_paused\"\xb2\t\n" +
+	"\x10GlobalUnitStatus\x12$\n" +
+	"\vbase_health\x18\x01 \x01(\rH\x00R\n" +
+	"baseHealth\x88\x01\x01\x12$\n" +
+	"\vbase_status\x18\x02 \x01(\rH\x01R\n" +
+	"baseStatus\x88\x01\x01\x12$\n" +
+	"\vbase_shield\x18\x03 \x01(\rH\x02R\n" +
+	"baseShield\x88\x01\x01\x12*\n" +
+	"\x0eoutpost_health\x18\x04 \x01(\rH\x03R\routpostHealth\x88\x01\x01\x12*\n" +
+	"\x0eoutpost_status\x18\x05 \x01(\rH\x04R\routpostStatus\x88\x01\x01\x12/\n" +
+	"\x11enemy_base_health\x18\x06 \x01(\rH\x05R\x0fenemyBaseHealth\x88\x01\x01\x12/\n" +
+	"\x11enemy_base_status\x18\a \x01(\rH\x06R\x0fenemyBaseStatus\x88\x01\x01\x12/\n" +
+	"\x11enemy_base_shield\x18\b \x01(\rH\aR\x0fenemyBaseShield\x88\x01\x01\x125\n" +
+	"\x14enemy_outpost_health\x18\t \x01(\rH\bR\x12enemyOutpostHealth\x88\x01\x01\x125\n" +
 	"\x14enemy_outpost_status\x18\n" +
-	" \x01(\rR\x12enemyOutpostStatus\x12!\n" +
+	" \x01(\rH\tR\x12enemyOutpostStatus\x88\x01\x01\x12!\n" +
 	"\frobot_health\x18\v \x03(\rR\vrobotHealth\x12#\n" +
-	"\rrobot_bullets\x18\f \x03(\x05R\frobotBullets\x12*\n" +
-	"\x11total_damage_ally\x18\r \x01(\rR\x0ftotalDamageAlly\x12,\n" +
-	"\x12total_damage_enemy\x18\x0e \x01(\rR\x10totalDamageEnemy\"j\n" +
+	"\rrobot_bullets\x18\f \x03(\x05R\frobotBullets\x12/\n" +
+	"\x11total_damage_ally\x18\r \x01(\rH\n" +
+	"R\x0ftotalDamageAlly\x88\x01\x01\x121\n" +
+	"\x12total_damage_enemy\x18\x0e \x01(\rH\vR\x10totalDamageEnemy\x88\x01\x01\"j\n" +
 	"\n" +
 	"BaseStatus\x12\x13\n" +
 	"\x0fBASE_INVINCIBLE\x10\x00\x12#\n" +
 	"\x1fBASE_VULNERABLE_ARMOR_RETRACTED\x10\x01\x12\"\n" +
-	"\x1eBASE_VULNERABLE_ARMOR_DEPLOYED\x10\x02\"\xc0\x01\n" +
+	"\x1eBASE_VULNERABLE_ARMOR_DEPLOYED\x10\x02\"\xc3\x01\n" +
 	"\rOutpostStatus\x12\x16\n" +
-	"\x12OUTPOST_INVINCIBLE\x10\x00\x12&\n" +
-	"\"OUTPOST_VULNERABLE_ARMOR_RETRACTED\x10\x01\x12%\n" +
-	"!OUTPOST_VULNERABLE_ARMOR_DEPLOYED\x10\x02\x12%\n" +
+	"\x12OUTPOST_INVINCIBLE\x10\x00\x12\x1a\n" +
+	"\x16OUTPOST_ALIVE_ROTATING\x10\x01\x12\x1c\n" +
+	"\x18OUTPOST_ALIVE_STATIONARY\x10\x02\x12%\n" +
 	"!OUTPOST_DESTROYED_NOT_REBUILDABLE\x10\x03\x12!\n" +
-	"\x1dOUTPOST_DESTROYED_REBUILDABLE\x10\x04\"\xc4\x01\n" +
-	"\x15GlobalLogisticsStatus\x12+\n" +
-	"\x11remaining_economy\x18\x01 \x01(\rR\x10remainingEconomy\x124\n" +
-	"\x16total_economy_obtained\x18\x02 \x01(\x04R\x14totalEconomyObtained\x12\x1d\n" +
+	"\x1dOUTPOST_DESTROYED_REBUILDABLE\x10\x04\x12\x16\n" +
+	"\x12OUTPOST_REBUILDING\x10\x05B\x0e\n" +
+	"\f_base_healthB\x0e\n" +
+	"\f_base_statusB\x0e\n" +
+	"\f_base_shieldB\x11\n" +
+	"\x0f_outpost_healthB\x11\n" +
+	"\x0f_outpost_statusB\x14\n" +
+	"\x12_enemy_base_healthB\x14\n" +
+	"\x12_enemy_base_statusB\x14\n" +
+	"\x12_enemy_base_shieldB\x17\n" +
+	"\x15_enemy_outpost_healthB\x17\n" +
+	"\x15_enemy_outpost_statusB\x14\n" +
+	"\x12_total_damage_allyB\x15\n" +
+	"\x13_total_damage_enemy\"\xad\x02\n" +
+	"\x15GlobalLogisticsStatus\x120\n" +
+	"\x11remaining_economy\x18\x01 \x01(\rH\x00R\x10remainingEconomy\x88\x01\x01\x129\n" +
+	"\x16total_economy_obtained\x18\x02 \x01(\x04H\x01R\x14totalEconomyObtained\x88\x01\x01\x12\"\n" +
 	"\n" +
-	"tech_level\x18\x03 \x01(\rR\ttechLevel\x12)\n" +
-	"\x10encryption_level\x18\x04 \x01(\rR\x0fencryptionLevel\"\xcc\x01\n" +
+	"tech_level\x18\x03 \x01(\rH\x02R\ttechLevel\x88\x01\x01\x12.\n" +
+	"\x10encryption_level\x18\x04 \x01(\rH\x03R\x0fencryptionLevel\x88\x01\x01B\x14\n" +
+	"\x12_remaining_economyB\x19\n" +
+	"\x17_total_economy_obtainedB\r\n" +
+	"\v_tech_levelB\x13\n" +
+	"\x11_encryption_level\"\xcc\x01\n" +
 	"\x16GlobalSpecialMechanism\x12!\n" +
 	"\fmechanism_id\x18\x01 \x03(\rR\vmechanismId\x12,\n" +
 	"\x12mechanism_time_sec\x18\x02 \x03(\x05R\x10mechanismTimeSec\"a\n" +
 	"\vMechanismID\x12\x10\n" +
 	"\fMECH_UNKNOWN\x10\x00\x12\x1e\n" +
 	"\x1aMECH_OWN_FORTRESS_OCCUPIED\x10\x01\x12 \n" +
-	"\x1cMECH_ENEMY_FORTRESS_OCCUPIED\x10\x02\"\xac\x05\n" +
-	"\x05Event\x12\x19\n" +
-	"\bevent_id\x18\x01 \x01(\x05R\aeventId\x12\x14\n" +
-	"\x05param\x18\x02 \x01(\tR\x05param\"\xf1\x04\n" +
+	"\x1cMECH_ENEMY_FORTRESS_OCCUPIED\x10\x02\"\xfc\x04\n" +
+	"\x05Event\x12\x1e\n" +
+	"\bevent_id\x18\x01 \x01(\x05H\x00R\aeventId\x88\x01\x01\x12\x19\n" +
+	"\x05param\x18\x02 \x01(\tH\x01R\x05param\x88\x01\x01\"\xa0\x04\n" +
 	"\aEventID\x12\x14\n" +
 	"\x10EVENT_ID_UNKNOWN\x10\x00\x12\x11\n" +
-	"\rEVENT_ID_KILL\x10\x01\x12 \n" +
-	"\x1cEVENT_ID_STRUCTURE_DESTROYED\x10\x02\x12!\n" +
-	"\x1dEVENT_ID_RUNE_CHANCES_CHANGED\x10\x03\x12\x17\n" +
-	"\x13EVENT_ID_RUNE_READY\x10\x04\x12\"\n" +
-	"\x1eEVENT_ID_RUNE_ACTIVATION_STATS\x10\x05\x12\x1b\n" +
-	"\x17EVENT_ID_RUNE_ACTIVATED\x10\x06\x12\x1e\n" +
-	"\x1aEVENT_ID_HERO_DEPLOY_ENTER\x10\a\x12\"\n" +
-	"\x1eEVENT_ID_OWN_HERO_SNIPE_DAMAGE\x10\b\x12$\n" +
-	" EVENT_ID_ENEMY_HERO_SNIPE_DAMAGE\x10\t\x12\x1d\n" +
-	"\x19EVENT_ID_AIR_SUPPORT_CALL\x10\n" +
-	"\x12(\n" +
-	"$EVENT_ID_OWN_AIR_SUPPORT_INTERRUPTED\x10\v\x12#\n" +
-	"\x1fEVENT_ID_ENEMY_AIR_SUPPORT_CALL\x10\f\x12*\n" +
-	"&EVENT_ID_ENEMY_AIR_SUPPORT_INTERRUPTED\x10\r\x12\x15\n" +
-	"\x11EVENT_ID_DART_HIT\x10\x0e\x12\x1d\n" +
-	"\x19EVENT_ID_DART_GATE_STATUS\x10\x0f\x12\x1e\n" +
-	"\x1aEVENT_ID_BASE_UNDER_ATTACK\x10\x10\x12\"\n" +
-	"\x1eEVENT_ID_OUTPOST_STOP_ROTATING\x10\x11\x12 \n" +
-	"\x1cEVENT_ID_BASE_ARMOR_EXPANDED\x10\x12\"\xca\x03\n" +
-	"\x0fRobotInjuryStat\x12!\n" +
-	"\ftotal_damage\x18\x01 \x01(\rR\vtotalDamage\x12)\n" +
-	"\x10collision_damage\x18\x02 \x01(\rR\x0fcollisionDamage\x126\n" +
-	"\x17small_projectile_damage\x18\x03 \x01(\rR\x15smallProjectileDamage\x126\n" +
-	"\x17large_projectile_damage\x18\x04 \x01(\rR\x15largeProjectileDamage\x12,\n" +
-	"\x12dart_splash_damage\x18\x05 \x01(\rR\x10dartSplashDamage\x122\n" +
-	"\x15module_offline_damage\x18\x06 \x01(\rR\x13moduleOfflineDamage\x12%\n" +
-	"\x0eoffline_damage\x18\a \x01(\rR\rofflineDamage\x12%\n" +
-	"\x0epenalty_damage\x18\b \x01(\rR\rpenaltyDamage\x12,\n" +
-	"\x12server_kill_damage\x18\t \x01(\rR\x10serverKillDamage\x12\x1b\n" +
+	"\rEVENT_ID_KILL\x10\x01\x12\x1e\n" +
+	"\x1aEVENT_ID_OUTPOST_DESTROYED\x10\x02\x12\"\n" +
+	"\x1eEVENT_ID_RUNE_ACTIVATION_STATS\x10\x03\x12\x1b\n" +
+	"\x17EVENT_ID_RUNE_ACTIVATED\x10\x04\x12\"\n" +
+	"\x1eEVENT_ID_OWN_HERO_SNIPE_DAMAGE\x10\x05\x12$\n" +
+	" EVENT_ID_ENEMY_HERO_SNIPE_DAMAGE\x10\x06\x12#\n" +
+	"\x1fEVENT_ID_ENEMY_AIR_SUPPORT_CALL\x10\a\x12*\n" +
+	"&EVENT_ID_ENEMY_AIR_SUPPORT_INTERRUPTED\x10\b\x12\x15\n" +
+	"\x11EVENT_ID_DART_HIT\x10\t\x12!\n" +
+	"\x1dEVENT_ID_ENEMY_DART_GATE_OPEN\x10\n" +
+	"\x12\x1e\n" +
+	"\x1aEVENT_ID_BASE_UNDER_ATTACK\x10\v\x12(\n" +
+	"$EVENT_ID_ENEMY_OUTPOST_STOP_ROTATING\x10\f\x12&\n" +
+	"\"EVENT_ID_ENEMY_BASE_ARMOR_EXPANDED\x10\r\x12&\n" +
+	"\"EVENT_ID_ASSEMBLY_LEVEL4_INTERRUPT\x10\x0e\x12\x1c\n" +
+	"\x18EVENT_ID_ASSEMBLY_RESULT\x10\x0fB\v\n" +
+	"\t_event_idB\b\n" +
+	"\x06_param\"\xd6\x05\n" +
+	"\x0fRobotInjuryStat\x12&\n" +
+	"\ftotal_damage\x18\x01 \x01(\rH\x00R\vtotalDamage\x88\x01\x01\x12.\n" +
+	"\x10collision_damage\x18\x02 \x01(\rH\x01R\x0fcollisionDamage\x88\x01\x01\x12;\n" +
+	"\x17small_projectile_damage\x18\x03 \x01(\rH\x02R\x15smallProjectileDamage\x88\x01\x01\x12;\n" +
+	"\x17large_projectile_damage\x18\x04 \x01(\rH\x03R\x15largeProjectileDamage\x88\x01\x01\x121\n" +
+	"\x12dart_splash_damage\x18\x05 \x01(\rH\x04R\x10dartSplashDamage\x88\x01\x01\x127\n" +
+	"\x15module_offline_damage\x18\x06 \x01(\rH\x05R\x13moduleOfflineDamage\x88\x01\x01\x12*\n" +
+	"\x0eoffline_damage\x18\a \x01(\rH\x06R\rofflineDamage\x88\x01\x01\x12*\n" +
+	"\x0epenalty_damage\x18\b \x01(\rH\aR\rpenaltyDamage\x88\x01\x01\x121\n" +
+	"\x12server_kill_damage\x18\t \x01(\rH\bR\x10serverKillDamage\x88\x01\x01\x12 \n" +
 	"\tkiller_id\x18\n" +
-	" \x01(\rR\bkillerId\"\xbe\x02\n" +
-	"\x12RobotRespawnStatus\x12,\n" +
-	"\x12is_pending_respawn\x18\x01 \x01(\bR\x10isPendingRespawn\x124\n" +
-	"\x16total_respawn_progress\x18\x02 \x01(\rR\x14totalRespawnProgress\x128\n" +
-	"\x18current_respawn_progress\x18\x03 \x01(\rR\x16currentRespawnProgress\x12(\n" +
-	"\x10can_free_respawn\x18\x04 \x01(\bR\x0ecanFreeRespawn\x121\n" +
-	"\x15gold_cost_for_respawn\x18\x05 \x01(\rR\x12goldCostForRespawn\x12-\n" +
-	"\x13can_pay_for_respawn\x18\x06 \x01(\bR\x10canPayForRespawn\"\xe4\x06\n" +
-	"\x11RobotStaticStatus\x12)\n" +
-	"\x10connection_state\x18\x01 \x01(\rR\x0fconnectionState\x12\x1f\n" +
-	"\vfield_state\x18\x02 \x01(\rR\n" +
-	"fieldState\x12\x1f\n" +
-	"\valive_state\x18\x03 \x01(\rR\n" +
-	"aliveState\x12\x19\n" +
-	"\brobot_id\x18\x04 \x01(\rR\arobotId\x12\x1d\n" +
+	" \x01(\rH\tR\bkillerId\x88\x01\x01B\x0f\n" +
+	"\r_total_damageB\x13\n" +
+	"\x11_collision_damageB\x1a\n" +
+	"\x18_small_projectile_damageB\x1a\n" +
+	"\x18_large_projectile_damageB\x15\n" +
+	"\x13_dart_splash_damageB\x18\n" +
+	"\x16_module_offline_damageB\x11\n" +
+	"\x0f_offline_damageB\x11\n" +
+	"\x0f_penalty_damageB\x15\n" +
+	"\x13_server_kill_damageB\f\n" +
 	"\n" +
-	"robot_type\x18\x05 \x01(\rR\trobotType\x12<\n" +
-	"\x1aperformance_system_shooter\x18\x06 \x01(\rR\x18performanceSystemShooter\x12<\n" +
-	"\x1aperformance_system_chassis\x18\a \x01(\rR\x18performanceSystemChassis\x12\x14\n" +
-	"\x05level\x18\b \x01(\rR\x05level\x12\x1d\n" +
+	"_killer_id\"\xf2\x03\n" +
+	"\x12RobotRespawnStatus\x121\n" +
+	"\x12is_pending_respawn\x18\x01 \x01(\bH\x00R\x10isPendingRespawn\x88\x01\x01\x129\n" +
+	"\x16total_respawn_progress\x18\x02 \x01(\rH\x01R\x14totalRespawnProgress\x88\x01\x01\x12=\n" +
+	"\x18current_respawn_progress\x18\x03 \x01(\rH\x02R\x16currentRespawnProgress\x88\x01\x01\x12-\n" +
+	"\x10can_free_respawn\x18\x04 \x01(\bH\x03R\x0ecanFreeRespawn\x88\x01\x01\x126\n" +
+	"\x15gold_cost_for_respawn\x18\x05 \x01(\rH\x04R\x12goldCostForRespawn\x88\x01\x01\x122\n" +
+	"\x13can_pay_for_respawn\x18\x06 \x01(\bH\x05R\x10canPayForRespawn\x88\x01\x01B\x15\n" +
+	"\x13_is_pending_respawnB\x19\n" +
+	"\x17_total_respawn_progressB\x1b\n" +
+	"\x19_current_respawn_progressB\x13\n" +
+	"\x11_can_free_respawnB\x18\n" +
+	"\x16_gold_cost_for_respawnB\x16\n" +
+	"\x14_can_pay_for_respawn\"\xb1\t\n" +
+	"\x11RobotStaticStatus\x12.\n" +
+	"\x10connection_state\x18\x01 \x01(\rH\x00R\x0fconnectionState\x88\x01\x01\x12$\n" +
+	"\vfield_state\x18\x02 \x01(\rH\x01R\n" +
+	"fieldState\x88\x01\x01\x12$\n" +
+	"\valive_state\x18\x03 \x01(\rH\x02R\n" +
+	"aliveState\x88\x01\x01\x12\x1e\n" +
+	"\brobot_id\x18\x04 \x01(\rH\x03R\arobotId\x88\x01\x01\x12\"\n" +
 	"\n" +
-	"max_health\x18\t \x01(\rR\tmaxHealth\x12\x19\n" +
+	"robot_type\x18\x05 \x01(\rH\x04R\trobotType\x88\x01\x01\x12A\n" +
+	"\x1aperformance_system_shooter\x18\x06 \x01(\rH\x05R\x18performanceSystemShooter\x88\x01\x01\x12A\n" +
+	"\x1aperformance_system_chassis\x18\a \x01(\rH\x06R\x18performanceSystemChassis\x88\x01\x01\x12\x19\n" +
+	"\x05level\x18\b \x01(\rH\aR\x05level\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"max_health\x18\t \x01(\rH\bR\tmaxHealth\x88\x01\x01\x12\x1e\n" +
 	"\bmax_heat\x18\n" +
-	" \x01(\rR\amaxHeat\x12,\n" +
-	"\x12heat_cooldown_rate\x18\v \x01(\x02R\x10heatCooldownRate\x12\x1b\n" +
-	"\tmax_power\x18\f \x01(\rR\bmaxPower\x12*\n" +
-	"\x11max_buffer_energy\x18\r \x01(\rR\x0fmaxBufferEnergy\x12,\n" +
-	"\x12max_chassis_energy\x18\x0e \x01(\rR\x10maxChassisEnergy\"\x9a\x01\n" +
+	" \x01(\rH\tR\amaxHeat\x88\x01\x01\x121\n" +
+	"\x12heat_cooldown_rate\x18\v \x01(\x02H\n" +
+	"R\x10heatCooldownRate\x88\x01\x01\x12 \n" +
+	"\tmax_power\x18\f \x01(\rH\vR\bmaxPower\x88\x01\x01\x12/\n" +
+	"\x11max_buffer_energy\x18\r \x01(\rH\fR\x0fmaxBufferEnergy\x88\x01\x01\x121\n" +
+	"\x12max_chassis_energy\x18\x0e \x01(\rH\rR\x10maxChassisEnergy\x88\x01\x01\"\x9a\x01\n" +
 	"\x18PerformanceSystemShooter\x12\x13\n" +
 	"\x0fSHOOTER_UNKNOWN\x10\x00\x12\x1c\n" +
 	"\x18SHOOTER_COOLING_PRIORITY\x10\x01\x12\x1a\n" +
@@ -4459,51 +4478,97 @@ const file_client_client_proto_rawDesc = "" +
 	"\x17CHASSIS_HEALTH_PRIORITY\x10\x01\x12\x1a\n" +
 	"\x16CHASSIS_POWER_PRIORITY\x10\x02\x12\x16\n" +
 	"\x12CHASSIS_HERO_MELEE\x10\x03\x12\x17\n" +
-	"\x13CHASSIS_HERO_RANGED\x10\x04\"\xf7\x04\n" +
-	"\x12RobotDynamicStatus\x12%\n" +
-	"\x0ecurrent_health\x18\x01 \x01(\rR\rcurrentHealth\x12!\n" +
-	"\fcurrent_heat\x18\x02 \x01(\x02R\vcurrentHeat\x129\n" +
-	"\x19last_projectile_fire_rate\x18\x03 \x01(\x02R\x16lastProjectileFireRate\x124\n" +
-	"\x16current_chassis_energy\x18\x04 \x01(\rR\x14currentChassisEnergy\x122\n" +
-	"\x15current_buffer_energy\x18\x05 \x01(\rR\x13currentBufferEnergy\x12-\n" +
-	"\x12current_experience\x18\x06 \x01(\rR\x11currentExperience\x124\n" +
-	"\x16experience_for_upgrade\x18\a \x01(\rR\x14experienceForUpgrade\x126\n" +
-	"\x17total_projectiles_fired\x18\b \x01(\rR\x15totalProjectilesFired\x12%\n" +
-	"\x0eremaining_ammo\x18\t \x01(\rR\rremainingAmmo\x12'\n" +
+	"\x13CHASSIS_HERO_RANGED\x10\x04B\x13\n" +
+	"\x11_connection_stateB\x0e\n" +
+	"\f_field_stateB\x0e\n" +
+	"\f_alive_stateB\v\n" +
+	"\t_robot_idB\r\n" +
+	"\v_robot_typeB\x1d\n" +
+	"\x1b_performance_system_shooterB\x1d\n" +
+	"\x1b_performance_system_chassisB\b\n" +
+	"\x06_levelB\r\n" +
+	"\v_max_healthB\v\n" +
+	"\t_max_heatB\x15\n" +
+	"\x13_heat_cooldown_rateB\f\n" +
+	"\n" +
+	"_max_powerB\x14\n" +
+	"\x12_max_buffer_energyB\x15\n" +
+	"\x13_max_chassis_energy\"\xe9\a\n" +
+	"\x12RobotDynamicStatus\x12*\n" +
+	"\x0ecurrent_health\x18\x01 \x01(\rH\x00R\rcurrentHealth\x88\x01\x01\x12&\n" +
+	"\fcurrent_heat\x18\x02 \x01(\x02H\x01R\vcurrentHeat\x88\x01\x01\x12>\n" +
+	"\x19last_projectile_fire_rate\x18\x03 \x01(\x02H\x02R\x16lastProjectileFireRate\x88\x01\x01\x129\n" +
+	"\x16current_chassis_energy\x18\x04 \x01(\rH\x03R\x14currentChassisEnergy\x88\x01\x01\x127\n" +
+	"\x15current_buffer_energy\x18\x05 \x01(\rH\x04R\x13currentBufferEnergy\x88\x01\x01\x122\n" +
+	"\x12current_experience\x18\x06 \x01(\rH\x05R\x11currentExperience\x88\x01\x01\x129\n" +
+	"\x16experience_for_upgrade\x18\a \x01(\rH\x06R\x14experienceForUpgrade\x88\x01\x01\x12;\n" +
+	"\x17total_projectiles_fired\x18\b \x01(\rH\aR\x15totalProjectilesFired\x88\x01\x01\x12*\n" +
+	"\x0eremaining_ammo\x18\t \x01(\rH\bR\rremainingAmmo\x88\x01\x01\x12,\n" +
 	"\x10is_out_of_combat\x18\n" +
-	" \x01(\bR\risOutOfCombat\x125\n" +
-	"\x17out_of_combat_countdown\x18\v \x01(\rR\x14outOfCombatCountdown\x12&\n" +
-	"\x0fcan_remote_heal\x18\f \x01(\bR\rcanRemoteHeal\x12&\n" +
-	"\x0fcan_remote_ammo\x18\r \x01(\bR\rcanRemoteAmmo\"\x87\x03\n" +
-	"\x11RobotModuleStatus\x12#\n" +
-	"\rpower_manager\x18\x01 \x01(\rR\fpowerManager\x12\x12\n" +
-	"\x04rfid\x18\x02 \x01(\rR\x04rfid\x12\x1f\n" +
-	"\vlight_strip\x18\x03 \x01(\rR\n" +
-	"lightStrip\x12#\n" +
-	"\rsmall_shooter\x18\x04 \x01(\rR\fsmallShooter\x12\x1f\n" +
-	"\vbig_shooter\x18\x05 \x01(\rR\n" +
-	"bigShooter\x12\x10\n" +
-	"\x03uwb\x18\x06 \x01(\rR\x03uwb\x12\x14\n" +
-	"\x05armor\x18\a \x01(\rR\x05armor\x12-\n" +
-	"\x12video_transmission\x18\b \x01(\rR\x11videoTransmission\x12\x1c\n" +
-	"\tcapacitor\x18\t \x01(\rR\tcapacitor\x12'\n" +
+	" \x01(\bH\tR\risOutOfCombat\x88\x01\x01\x12:\n" +
+	"\x17out_of_combat_countdown\x18\v \x01(\rH\n" +
+	"R\x14outOfCombatCountdown\x88\x01\x01\x12+\n" +
+	"\x0fcan_remote_heal\x18\f \x01(\bH\vR\rcanRemoteHeal\x88\x01\x01\x12+\n" +
+	"\x0fcan_remote_ammo\x18\r \x01(\bH\fR\rcanRemoteAmmo\x88\x01\x01B\x11\n" +
+	"\x0f_current_healthB\x0f\n" +
+	"\r_current_heatB\x1c\n" +
+	"\x1a_last_projectile_fire_rateB\x19\n" +
+	"\x17_current_chassis_energyB\x18\n" +
+	"\x16_current_buffer_energyB\x15\n" +
+	"\x13_current_experienceB\x19\n" +
+	"\x17_experience_for_upgradeB\x1a\n" +
+	"\x18_total_projectiles_firedB\x11\n" +
+	"\x0f_remaining_ammoB\x13\n" +
+	"\x11_is_out_of_combatB\x1a\n" +
+	"\x18_out_of_combat_countdownB\x12\n" +
+	"\x10_can_remote_healB\x12\n" +
+	"\x10_can_remote_ammo\"\xf1\x04\n" +
+	"\x11RobotModuleStatus\x12(\n" +
+	"\rpower_manager\x18\x01 \x01(\rH\x00R\fpowerManager\x88\x01\x01\x12\x17\n" +
+	"\x04rfid\x18\x02 \x01(\rH\x01R\x04rfid\x88\x01\x01\x12$\n" +
+	"\vlight_strip\x18\x03 \x01(\rH\x02R\n" +
+	"lightStrip\x88\x01\x01\x12(\n" +
+	"\rsmall_shooter\x18\x04 \x01(\rH\x03R\fsmallShooter\x88\x01\x01\x12$\n" +
+	"\vbig_shooter\x18\x05 \x01(\rH\x04R\n" +
+	"bigShooter\x88\x01\x01\x12\x15\n" +
+	"\x03uwb\x18\x06 \x01(\rH\x05R\x03uwb\x88\x01\x01\x12\x19\n" +
+	"\x05armor\x18\a \x01(\rH\x06R\x05armor\x88\x01\x01\x122\n" +
+	"\x12video_transmission\x18\b \x01(\rH\aR\x11videoTransmission\x88\x01\x01\x12!\n" +
+	"\tcapacitor\x18\t \x01(\rH\bR\tcapacitor\x88\x01\x01\x12,\n" +
 	"\x0fmain_controller\x18\n" +
-	" \x01(\rR\x0emainController\x124\n" +
-	"\x16laser_detection_module\x18\v \x01(\rR\x14laserDetectionModule\"K\n" +
-	"\rRobotPosition\x12\f\n" +
-	"\x01x\x18\x01 \x01(\x02R\x01x\x12\f\n" +
-	"\x01y\x18\x02 \x01(\x02R\x01y\x12\f\n" +
-	"\x01z\x18\x03 \x01(\x02R\x01z\x12\x10\n" +
-	"\x03yaw\x18\x04 \x01(\x02R\x03yaw\"\xe4\x02\n" +
-	"\x04Buff\x12\x19\n" +
-	"\brobot_id\x18\x01 \x01(\rR\arobotId\x12\x1b\n" +
-	"\tbuff_type\x18\x02 \x01(\rR\bbuffType\x12\x1d\n" +
+	" \x01(\rH\tR\x0emainController\x88\x01\x01\x129\n" +
+	"\x16laser_detection_module\x18\v \x01(\rH\n" +
+	"R\x14laserDetectionModule\x88\x01\x01B\x10\n" +
+	"\x0e_power_managerB\a\n" +
+	"\x05_rfidB\x0e\n" +
+	"\f_light_stripB\x10\n" +
+	"\x0e_small_shooterB\x0e\n" +
+	"\f_big_shooterB\x06\n" +
+	"\x04_uwbB\b\n" +
+	"\x06_armorB\x15\n" +
+	"\x13_video_transmissionB\f\n" +
 	"\n" +
-	"buff_level\x18\x03 \x01(\x05R\tbuffLevel\x12\"\n" +
-	"\rbuff_max_time\x18\x04 \x01(\rR\vbuffMaxTime\x12$\n" +
-	"\x0ebuff_left_time\x18\x05 \x01(\rR\fbuffLeftTime\x12\x1d\n" +
+	"_capacitorB\x12\n" +
+	"\x10_main_controllerB\x19\n" +
+	"\x17_laser_detection_module\"\xa6\x01\n" +
+	"\rRobotPosition\x12\x11\n" +
+	"\x01x\x18\x01 \x01(\x02H\x00R\x01x\x88\x01\x01\x12\x11\n" +
+	"\x01y\x18\x02 \x01(\x02H\x01R\x01y\x88\x01\x01\x12\x11\n" +
+	"\x01z\x18\x03 \x01(\x02H\x02R\x01z\x88\x01\x01\x12\x15\n" +
+	"\x03yaw\x18\x04 \x01(\x02H\x03R\x03yaw\x88\x01\x01\x12\x1e\n" +
+	"\brobot_id\x18\x05 \x01(\rH\x04R\arobotId\x88\x01\x01B\x04\n" +
+	"\x02_xB\x04\n" +
+	"\x02_yB\x04\n" +
+	"\x02_zB\x06\n" +
+	"\x04_yawB\v\n" +
+	"\t_robot_id\"\xad\x03\n" +
+	"\x04Buff\x12\x1e\n" +
+	"\brobot_id\x18\x01 \x01(\rH\x00R\arobotId\x88\x01\x01\x12 \n" +
+	"\tbuff_type\x18\x02 \x01(\rH\x01R\bbuffType\x88\x01\x01\x12\"\n" +
 	"\n" +
-	"msg_params\x18\x06 \x01(\tR\tmsgParams\"\x9b\x01\n" +
+	"buff_level\x18\x03 \x01(\x05H\x02R\tbuffLevel\x88\x01\x01\x12'\n" +
+	"\rbuff_max_time\x18\x04 \x01(\rH\x03R\vbuffMaxTime\x88\x01\x01\x12)\n" +
+	"\x0ebuff_left_time\x18\x05 \x01(\rH\x04R\fbuffLeftTime\x88\x01\x01\"\x9b\x01\n" +
 	"\bBuffType\x12\x10\n" +
 	"\fBUFF_UNKNOWN\x10\x00\x12\x0f\n" +
 	"\vBUFF_ATTACK\x10\x01\x12\x10\n" +
@@ -4513,11 +4578,17 @@ const file_client_client_proto_rawDesc = "" +
 	"BUFF_POWER\x10\x04\x12\x10\n" +
 	"\fBUFF_HEALING\x10\x05\x12\r\n" +
 	"\tBUFF_AMMO\x10\x06\x12\x16\n" +
-	"\x12BUFF_TERRAIN_BOOST\x10\a\"\x97\x02\n" +
-	"\vPenaltyInfo\x12!\n" +
-	"\fpenalty_type\x18\x01 \x01(\rR\vpenaltyType\x12,\n" +
-	"\x12penalty_effect_sec\x18\x02 \x01(\rR\x10penaltyEffectSec\x12*\n" +
-	"\x11total_penalty_num\x18\x03 \x01(\rR\x0ftotalPenaltyNum\"\x8a\x01\n" +
+	"\x12BUFF_TERRAIN_BOOST\x10\aB\v\n" +
+	"\t_robot_idB\f\n" +
+	"\n" +
+	"_buff_typeB\r\n" +
+	"\v_buff_levelB\x10\n" +
+	"\x0e_buff_max_timeB\x11\n" +
+	"\x0f_buff_left_time\"\xe4\x02\n" +
+	"\vPenaltyInfo\x12&\n" +
+	"\fpenalty_type\x18\x01 \x01(\rH\x00R\vpenaltyType\x88\x01\x01\x121\n" +
+	"\x12penalty_effect_sec\x18\x02 \x01(\rH\x01R\x10penaltyEffectSec\x88\x01\x01\x12/\n" +
+	"\x11total_penalty_num\x18\x03 \x01(\rH\x02R\x0ftotalPenaltyNum\x88\x01\x01\"\x8a\x01\n" +
 	"\vPenaltyType\x12\x13\n" +
 	"\x0fPENALTY_UNKNOWN\x10\x00\x12\x0f\n" +
 	"\vYELLOW_CARD\x10\x01\x12\x14\n" +
@@ -4526,31 +4597,37 @@ const file_client_client_proto_rawDesc = "" +
 	"\n" +
 	"OVER_POWER\x10\x04\x12\r\n" +
 	"\tOVER_HEAT\x10\x05\x12\x12\n" +
-	"\x0eOVER_FIRE_RATE\x10\x06\"\xb0\x02\n" +
-	"\x11RobotPathPlanInfo\x12\x1c\n" +
-	"\tintention\x18\x01 \x01(\rR\tintention\x12\x1e\n" +
-	"\vstart_pos_x\x18\x02 \x01(\rR\tstartPosX\x12\x1e\n" +
-	"\vstart_pos_y\x18\x03 \x01(\rR\tstartPosY\x12\x1d\n" +
+	"\x0eOVER_FIRE_RATE\x10\x06B\x0f\n" +
+	"\r_penalty_typeB\x15\n" +
+	"\x13_penalty_effect_secB\x14\n" +
+	"\x12_total_penalty_num\"\x80\x03\n" +
+	"\x11RobotPathPlanInfo\x12!\n" +
+	"\tintention\x18\x01 \x01(\rH\x00R\tintention\x88\x01\x01\x12#\n" +
+	"\vstart_pos_x\x18\x02 \x01(\rH\x01R\tstartPosX\x88\x01\x01\x12#\n" +
+	"\vstart_pos_y\x18\x03 \x01(\rH\x02R\tstartPosY\x88\x01\x01\x12\x1d\n" +
 	"\boffset_x\x18\x04 \x03(\x05B\x02\x10\x01R\aoffsetX\x12\x1d\n" +
-	"\boffset_y\x18\x05 \x03(\x05B\x02\x10\x01R\aoffsetY\x12\x1b\n" +
-	"\tsender_id\x18\x06 \x01(\rR\bsenderId\"b\n" +
+	"\boffset_y\x18\x05 \x03(\x05B\x02\x10\x01R\aoffsetY\x12 \n" +
+	"\tsender_id\x18\x06 \x01(\rH\x03R\bsenderId\x88\x01\x01\"b\n" +
 	"\tIntention\x12\x15\n" +
 	"\x11INTENTION_UNKNOWN\x10\x00\x12\x14\n" +
 	"\x10INTENTION_ATTACK\x10\x01\x12\x14\n" +
 	"\x10INTENTION_DEFEND\x10\x02\x12\x12\n" +
-	"\x0eINTENTION_MOVE\x10\x03\"\xfd\x03\n" +
-	"\x12MapClickInfoNotify\x12\x1e\n" +
-	"\vis_send_all\x18\x01 \x01(\rR\tisSendAll\x12\x19\n" +
-	"\brobot_id\x18\x02 \x01(\fR\arobotId\x12\x12\n" +
-	"\x04mode\x18\x03 \x01(\rR\x04mode\x12\x19\n" +
-	"\benemy_id\x18\x04 \x01(\rR\aenemyId\x12\x14\n" +
-	"\x05ascii\x18\x05 \x01(\rR\x05ascii\x12\x12\n" +
-	"\x04type\x18\x06 \x01(\rR\x04type\x12\x19\n" +
-	"\bscreen_x\x18\a \x01(\rR\ascreenX\x12\x19\n" +
-	"\bscreen_y\x18\b \x01(\rR\ascreenY\x12\x13\n" +
-	"\x05map_x\x18\t \x01(\x02R\x04mapX\x12\x13\n" +
-	"\x05map_y\x18\n" +
-	" \x01(\x02R\x04mapY\"H\n" +
+	"\x0eINTENTION_MOVE\x10\x03B\f\n" +
+	"\n" +
+	"_intentionB\x0e\n" +
+	"\f_start_pos_xB\x0e\n" +
+	"\f_start_pos_yB\f\n" +
+	"\n" +
+	"_sender_id\"\xc9\x04\n" +
+	"\x12MapClickInfoNotify\x12#\n" +
+	"\vis_send_all\x18\x01 \x01(\rH\x00R\tisSendAll\x88\x01\x01\x12\x1e\n" +
+	"\brobot_id\x18\x02 \x01(\fH\x01R\arobotId\x88\x01\x01\x12\x17\n" +
+	"\x04mode\x18\x03 \x01(\rH\x02R\x04mode\x88\x01\x01\x12\x1e\n" +
+	"\benemy_id\x18\x04 \x01(\rH\x03R\aenemyId\x88\x01\x01\x12\x19\n" +
+	"\x05ascii\x18\x05 \x01(\rH\x04R\x05ascii\x88\x01\x01\x12\x17\n" +
+	"\x04type\x18\x06 \x01(\rH\x05R\x04type\x88\x01\x01\x12\x18\n" +
+	"\x05map_x\x18\a \x01(\x02H\x06R\x04mapX\x88\x01\x01\x12\x18\n" +
+	"\x05map_y\x18\b \x01(\x02H\aR\x04mapY\x88\x01\x01\"H\n" +
 	"\tSendRange\x12\x13\n" +
 	"\x0fSPECIFIC_CLIENT\x10\x00\x12\x18\n" +
 	"\x14TEAM_EXCEPT_SENTINEL\x10\x01\x12\f\n" +
@@ -4565,54 +4642,83 @@ const file_client_client_proto_rawDesc = "" +
 	"\bMarkType\x12\x15\n" +
 	"\x11TYPE_UNKNOWN_MARK\x10\x00\x12\x12\n" +
 	"\x0eMAP_COORDINATE\x10\x01\x12\x10\n" +
-	"\fTARGET_ROBOT\x10\x02\"\xc8\x01\n" +
-	"\x11RadarInfoToClient\x12&\n" +
-	"\x0ftarget_robot_id\x18\x01 \x01(\rR\rtargetRobotId\x12 \n" +
-	"\ftarget_pos_x\x18\x02 \x01(\x02R\n" +
-	"targetPosX\x12 \n" +
-	"\ftarget_pos_y\x18\x03 \x01(\x02R\n" +
-	"targetPosY\x12#\n" +
-	"\rtorward_angle\x18\x04 \x01(\x02R\ftorwardAngle\x12\"\n" +
-	"\ris_high_light\x18\x05 \x01(\rR\visHighLight\"%\n" +
-	"\x0fCustomByteBlock\x12\x12\n" +
-	"\x04data\x18\x01 \x01(\fR\x04data\"\x85\x01\n" +
-	"\x0fAssemblyCommand\x12\x1c\n" +
-	"\toperation\x18\x01 \x01(\rR\toperation\x12\x1e\n" +
+	"\fTARGET_ROBOT\x10\x02B\x0e\n" +
+	"\f_is_send_allB\v\n" +
+	"\t_robot_idB\a\n" +
+	"\x05_modeB\v\n" +
+	"\t_enemy_idB\b\n" +
+	"\x06_asciiB\a\n" +
+	"\x05_typeB\b\n" +
+	"\x06_map_xB\b\n" +
+	"\x06_map_y\"}\n" +
+	"\x11RadarInfoToClient\x12h\n" +
+	"\x14RadarSingleRobotInfo\x18\x01 \x03(\v24.robosouls.rmproto.v2026.client.RadarSingleRobotInfoR\x14RadarSingleRobotInfo\"\xc1\x01\n" +
+	"\x14RadarSingleRobotInfo\x12%\n" +
+	"\ftarget_pos_x\x18\x01 \x01(\rH\x00R\n" +
+	"targetPosX\x88\x01\x01\x12%\n" +
+	"\ftarget_pos_y\x18\x02 \x01(\rH\x01R\n" +
+	"targetPosY\x88\x01\x01\x12'\n" +
+	"\ris_high_light\x18\x03 \x01(\rH\x02R\visHighLight\x88\x01\x01B\x0f\n" +
+	"\r_target_pos_xB\x0f\n" +
+	"\r_target_pos_yB\x10\n" +
+	"\x0e_is_high_light\"3\n" +
+	"\x0fCustomByteBlock\x12\x17\n" +
+	"\x04data\x18\x01 \x01(\fH\x00R\x04data\x88\x01\x01B\a\n" +
+	"\x05_data\"\xb0\x01\n" +
+	"\x0fAssemblyCommand\x12!\n" +
+	"\toperation\x18\x01 \x01(\rH\x00R\toperation\x88\x01\x01\x12#\n" +
 	"\n" +
-	"difficulty\x18\x02 \x01(\rR\n" +
-	"difficulty\"4\n" +
-	"\tOperation\x12\x0e\n" +
-	"\n" +
-	"OP_UNKNOWN\x10\x00\x12\v\n" +
+	"difficulty\x18\x02 \x01(\rH\x01R\n" +
+	"difficulty\x88\x01\x01\"8\n" +
+	"\tOperation\x12\x12\n" +
+	"\x0eSTART_EXCHANGE\x10\x00\x12\v\n" +
 	"\aCONFIRM\x10\x01\x12\n" +
 	"\n" +
-	"\x06CANCEL\x10\x02\"\xff\x02\n" +
-	"\x17TechCoreMotionStateSync\x128\n" +
-	"\x18maximum_difficulty_level\x18\x01 \x01(\rR\x16maximumDifficultyLevel\x12\x16\n" +
-	"\x06status\x18\x02 \x01(\rR\x06status\x12*\n" +
-	"\x11enemy_core_status\x18\x03 \x01(\rR\x0fenemyCoreStatus\x12&\n" +
-	"\x0fremain_time_all\x18\x04 \x01(\rR\rremainTimeAll\x12(\n" +
-	"\x10remain_time_step\x18\x05 \x01(\rR\x0eremainTimeStep\"\x93\x01\n" +
+	"\x06CANCEL\x10\x02B\f\n" +
 	"\n" +
-	"CoreStatus\x12\x12\n" +
-	"\x0eSTATUS_UNKNOWN\x10\x00\x12\b\n" +
-	"\x04IDLE\x10\x01\x12\x17\n" +
-	"\x13DIFFICULTY_SELECTED\x10\x02\x12\x12\n" +
-	"\x0eMOVE_COMPLETED\x10\x03\x12\x12\n" +
-	"\x0eSTEP_COMPLETED\x10\x04\x12\x17\n" +
-	"\x13ALL_STEPS_COMPLETED\x10\x05\x12\r\n" +
-	"\tCONFIRMED\x10\x06\"}\n" +
-	" RobotPerformanceSelectionCommand\x12\x18\n" +
-	"\ashooter\x18\x01 \x01(\rR\ashooter\x12\x18\n" +
-	"\achassis\x18\x02 \x01(\rR\achassis\x12%\n" +
-	"\x0esentry_control\x18\x03 \x01(\rR\rsentryControl\"z\n" +
-	"\x1dRobotPerformanceSelectionSync\x12\x18\n" +
-	"\ashooter\x18\x01 \x01(\rR\ashooter\x12\x18\n" +
-	"\achassis\x18\x02 \x01(\rR\achassis\x12%\n" +
-	"\x0esentry_control\x18\x03 \x01(\rR\rsentryControl\"\xee\x01\n" +
-	"\rCommonCommand\x12\x19\n" +
-	"\bcmd_type\x18\x01 \x01(\rR\acmdType\x12\x14\n" +
-	"\x05param\x18\x02 \x01(\rR\x05param\"\xab\x01\n" +
+	"_operationB\r\n" +
+	"\v_difficulty\"\x99\x04\n" +
+	"\x17TechCoreMotionStateSync\x12=\n" +
+	"\x18maximum_difficulty_level\x18\x01 \x01(\rH\x00R\x16maximumDifficultyLevel\x88\x01\x01\x12$\n" +
+	"\vbasic_state\x18\x02 \x01(\rH\x01R\n" +
+	"basicState\x88\x01\x01\x12$\n" +
+	"\vputin_state\x18\x03 \x01(\rH\x02R\n" +
+	"putinState\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"move_state\x18\x04 \x01(\rH\x03R\tmoveState\x88\x01\x01\x12&\n" +
+	"\frotate_state\x18\x05 \x01(\rH\x04R\vrotateState\x88\x01\x01\x12/\n" +
+	"\x11enemy_core_status\x18\x06 \x01(\rH\x05R\x0fenemyCoreStatus\x88\x01\x01\x12+\n" +
+	"\x0fremain_time_all\x18\a \x01(\rH\x06R\rremainTimeAll\x88\x01\x01\x12-\n" +
+	"\x10remain_time_step\x18\b \x01(\rH\aR\x0eremainTimeStep\x88\x01\x01B\x1b\n" +
+	"\x19_maximum_difficulty_levelB\x0e\n" +
+	"\f_basic_stateB\x0e\n" +
+	"\f_putin_stateB\r\n" +
+	"\v_move_stateB\x0f\n" +
+	"\r_rotate_stateB\x14\n" +
+	"\x12_enemy_core_statusB\x12\n" +
+	"\x10_remain_time_allB\x13\n" +
+	"\x11_remain_time_step\"\xb7\x01\n" +
+	" RobotPerformanceSelectionCommand\x12\x1d\n" +
+	"\ashooter\x18\x01 \x01(\rH\x00R\ashooter\x88\x01\x01\x12\x1d\n" +
+	"\achassis\x18\x02 \x01(\rH\x01R\achassis\x88\x01\x01\x12*\n" +
+	"\x0esentry_control\x18\x03 \x01(\rH\x02R\rsentryControl\x88\x01\x01B\n" +
+	"\n" +
+	"\b_shooterB\n" +
+	"\n" +
+	"\b_chassisB\x11\n" +
+	"\x0f_sentry_control\"\xb4\x01\n" +
+	"\x1dRobotPerformanceSelectionSync\x12\x1d\n" +
+	"\ashooter\x18\x01 \x01(\rH\x00R\ashooter\x88\x01\x01\x12\x1d\n" +
+	"\achassis\x18\x02 \x01(\rH\x01R\achassis\x88\x01\x01\x12*\n" +
+	"\x0esentry_control\x18\x03 \x01(\rH\x02R\rsentryControl\x88\x01\x01B\n" +
+	"\n" +
+	"\b_shooterB\n" +
+	"\n" +
+	"\b_chassisB\x11\n" +
+	"\x0f_sentry_control\"\x8f\x02\n" +
+	"\rCommonCommand\x12\x1e\n" +
+	"\bcmd_type\x18\x01 \x01(\rH\x00R\acmdType\x88\x01\x01\x12\x19\n" +
+	"\x05param\x18\x02 \x01(\rH\x01R\x05param\x88\x01\x01\"\xab\x01\n" +
 	"\aCmdType\x12\x0f\n" +
 	"\vCMD_UNKNOWN\x10\x00\x12\x11\n" +
 	"\rEXCHANGE_17MM\x10\x01\x12\x11\n" +
@@ -4620,45 +4726,55 @@ const file_client_client_proto_rawDesc = "" +
 	"\x0fCONFIRM_RESPAWN\x10\x03\x12\x1e\n" +
 	"\x1aEXCHANGE_IMMEDIATE_RESPAWN\x10\x04\x12\x18\n" +
 	"\x14REMOTE_EXCHANGE_AMMO\x10\x05\x12\x1a\n" +
-	"\x16REMOTE_EXCHANGE_HEALTH\x10\x06\"V\n" +
-	"\x1aHeroDeployModeEventCommand\x12\x12\n" +
-	"\x04mode\x18\x01 \x01(\rR\x04mode\"$\n" +
+	"\x16REMOTE_EXCHANGE_HEALTH\x10\x06B\v\n" +
+	"\t_cmd_typeB\b\n" +
+	"\x06_param\"d\n" +
+	"\x1aHeroDeployModeEventCommand\x12\x17\n" +
+	"\x04mode\x18\x01 \x01(\rH\x00R\x04mode\x88\x01\x01\"$\n" +
 	"\rDeployModeCmd\x12\b\n" +
 	"\x04EXIT\x10\x00\x12\t\n" +
-	"\x05ENTER\x10\x01\"^\n" +
-	"\x14DeployModeStatusSync\x12\x16\n" +
-	"\x06status\x18\x01 \x01(\rR\x06status\".\n" +
+	"\x05ENTER\x10\x01B\a\n" +
+	"\x05_mode\"n\n" +
+	"\x14DeployModeStatusSync\x12\x1b\n" +
+	"\x06status\x18\x01 \x01(\rH\x00R\x06status\x88\x01\x01\".\n" +
 	"\fDeployStatus\x12\x10\n" +
 	"\fNOT_DEPLOYED\x10\x00\x12\f\n" +
-	"\bDEPLOYED\x10\x01\"1\n" +
-	"\x13RuneActivateCommand\x12\x1a\n" +
-	"\bactivate\x18\x01 \x01(\rR\bactivate\"\xca\x01\n" +
-	"\x0eRuneStatusSync\x12\x1f\n" +
-	"\vrune_status\x18\x01 \x01(\rR\n" +
-	"runeStatus\x12%\n" +
-	"\x0eactivated_arms\x18\x02 \x01(\rR\ractivatedArms\x12#\n" +
-	"\raverage_rings\x18\x03 \x01(\rR\faverageRings\"K\n" +
+	"\bDEPLOYED\x10\x01B\t\n" +
+	"\a_status\"C\n" +
+	"\x13RuneActivateCommand\x12\x1f\n" +
+	"\bactivate\x18\x01 \x01(\rH\x00R\bactivate\x88\x01\x01B\v\n" +
+	"\t_activate\"\x8e\x02\n" +
+	"\x0eRuneStatusSync\x12$\n" +
+	"\vrune_status\x18\x01 \x01(\rH\x00R\n" +
+	"runeStatus\x88\x01\x01\x12*\n" +
+	"\x0eactivated_arms\x18\x02 \x01(\rH\x01R\ractivatedArms\x88\x01\x01\x12(\n" +
+	"\raverage_rings\x18\x03 \x01(\x02H\x02R\faverageRings\x88\x01\x01\"K\n" +
 	"\n" +
 	"RuneStatus\x12\x10\n" +
 	"\fRUNE_UNKNOWN\x10\x00\x12\f\n" +
 	"\bINACTIVE\x10\x01\x12\x0e\n" +
 	"\n" +
 	"ACTIVATING\x10\x02\x12\r\n" +
-	"\tACTIVATED\x10\x03\"\xad\x01\n" +
-	"\x10SentryStatusSync\x12\x1d\n" +
+	"\tACTIVATED\x10\x03B\x0e\n" +
+	"\f_rune_statusB\x11\n" +
+	"\x0f_activated_armsB\x10\n" +
+	"\x0e_average_rings\"\xd6\x01\n" +
+	"\x10SentryStatusSync\x12\"\n" +
 	"\n" +
-	"posture_id\x18\x01 \x01(\rR\tpostureId\x12\x1f\n" +
-	"\vis_weakened\x18\x02 \x01(\bR\n" +
-	"isWeakened\"Y\n" +
+	"posture_id\x18\x01 \x01(\rH\x00R\tpostureId\x88\x01\x01\x12$\n" +
+	"\vis_weakened\x18\x02 \x01(\bH\x01R\n" +
+	"isWeakened\x88\x01\x01\"Y\n" +
 	"\aPosture\x12\x13\n" +
 	"\x0fPOSTURE_UNKNOWN\x10\x00\x12\x12\n" +
 	"\x0ePOSTURE_ATTACK\x10\x01\x12\x13\n" +
 	"\x0fPOSTURE_DEFENSE\x10\x02\x12\x10\n" +
-	"\fPOSTURE_MOVE\x10\x03\"\xe4\x01\n" +
-	"\vDartCommand\x12\x1b\n" +
-	"\ttarget_id\x18\x01 \x01(\rR\btargetId\x12\x12\n" +
-	"\x04open\x18\x02 \x01(\bR\x04open\x12%\n" +
-	"\x0elaunch_confirm\x18\x03 \x01(\bR\rlaunchConfirm\"}\n" +
+	"\fPOSTURE_MOVE\x10\x03B\r\n" +
+	"\v_posture_idB\x0e\n" +
+	"\f_is_weakened\"\x9d\x02\n" +
+	"\vDartCommand\x12 \n" +
+	"\ttarget_id\x18\x01 \x01(\rH\x00R\btargetId\x88\x01\x01\x12\x17\n" +
+	"\x04open\x18\x02 \x01(\bH\x01R\x04open\x88\x01\x01\x12*\n" +
+	"\x0elaunch_confirm\x18\x03 \x01(\bH\x02R\rlaunchConfirm\x88\x01\x01\"}\n" +
 	"\n" +
 	"DartTarget\x12\x12\n" +
 	"\x0eTARGET_UNKNOWN\x10\x00\x12\v\n" +
@@ -4667,13 +4783,20 @@ const file_client_client_proto_rawDesc = "" +
 	"BASE_FIXED\x10\x02\x12\x15\n" +
 	"\x11BASE_RANDOM_FIXED\x10\x03\x12\x14\n" +
 	"\x10BASE_RANDOM_MOVE\x10\x04\x12\x11\n" +
-	"\rBASE_END_MOVE\x10\x05\"M\n" +
-	"\x1aDartSelectTargetStatusSync\x12\x1b\n" +
-	"\ttarget_id\x18\x01 \x01(\rR\btargetId\x12\x12\n" +
-	"\x04open\x18\x02 \x01(\rR\x04open\"\x90\x02\n" +
-	"\x11SentryCtrlCommand\x12\x1d\n" +
+	"\rBASE_END_MOVE\x10\x05B\f\n" +
 	"\n" +
-	"command_id\x18\x01 \x01(\rR\tcommandId\"\xdb\x01\n" +
+	"_target_idB\a\n" +
+	"\x05_openB\x11\n" +
+	"\x0f_launch_confirm\"n\n" +
+	"\x1aDartSelectTargetStatusSync\x12 \n" +
+	"\ttarget_id\x18\x01 \x01(\rH\x00R\btargetId\x88\x01\x01\x12\x17\n" +
+	"\x04open\x18\x02 \x01(\rH\x01R\x04open\x88\x01\x01B\f\n" +
+	"\n" +
+	"_target_idB\a\n" +
+	"\x05_open\"\x96\x02\n" +
+	"\x11SentryCtrlCommand\x12\"\n" +
+	"\n" +
+	"command_id\x18\x01 \x01(\rH\x00R\tcommandId\x88\x01\x01\"\xcd\x01\n" +
 	"\x0eGuardCommandID\x12\x0f\n" +
 	"\vCMD_INVALID\x10\x00\x12\x13\n" +
 	"\x0fHEAL_POINT_AMMO\x10\x01\x12\x17\n" +
@@ -4681,38 +4804,45 @@ const file_client_client_proto_rawDesc = "" +
 	"\vREMOTE_AMMO\x10\x03\x12\x0f\n" +
 	"\vREMOTE_HEAL\x10\x04\x12\x10\n" +
 	"\fFREE_RESPAWN\x10\x05\x12\x10\n" +
-	"\fGOLD_RESPAWN\x10\x06\x12\f\n" +
-	"\bMAP_MARK\x10\a\x12\x11\n" +
-	"\rSWITCH_ATTACK\x10\b\x12\x12\n" +
-	"\x0eSWITCH_DEFENSE\x10\t\x12\x0f\n" +
-	"\vSWITCH_MOVE\x10\n" +
-	"\"R\n" +
-	"\x10SentryCtrlResult\x12\x1d\n" +
+	"\fGOLD_RESPAWN\x10\x06\x12\x11\n" +
+	"\rSWITCH_ATTACK\x10\a\x12\x12\n" +
+	"\x0eSWITCH_DEFENSE\x10\b\x12\x0f\n" +
+	"\vSWITCH_MOVE\x10\tB\r\n" +
+	"\v_command_id\"{\n" +
+	"\x10SentryCtrlResult\x12\"\n" +
 	"\n" +
-	"command_id\x18\x01 \x01(\rR\tcommandId\x12\x1f\n" +
-	"\vresult_code\x18\x02 \x01(\rR\n" +
-	"resultCode\"\x83\x01\n" +
-	"\x11AirSupportCommand\x12\x1d\n" +
+	"command_id\x18\x01 \x01(\rH\x00R\tcommandId\x88\x01\x01\x12$\n" +
+	"\vresult_code\x18\x02 \x01(\rH\x01R\n" +
+	"resultCode\x88\x01\x01B\r\n" +
+	"\v_command_idB\x0e\n" +
+	"\f_result_code\"\x8b\x01\n" +
+	"\x11AirSupportCommand\x12\"\n" +
 	"\n" +
-	"command_id\x18\x01 \x01(\rR\tcommandId\"O\n" +
-	"\x0fAirSupportCmdID\x12\x0f\n" +
-	"\vCMD_UNKNOWN\x10\x00\x12\r\n" +
+	"command_id\x18\x01 \x01(\rH\x00R\tcommandId\x88\x01\x01\"C\n" +
+	"\x0fAirSupportCmdID\x12\x12\n" +
+	"\x0eCANCEL_SUPPORT\x10\x00\x12\r\n" +
 	"\tFREE_CALL\x10\x01\x12\r\n" +
-	"\tGOLD_CALL\x10\x02\x12\r\n" +
-	"\tINTERRUPT\x10\x03\"\xc3\x02\n" +
-	"\x14AirSupportStatusSync\x12+\n" +
-	"\x11airsupport_status\x18\x01 \x01(\rR\x10airsupportStatus\x12\x1b\n" +
-	"\tleft_time\x18\x02 \x01(\rR\bleftTime\x12\x1d\n" +
+	"\tGOLD_CALL\x10\x02B\r\n" +
+	"\v_command_id\"\xb8\x03\n" +
+	"\x14AirSupportStatusSync\x120\n" +
+	"\x11airsupport_status\x18\x01 \x01(\rH\x00R\x10airsupportStatus\x88\x01\x01\x12 \n" +
+	"\tleft_time\x18\x02 \x01(\rH\x01R\bleftTime\x88\x01\x01\x12\"\n" +
 	"\n" +
-	"cost_coins\x18\x03 \x01(\rR\tcostCoins\x12*\n" +
-	"\x11is_being_targeted\x18\x04 \x01(\rR\x0fisBeingTargeted\x12%\n" +
-	"\x0eshooter_status\x18\x05 \x01(\rR\rshooterStatus\"6\n" +
+	"cost_coins\x18\x03 \x01(\rH\x02R\tcostCoins\x88\x01\x01\x12/\n" +
+	"\x11is_being_targeted\x18\x04 \x01(\rH\x03R\x0fisBeingTargeted\x88\x01\x01\x12*\n" +
+	"\x0eshooter_status\x18\x05 \x01(\rH\x04R\rshooterStatus\x88\x01\x01\"6\n" +
 	"\x10AirSupportStatus\x12\x0f\n" +
 	"\vSTATUS_IDLE\x10\x00\x12\x11\n" +
 	"\rSTATUS_ACTIVE\x10\x01\"7\n" +
 	"\rShooterStatus\x12\x12\n" +
 	"\x0eSHOOTER_LOCKED\x10\x00\x12\x12\n" +
-	"\x0eSHOOTER_NORMAL\x10\x01*\xa3\x04\n" +
+	"\x0eSHOOTER_NORMAL\x10\x01B\x14\n" +
+	"\x12_airsupport_statusB\f\n" +
+	"\n" +
+	"_left_timeB\r\n" +
+	"\v_cost_coinsB\x14\n" +
+	"\x12_is_being_targetedB\x11\n" +
+	"\x0f_shooter_status*\xa3\x04\n" +
 	"\aRobotId\x12\x11\n" +
 	"\rROBOT_UNKNOWN\x10\x00\x12\x12\n" +
 	"\x0eROBOT_RED_HERO\x10\x01\x12\x16\n" +
@@ -4766,8 +4896,8 @@ func file_client_client_proto_rawDescGZIP() []byte {
 	return file_client_client_proto_rawDescData
 }
 
-var file_client_client_proto_enumTypes = make([]protoimpl.EnumInfo, 27)
-var file_client_client_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
+var file_client_client_proto_enumTypes = make([]protoimpl.EnumInfo, 26)
+var file_client_client_proto_msgTypes = make([]protoimpl.MessageInfo, 36)
 var file_client_client_proto_goTypes = []any{
 	(RobotId)(0),                                    // 0: robosouls.rmproto.v2026.client.RobotId
 	(ClientId)(0),                                   // 1: robosouls.rmproto.v2026.client.ClientId
@@ -4785,35 +4915,35 @@ var file_client_client_proto_goTypes = []any{
 	(MapClickInfoNotify_MarkMode)(0),                // 13: robosouls.rmproto.v2026.client.MapClickInfoNotify.MarkMode
 	(MapClickInfoNotify_MarkType)(0),                // 14: robosouls.rmproto.v2026.client.MapClickInfoNotify.MarkType
 	(AssemblyCommand_Operation)(0),                  // 15: robosouls.rmproto.v2026.client.AssemblyCommand.Operation
-	(TechCoreMotionStateSync_CoreStatus)(0),         // 16: robosouls.rmproto.v2026.client.TechCoreMotionStateSync.CoreStatus
-	(CommonCommand_CmdType)(0),                      // 17: robosouls.rmproto.v2026.client.CommonCommand.CmdType
-	(HeroDeployModeEventCommand_DeployModeCmd)(0),   // 18: robosouls.rmproto.v2026.client.HeroDeployModeEventCommand.DeployModeCmd
-	(DeployModeStatusSync_DeployStatus)(0),          // 19: robosouls.rmproto.v2026.client.DeployModeStatusSync.DeployStatus
-	(RuneStatusSync_RuneStatus)(0),                  // 20: robosouls.rmproto.v2026.client.RuneStatusSync.RuneStatus
-	(SentryStatusSync_Posture)(0),                   // 21: robosouls.rmproto.v2026.client.SentryStatusSync.Posture
-	(DartCommand_DartTarget)(0),                     // 22: robosouls.rmproto.v2026.client.DartCommand.DartTarget
-	(SentryCtrlCommand_GuardCommandID)(0),           // 23: robosouls.rmproto.v2026.client.SentryCtrlCommand.GuardCommandID
-	(AirSupportCommand_AirSupportCmdID)(0),          // 24: robosouls.rmproto.v2026.client.AirSupportCommand.AirSupportCmdID
-	(AirSupportStatusSync_AirSupportStatus)(0),      // 25: robosouls.rmproto.v2026.client.AirSupportStatusSync.AirSupportStatus
-	(AirSupportStatusSync_ShooterStatus)(0),         // 26: robosouls.rmproto.v2026.client.AirSupportStatusSync.ShooterStatus
-	(*KeyboardMouseControl)(nil),                    // 27: robosouls.rmproto.v2026.client.KeyboardMouseControl
-	(*CustomControl)(nil),                           // 28: robosouls.rmproto.v2026.client.CustomControl
-	(*GameStatus)(nil),                              // 29: robosouls.rmproto.v2026.client.GameStatus
-	(*GlobalUnitStatus)(nil),                        // 30: robosouls.rmproto.v2026.client.GlobalUnitStatus
-	(*GlobalLogisticsStatus)(nil),                   // 31: robosouls.rmproto.v2026.client.GlobalLogisticsStatus
-	(*GlobalSpecialMechanism)(nil),                  // 32: robosouls.rmproto.v2026.client.GlobalSpecialMechanism
-	(*Event)(nil),                                   // 33: robosouls.rmproto.v2026.client.Event
-	(*RobotInjuryStat)(nil),                         // 34: robosouls.rmproto.v2026.client.RobotInjuryStat
-	(*RobotRespawnStatus)(nil),                      // 35: robosouls.rmproto.v2026.client.RobotRespawnStatus
-	(*RobotStaticStatus)(nil),                       // 36: robosouls.rmproto.v2026.client.RobotStaticStatus
-	(*RobotDynamicStatus)(nil),                      // 37: robosouls.rmproto.v2026.client.RobotDynamicStatus
-	(*RobotModuleStatus)(nil),                       // 38: robosouls.rmproto.v2026.client.RobotModuleStatus
-	(*RobotPosition)(nil),                           // 39: robosouls.rmproto.v2026.client.RobotPosition
-	(*Buff)(nil),                                    // 40: robosouls.rmproto.v2026.client.Buff
-	(*PenaltyInfo)(nil),                             // 41: robosouls.rmproto.v2026.client.PenaltyInfo
-	(*RobotPathPlanInfo)(nil),                       // 42: robosouls.rmproto.v2026.client.RobotPathPlanInfo
-	(*MapClickInfoNotify)(nil),                      // 43: robosouls.rmproto.v2026.client.MapClickInfoNotify
-	(*RadarInfoToClient)(nil),                       // 44: robosouls.rmproto.v2026.client.RadarInfoToClient
+	(CommonCommand_CmdType)(0),                      // 16: robosouls.rmproto.v2026.client.CommonCommand.CmdType
+	(HeroDeployModeEventCommand_DeployModeCmd)(0),   // 17: robosouls.rmproto.v2026.client.HeroDeployModeEventCommand.DeployModeCmd
+	(DeployModeStatusSync_DeployStatus)(0),          // 18: robosouls.rmproto.v2026.client.DeployModeStatusSync.DeployStatus
+	(RuneStatusSync_RuneStatus)(0),                  // 19: robosouls.rmproto.v2026.client.RuneStatusSync.RuneStatus
+	(SentryStatusSync_Posture)(0),                   // 20: robosouls.rmproto.v2026.client.SentryStatusSync.Posture
+	(DartCommand_DartTarget)(0),                     // 21: robosouls.rmproto.v2026.client.DartCommand.DartTarget
+	(SentryCtrlCommand_GuardCommandID)(0),           // 22: robosouls.rmproto.v2026.client.SentryCtrlCommand.GuardCommandID
+	(AirSupportCommand_AirSupportCmdID)(0),          // 23: robosouls.rmproto.v2026.client.AirSupportCommand.AirSupportCmdID
+	(AirSupportStatusSync_AirSupportStatus)(0),      // 24: robosouls.rmproto.v2026.client.AirSupportStatusSync.AirSupportStatus
+	(AirSupportStatusSync_ShooterStatus)(0),         // 25: robosouls.rmproto.v2026.client.AirSupportStatusSync.ShooterStatus
+	(*KeyboardMouseControl)(nil),                    // 26: robosouls.rmproto.v2026.client.KeyboardMouseControl
+	(*CustomControl)(nil),                           // 27: robosouls.rmproto.v2026.client.CustomControl
+	(*GameStatus)(nil),                              // 28: robosouls.rmproto.v2026.client.GameStatus
+	(*GlobalUnitStatus)(nil),                        // 29: robosouls.rmproto.v2026.client.GlobalUnitStatus
+	(*GlobalLogisticsStatus)(nil),                   // 30: robosouls.rmproto.v2026.client.GlobalLogisticsStatus
+	(*GlobalSpecialMechanism)(nil),                  // 31: robosouls.rmproto.v2026.client.GlobalSpecialMechanism
+	(*Event)(nil),                                   // 32: robosouls.rmproto.v2026.client.Event
+	(*RobotInjuryStat)(nil),                         // 33: robosouls.rmproto.v2026.client.RobotInjuryStat
+	(*RobotRespawnStatus)(nil),                      // 34: robosouls.rmproto.v2026.client.RobotRespawnStatus
+	(*RobotStaticStatus)(nil),                       // 35: robosouls.rmproto.v2026.client.RobotStaticStatus
+	(*RobotDynamicStatus)(nil),                      // 36: robosouls.rmproto.v2026.client.RobotDynamicStatus
+	(*RobotModuleStatus)(nil),                       // 37: robosouls.rmproto.v2026.client.RobotModuleStatus
+	(*RobotPosition)(nil),                           // 38: robosouls.rmproto.v2026.client.RobotPosition
+	(*Buff)(nil),                                    // 39: robosouls.rmproto.v2026.client.Buff
+	(*PenaltyInfo)(nil),                             // 40: robosouls.rmproto.v2026.client.PenaltyInfo
+	(*RobotPathPlanInfo)(nil),                       // 41: robosouls.rmproto.v2026.client.RobotPathPlanInfo
+	(*MapClickInfoNotify)(nil),                      // 42: robosouls.rmproto.v2026.client.MapClickInfoNotify
+	(*RadarInfoToClient)(nil),                       // 43: robosouls.rmproto.v2026.client.RadarInfoToClient
+	(*RadarSingleRobotInfo)(nil),                    // 44: robosouls.rmproto.v2026.client.RadarSingleRobotInfo
 	(*CustomByteBlock)(nil),                         // 45: robosouls.rmproto.v2026.client.CustomByteBlock
 	(*AssemblyCommand)(nil),                         // 46: robosouls.rmproto.v2026.client.AssemblyCommand
 	(*TechCoreMotionStateSync)(nil),                 // 47: robosouls.rmproto.v2026.client.TechCoreMotionStateSync
@@ -4833,11 +4963,12 @@ var file_client_client_proto_goTypes = []any{
 	(*AirSupportStatusSync)(nil),                    // 61: robosouls.rmproto.v2026.client.AirSupportStatusSync
 }
 var file_client_client_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	44, // 0: robosouls.rmproto.v2026.client.RadarInfoToClient.RadarSingleRobotInfo:type_name -> robosouls.rmproto.v2026.client.RadarSingleRobotInfo
+	1,  // [1:1] is the sub-list for method output_type
+	1,  // [1:1] is the sub-list for method input_type
+	1,  // [1:1] is the sub-list for extension type_name
+	1,  // [1:1] is the sub-list for extension extendee
+	0,  // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_client_client_proto_init() }
@@ -4845,13 +4976,47 @@ func file_client_client_proto_init() {
 	if File_client_client_proto != nil {
 		return
 	}
+	file_client_client_proto_msgTypes[0].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[1].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[2].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[3].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[4].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[6].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[7].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[8].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[9].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[10].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[11].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[12].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[13].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[14].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[15].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[16].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[18].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[19].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[20].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[21].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[22].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[23].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[24].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[25].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[26].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[27].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[28].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[29].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[30].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[31].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[32].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[33].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[34].OneofWrappers = []any{}
+	file_client_client_proto_msgTypes[35].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_client_client_proto_rawDesc), len(file_client_client_proto_rawDesc)),
-			NumEnums:      27,
-			NumMessages:   35,
+			NumEnums:      26,
+			NumMessages:   36,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
